@@ -1,14 +1,17 @@
-import React from 'react';
-import { StyleSheet, Alert, Dimensions } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, Alert, Dimensions, AsyncStorage } from 'react-native';
 import { Text, Layout, Button } from '@ui-kitten/components';
 import QRCode from 'react-native-qrcode-svg';
+import { LOGOUT } from '../../reducer/AppReducer';
+import { AppContext } from '../../context/AppContext';
 
 const { width } = Dimensions.get('screen');
 
 const RegistrasiPoliklinik3 = props => {
   const { setForm, setStep, form, navigation } = props;
+  const { dispatch } = useContext(AppContext);
 
-  const handleForm = btn => {
+  const handleForm = async btn => {
     setForm({});
     setStep(0);
     if (btn === 'simpan') {
@@ -19,6 +22,8 @@ const RegistrasiPoliklinik3 = props => {
         }
       ]);
     } else {
+      await AsyncStorage.removeItem('_USERDATA_');
+      dispatch({ type: LOGOUT });
       navigation.popToTop();
     }
   };

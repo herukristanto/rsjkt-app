@@ -1,15 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   FlatList,
   Image,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 import { Layout, Text, Button, Icon, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppContext } from '../context/AppContext';
+import { LOGOUT } from '../reducer/AppReducer';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -21,8 +24,16 @@ const images = [
 
 const HomeScreen = props => {
   const { navigation } = props;
+  const { state, dispatch } = useContext(AppContext);
 
   const theme = useTheme();
+
+  console.log(state);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('_USERDATA_');
+    dispatch({ type: LOGOUT });
+  };
 
   const styl = useMemo(
     () =>
@@ -112,15 +123,17 @@ const HomeScreen = props => {
         />
 
         <View style={styl.buttonContainer}>
-          <TouchableOpacity
-            style={styl.button}
-            onPress={() => navigation.navigate('Register')}
-          >
-            <Icon name='log-in-outline' width={64} height={64} fill='green' />
-            <Text style={styl.buttonText} category='h6' category='h6'>
-              Registrasi Akun
-            </Text>
-          </TouchableOpacity>
+          {!state.isLogin && (
+            <TouchableOpacity
+              style={styl.button}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Icon name='log-in-outline' width={64} height={64} fill='green' />
+              <Text style={styl.buttonText} category='h6' category='h6'>
+                Registrasi Akun
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={styl.button}
             onPress={() => navigation.navigate('RegistrasiPoliklinik')}
@@ -142,24 +155,51 @@ const HomeScreen = props => {
               Lokasi
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styl.button}
-            onPress={() => navigation.navigate('Login')}
-          >
-            <Icon name='log-in-outline' width={64} height={64} fill='green' />
-            <Text style={styl.buttonText} category='h6'>
-              Login Pasien
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styl.button}
-            onPress={() => navigation.navigate('LoginDokter')}
-          >
-            <Icon name='log-in-outline' width={64} height={64} fill='green' />
-            <Text style={styl.buttonText} category='h6'>
-              Login Dokter
-            </Text>
-          </TouchableOpacity>
+          {!state.isLogin && (
+            <>
+              <TouchableOpacity
+                style={styl.button}
+                onPress={() => navigation.navigate('Login')}
+              >
+                <Icon
+                  name='log-in-outline'
+                  width={64}
+                  height={64}
+                  fill='green'
+                />
+                <Text style={styl.buttonText} category='h6'>
+                  Login Pasien
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styl.button}
+                onPress={() => navigation.navigate('LoginDokter')}
+              >
+                <Icon
+                  name='log-in-outline'
+                  width={64}
+                  height={64}
+                  fill='green'
+                />
+                <Text style={styl.buttonText} category='h6'>
+                  Login Dokter
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+          {state.isLogin && (
+            <TouchableOpacity style={styl.button} onPress={handleLogout}>
+              <Icon
+                name='log-out-outline'
+                width={64}
+                height={64}
+                fill='green'
+              />
+              <Text style={styl.buttonText} category='h6'>
+                Logout
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </LinearGradient>
     </>
