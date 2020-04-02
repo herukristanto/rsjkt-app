@@ -28,8 +28,6 @@ const HomeScreen = props => {
 
   const theme = useTheme();
 
-  console.log(state);
-
   const handleLogout = async () => {
     await AsyncStorage.removeItem('_USERDATA_');
     dispatch({ type: LOGOUT });
@@ -134,15 +132,17 @@ const HomeScreen = props => {
               </Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity
-            style={styl.button}
-            onPress={() => navigation.navigate('RegistrasiPoliklinik')}
-          >
-            <Icon name='log-in-outline' width={64} height={64} fill='green' />
-            <Text style={styl.buttonText} category='h6'>
-              Registrasi Poli
-            </Text>
-          </TouchableOpacity>
+          {state.isLogin && (
+            <TouchableOpacity
+              style={styl.button}
+              onPress={() => navigation.navigate('RegistrasiPoliklinik')}
+            >
+              <Icon name='log-in-outline' width={64} height={64} fill='green' />
+              <Text style={styl.buttonText} category='h6'>
+                Registrasi Poli
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styl.button} onPress={() => {}}>
             <Icon name='bookmark' width={64} height={64} fill='green' />
             <Text style={styl.buttonText} category='h6'>

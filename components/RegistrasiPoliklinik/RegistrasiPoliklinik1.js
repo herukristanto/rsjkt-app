@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Text,
@@ -10,13 +10,17 @@ import {
   useTheme
 } from '@ui-kitten/components';
 import RNPickerSelect from 'react-native-picker-select';
+import useAxios from '../../utils/useAxios';
+import { getUnique } from '../../utils/helpers';
 
 const RegistrasiPoliklinik1 = props => {
   const { setForm, setStep, form } = props;
   const theme = useTheme();
 
-  const noRekamMedis = '12345';
-  const tanggalLahir = '31/03/2020';
+  const [daftarPraktek, setDaftarPraktek] = useState([]);
+  const [poliklinikName, setPoliklinikName] = useState([]);
+  const [dokterName, setDokterName] = useState([]);
+  const [jadwal, setJadwal] = useState([]);
 
   const [dokter, setDokter] = useState(form.dokter);
   const [poliklinik, setPoliklinik] = useState(form.poliklinik);
@@ -25,6 +29,33 @@ const RegistrasiPoliklinik1 = props => {
   const [jaminan, setJaminan] = useState(form.jaminan);
   const [perusahaan, setPerusahaan] = useState(form.perusahaan);
   const [noKartu, setNoKartu] = useState(form.noKartu);
+
+  const [, getPoli] = useAxios(
+    { url: '/daftar_praktek', method: 'GET' },
+    { manual: true }
+  );
+
+  const listPoliklinik = async () => {
+    try {
+      const { data } = await getPoli({ params: { key: 'rsjkt4231' } });
+      setDaftarPraktek(data);
+      const poliUnique = await getUnique(data, 'Poli_nm');
+      const poliData = await poliUnique.map(poli => {
+        return {
+          value: poli.Poli_nm.trim(),
+          label: poli.Poli_nm.trim()
+        };
+      });
+
+      setPoliklinikName(poliData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    listPoliklinik();
+  }, []);
 
   const pickerSelectStyles = useMemo(
     () =>
@@ -54,12 +85,42 @@ const RegistrasiPoliklinik1 = props => {
     []
   );
 
+  const handlePoliklinik = async value => {
+    setPoliklinik(value);
+
+    const rawDokter = daftarPraktek.map(item => {
+      if (item.Poli_nm.trim() == value) {
+        return {
+          value: item.Dokter_nm.trim(),
+          label: item.Dokter_nm.trim()
+        };
+      }
+    });
+    const dokterUnique = await getUnique(rawDokter, 'label');
+
+    setDokterName(dokterUnique);
+  };
+
+  const handleDokter = async value => {
+    setDokter(value);
+
+    const rawJadwal = daftarPraktek.map(item => {
+      if (item.Dokter_nm.trim() == value) {
+        return {
+          label: `${item.nm_day.trim()}, ${item.Jam_Awal.trim()} - ${item.Jam_Akhir.trim()}`,
+          value: `${item.nm_day.trim()}, ${item.Jam_Awal.trim()} - ${item.Jam_Akhir.trim()}`
+        };
+      }
+      return;
+    });
+    const filteredJadwal = rawJadwal.filter(Boolean);
+    setJadwal(filteredJadwal);
+  };
+
   const handleForm = () => {
     setForm(prevForm => {
       return {
         ...prevForm,
-        noRekamMedis,
-        tanggalLahir,
         dokter,
         poliklinik,
         tanggal,
@@ -140,38 +201,17 @@ const RegistrasiPoliklinik1 = props => {
     <React.Fragment>
       <Text category='h4'>Registrasi Poliklinik</Text>
       <Layout style={styles.form}>
-        <Input label='No Rekam Medis' value={noRekamMedis} disabled />
+        <Input label='No Rekam Medis' value={`${form.noRekamMedis}`} disabled />
       </Layout>
       <Layout style={styles.form}>
-        <Input label='Tanggal Lahir' value={tanggalLahir} disabled />
+        <Input label='Tanggal Lahir' value={form.tanggalLahir} disabled />
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Poliklinik</Text>
         <RNPickerSelect
-          onValueChange={value => setPoliklinik(value)}
+          onValueChange={value => handlePoliklinik(value)}
           value={poliklinik}
-          items={[
-            {
-              label: 'Umum',
-              value: 'umum'
-            },
-            {
-              label: 'Mata',
-              value: 'mata'
-            },
-            {
-              label: 'Jantung',
-              value: 'jantung'
-            },
-            {
-              label: 'Kulit',
-              value: 'kulit'
-            },
-            {
-              label: 'THT',
-              value: 'tht'
-            }
-          ]}
+          items={poliklinikName}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
           placeholder={{
@@ -185,30 +225,9 @@ const RegistrasiPoliklinik1 = props => {
         <Text style={styles.label}>Dokter</Text>
         <RNPickerSelect
           disabled={!poliklinik}
-          onValueChange={value => setDokter(value)}
+          onValueChange={value => handleDokter(value)}
           value={dokter}
-          items={[
-            {
-              label: 'dr. Abdullah Fadlol , Sp.U',
-              value: 'dr. Abdullah Fadlol , Sp.U'
-            },
-            {
-              label: 'dr. Achmad Zaki , Sp.OT',
-              value: 'dr. Achmad Zaki , Sp.OT'
-            },
-            {
-              label: 'dr. ADE RUSMIATI , Sp.P',
-              value: 'dr. ADE RUSMIATI , Sp.P'
-            },
-            {
-              label: 'dr. Adhani Jurianti , Sp.A',
-              value: 'dr. Adhani Jurianti , Sp.A'
-            },
-            {
-              label: 'dr. Adila Hisyam , SpTHT',
-              value: 'dr. Adila Hisyam , SpTHT'
-            }
-          ]}
+          items={dokterName}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
           placeholder={{
@@ -224,20 +243,7 @@ const RegistrasiPoliklinik1 = props => {
           disabled={!dokter}
           onValueChange={value => setTanggal(value)}
           value={tanggal}
-          items={[
-            {
-              label: '2020/03/31',
-              value: new Date('2020/03/31')
-            },
-            {
-              label: '2020/04/31',
-              value: new Date('2020/04/31')
-            },
-            {
-              label: '2020/05/31',
-              value: new Date('2020/05/31')
-            }
-          ]}
+          items={jadwal}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
           placeholder={{

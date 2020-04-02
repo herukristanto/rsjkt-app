@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Layout } from '@ui-kitten/components';
 
 import RegistrasiPoliklinik1 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik1';
 import RegistrasiPoliklinik2 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik2';
 import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik3';
+import { AppContext } from '../context/AppContext';
+import moment from 'moment';
 
 const RegistrasiPoliklinik = props => {
+  const { state } = useContext(AppContext);
+
   const [form, setForm] = useState({
+    noRekamMedis: '',
+    tanggalLahir: '',
     dokter: '',
     poliklinik: '',
     tanggal: '',
@@ -20,6 +26,16 @@ const RegistrasiPoliklinik = props => {
   const [step, setStep] = useState(1);
 
   console.log(form);
+
+  useEffect(() => {
+    setForm(prevForm => {
+      return {
+        ...prevForm,
+        noRekamMedis: state.user.nomor_cm,
+        tanggalLahir: moment(state.user.Tgl_lahir).format('DD MMMM YYYY')
+      };
+    });
+  }, []);
 
   return (
     <Layout style={styles.screen}>

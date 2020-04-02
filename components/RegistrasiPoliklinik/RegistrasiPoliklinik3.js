@@ -40,7 +40,7 @@ const RegistrasiPoliklinik3 = props => {
         <QRCode value='https://github.com/granitebps' size={width * 0.5} />
       </Layout>
       <Layout style={styles.form}>
-        <Text>{form.tanggal.toDateString()}</Text>
+        <Text>{form.tanggal}</Text>
       </Layout>
       <Layout style={styles.form}>
         <Text>Lokasi : {form.poliklinik}</Text>
