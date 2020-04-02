@@ -7,12 +7,15 @@ import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
 
 import RootNavigation from './navigations/RootNavigation';
+import { AppContextProvider } from './context/AppContext';
 
 export default function App() {
   return (
     <ApplicationProvider mapping={mapping} theme={theme}>
-      <IconRegistry icons={EvaIconsPack} />
-      <RootNavigation />
+      <AppContextProvider>
+        <IconRegistry icons={EvaIconsPack} />
+        <RootNavigation />
+      </AppContextProvider>
     </ApplicationProvider>
   );
 }
