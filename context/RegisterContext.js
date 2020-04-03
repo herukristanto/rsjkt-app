@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from 'react';
-import { View, Text } from 'react-native';
 import { RegisterReducer, initialState } from '../reducer/RegisterReducer';
 
 export const RegisterContext = createContext();

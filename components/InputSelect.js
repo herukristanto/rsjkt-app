@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useTheme } from '@ui-kitten/components';
 
-const Picker = ({ placeholder, data, value, onChange }) => {
+const InputSelect = ({ placeholder, data, value, onChange }) => {
   const theme = useTheme();
   const pickerSelectStyles = useMemo(
     () =>
@@ -49,4 +49,4 @@ const Picker = ({ placeholder, data, value, onChange }) => {
   );
 };
 
-export default Picker;
+export default InputSelect;

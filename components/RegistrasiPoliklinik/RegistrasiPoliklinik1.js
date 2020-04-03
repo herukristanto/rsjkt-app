@@ -10,7 +10,7 @@ import {
   Spinner
 } from '@ui-kitten/components';
 import { getUnique } from '../../utils/helpers';
-import Picker from '../Picker';
+import InputSelect from '../InputSelect';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
   GET_DAFTAR_DOKTER,
@@ -107,7 +107,7 @@ const RegistrasiPoliklinik1 = props => {
       <>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jaminan</Text>
-          <Picker
+          <InputSelect
             placeholder='Pilih Jaminan'
             data={state.daftarJaminan}
             value={jaminan}
@@ -116,7 +116,7 @@ const RegistrasiPoliklinik1 = props => {
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Perusahaan</Text>
-          <Picker
+          <InputSelect
             placeholder='Pilih Perusahaan'
             data={state.daftarPerusahaan}
             value={perusahaan}
@@ -154,7 +154,7 @@ const RegistrasiPoliklinik1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Poliklinik</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Poliklinik'
           data={state.daftarPoli}
           value={poliklinik}
@@ -163,7 +163,7 @@ const RegistrasiPoliklinik1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Dokter</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Dokter'
           data={state.daftarDokter}
           value={dokter}
@@ -172,7 +172,7 @@ const RegistrasiPoliklinik1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Tanggal Kunjungan</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Tanggal Kunjungan'
           data={state.daftarJadwal}
           value={tanggal}

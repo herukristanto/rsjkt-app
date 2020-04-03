@@ -1,30 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { RegisterContext } from '../../context/RegisterContext';
+import { ADD_FORM } from '../../reducer/RegisterReducer';
 
 const RegisterForm3 = props => {
-  const { setForm, setStep, form } = props;
+  const { setStep } = props;
+  const { state, dispatch } = useContext(RegisterContext);
 
-  const [namaKeluarga, setNamaKeluarga] = useState(form.namaKeluarga);
+  const [namaKeluarga, setNamaKeluarga] = useState(state.form.namaKeluarga);
   const [hubunganKeluarga, setHubunganKeluarga] = useState(
-    form.hubunganKeluarga
+    state.form.hubunganKeluarga
   );
-  const [alamatKeluarga, setAlamatKeluarga] = useState(form.alamatKeluarga);
-  const [rtKeluarga, setRtKeluarga] = useState(form.rtKeluarga);
-  const [rwKeluarga, setRwKeluarga] = useState(form.rwKeluarga);
-  const [kotaKeluarga, setKotaKeluarga] = useState(form.kotaKeluarga);
-  const [kodePosKeluarga, setKodePosKeluarga] = useState(form.kodePosKeluarga);
-  const [telpKeluarga, setTelpKeluarga] = useState(form.telpKeluarga);
-  const [telp2Keluarga, setTelp2Keluarga] = useState(form.telp2Keluarga);
-  const [emailKeluarga, setEmailKeluarga] = useState(form.emailKeluarga);
-  const [namaAyah, setNamaAyah] = useState(form.namaAyah);
-  const [pekerjaanAyah, setPekerjaahAyah] = useState(form.pekerjaanAyah);
-  const [namaIbu, setNamaIbu] = useState(form.namaIbu);
+  const [alamatKeluarga, setAlamatKeluarga] = useState(
+    state.form.alamatKeluarga
+  );
+  const [rtKeluarga, setRtKeluarga] = useState(state.form.rtKeluarga);
+  const [rwKeluarga, setRwKeluarga] = useState(state.form.rwKeluarga);
+  const [kotaKeluarga, setKotaKeluarga] = useState(state.form.kotaKeluarga);
+  const [kodePosKeluarga, setKodePosKeluarga] = useState(
+    state.form.kodePosKeluarga
+  );
+  const [telpKeluarga, setTelpKeluarga] = useState(state.form.telpKeluarga);
+  const [telp2Keluarga, setTelp2Keluarga] = useState(state.form.telp2Keluarga);
+  const [emailKeluarga, setEmailKeluarga] = useState(state.form.emailKeluarga);
+  const [namaAyah, setNamaAyah] = useState(state.form.namaAyah);
+  const [pekerjaanAyah, setPekerjaahAyah] = useState(state.form.pekerjaanAyah);
+  const [namaIbu, setNamaIbu] = useState(state.form.namaIbu);
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_FORM,
+      form: {
         namaKeluarga,
         hubunganKeluarga,
         alamatKeluarga,
@@ -38,7 +45,7 @@ const RegisterForm3 = props => {
         namaAyah,
         pekerjaanAyah,
         namaIbu
-      };
+      }
     });
     setStep(prevStep => prevStep + 1);
   };

@@ -1,33 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { RegisterContext } from '../../context/RegisterContext';
+import { ADD_FORM, RESET_FORM } from '../../reducer/RegisterReducer';
 
 const RegisterForm4 = props => {
-  const { setForm, setStep, navigation, form } = props;
+  const { setStep, navigation } = props;
+  const { state, dispatch } = useContext(RegisterContext);
 
-  const [pekerjaan, setPekerjaan] = useState(form.pekerjaan);
-  const [namaPekerjaan, setNamaPekerjaan] = useState(form.namaPekerjaan);
-  const [alamatPekerjaan, setAlamatPekerjaan] = useState(form.alamatPekerjaan);
-  const [telpPekerjaan, setTelpPekerjaan] = useState(form.telpPekerjaan);
-  const [departemen, setDepartemen] = useState(form.departemen);
-  const [jabatan, setJabatan] = useState(form.jabatan);
+  const [pekerjaan, setPekerjaan] = useState(state.form.pekerjaan);
+  const [namaPekerjaan, setNamaPekerjaan] = useState(state.form.namaPekerjaan);
+  const [alamatPekerjaan, setAlamatPekerjaan] = useState(
+    state.form.alamatPekerjaan
+  );
+  const [telpPekerjaan, setTelpPekerjaan] = useState(state.form.telpPekerjaan);
+  const [departemen, setDepartemen] = useState(state.form.departemen);
+  const [jabatan, setJabatan] = useState(state.form.jabatan);
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_FORM,
+      form: {
         pekerjaan,
         namaPekerjaan,
         alamatPekerjaan,
         telpPekerjaan,
         departemen,
         jabatan
-      };
+      }
     });
     setStep(0);
-    Alert.alert('Berhasil', 'Data Berhasil Disimpan', [
+    // JSON.stringify(data, null, 2)
+    Alert.alert('Berhasil', JSON.stringify(state.form, null, 2), [
       { text: 'OK', onPress: () => navigation.popToTop() }
     ]);
+    dispatch({
+      type: RESET_FORM
+    });
   };
 
   const handleBack = () => {

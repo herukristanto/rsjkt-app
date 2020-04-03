@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { RegisterContext } from '../../context/RegisterContext';
+import { ADD_FORM } from '../../reducer/RegisterReducer';
 
 const RegisterForm2 = props => {
-  const { setForm, setStep, form } = props;
+  const { setStep } = props;
+  const { state, dispatch } = useContext(RegisterContext);
 
-  const [alamat, setAlamat] = useState(form.alamat);
-  const [rt, setRt] = useState(form.rt);
-  const [rw, setRw] = useState(form.rw);
-  const [kota, setKota] = useState(form.kota);
-  const [kodePos, setKodePos] = useState(form.kodePos);
-  const [telp, setTelp] = useState(form.telp);
-  const [telp2, setTelp2] = useState(form.telp2);
-  const [email, setEmail] = useState(form.email);
+  const [alamat, setAlamat] = useState(state.form.alamat);
+  const [rt, setRt] = useState(state.form.rt);
+  const [rw, setRw] = useState(state.form.rw);
+  const [kota, setKota] = useState(state.form.kota);
+  const [kodePos, setKodePos] = useState(state.form.kodePos);
+  const [telp, setTelp] = useState(state.form.telp);
+  const [telp2, setTelp2] = useState(state.form.telp2);
+  const [email, setEmail] = useState(state.form.email);
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_FORM,
+      form: {
         alamat,
         rt,
         rw,
@@ -26,7 +29,7 @@ const RegisterForm2 = props => {
         telp,
         telp2,
         email
-      };
+      }
     });
     setStep(prevStep => prevStep + 1);
   };

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Layout,
@@ -8,27 +8,32 @@ import {
   Radio,
   Button
 } from '@ui-kitten/components';
+import { Formik } from 'formik';
 
-import Picker from '../Picker';
+import InputSelect from '../InputSelect';
 import CustomDatePicker from '../CustomDatePicker';
+import { RegisterContext } from '../../context/RegisterContext';
+import { ADD_FORM } from '../../reducer/RegisterReducer';
 
 const RegisterForm1 = props => {
-  const { setForm, setStep, form } = props;
+  const { state, dispatch } = useContext(RegisterContext);
+  const { setStep } = props;
+  // console.log(state.form);
 
-  const [namaLengkap, setNamaLengkap] = useState(form.namaLengkap);
-  const [namaPanggilan, setNamaPanggilan] = useState(form.namaPanggilan);
-  const [identitas, setIdentitas] = useState(form.identitas);
-  const [noIndentitas, setNoIndentitas] = useState(form.noIndentitas);
-  const [tanggalLahir, setTanggalLahir] = useState(form.tanggalLahir);
-  const [kelamin, setKelamin] = useState(form.kelamin);
-  const [darah, setDarah] = useState(form.darah);
-  const [pendidikan, setPendidikan] = useState(form.pendidikan);
-  const [agama, setAgama] = useState(form.agama);
+  const [namaLengkap, setNamaLengkap] = useState(state.form.namaLengkap);
+  const [namaPanggilan, setNamaPanggilan] = useState(state.form.namaPanggilan);
+  const [identitas, setIdentitas] = useState(state.form.identitas);
+  const [noIndentitas, setNoIndentitas] = useState(state.form.noIndentitas);
+  const [tanggalLahir, setTanggalLahir] = useState(state.form.tanggalLahir);
+  const [kelamin, setKelamin] = useState(state.form.kelamin);
+  const [darah, setDarah] = useState(state.form.darah);
+  const [pendidikan, setPendidikan] = useState(state.form.pendidikan);
+  const [agama, setAgama] = useState(state.form.agama);
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_FORM,
+      form: {
         namaLengkap,
         namaPanggilan,
         identitas,
@@ -38,7 +43,7 @@ const RegisterForm1 = props => {
         darah,
         pendidikan,
         agama
-      };
+      }
     });
     setStep(prevStep => prevStep + 1);
   };
@@ -65,7 +70,7 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Identitas</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Identitas'
           data={[
             { label: 'KTP', value: 'ktp' },
@@ -100,7 +105,7 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Golongan Darah</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Golongan Darah'
           data={[
             { label: 'A', value: 'a' },
@@ -122,7 +127,7 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Agama</Text>
-        <Picker
+        <InputSelect
           placeholder='Pilih Agama'
           data={[
             { label: 'Islam', value: 'islam' },
