@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { getIn, useFormikContext } from 'formik';
 import { Input } from '@ui-kitten/components';
 
 const InputText = ({ name, ...props }) => {
-  const { values, handleChange, handleBlur } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
 
   return (
     <React.Fragment>
       <Input
         {...props}
         value={getIn(values, name)}
-        onChangeText={handleChange(name)}
-        onBlur={handleBlur(name)}
+        onChangeText={value => setFieldValue(name, value)}
       />
     </React.Fragment>
   );

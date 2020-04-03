@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useTheme } from '@ui-kitten/components';
+import { getIn, useFormikContext } from 'formik';
 
-const InputSelect = ({ placeholder, data, value, onChange }) => {
+const InputSelect = ({ placeholder, name, ...props }) => {
+  const { values, setFieldValue } = useFormikContext();
+
   const theme = useTheme();
   const pickerSelectStyles = useMemo(
     () =>
@@ -34,18 +37,20 @@ const InputSelect = ({ placeholder, data, value, onChange }) => {
   );
 
   return (
-    <RNPickerSelect
-      value={value}
-      onValueChange={onChange}
-      items={data}
-      useNativeAndroidPickerStyle={false}
-      style={pickerSelectStyles}
-      placeholder={{
-        label: placeholder,
-        value: null,
-        color: '#9EA0A4'
-      }}
-    />
+    <React.Fragment>
+      <RNPickerSelect
+        {...props}
+        value={getIn(values, name)}
+        onValueChange={value => setFieldValue(name, value)}
+        useNativeAndroidPickerStyle={false}
+        style={pickerSelectStyles}
+        placeholder={{
+          label: placeholder,
+          value: null,
+          color: '#9EA0A4'
+        }}
+      />
+    </React.Fragment>
   );
 };
 

@@ -43,7 +43,6 @@ export const initialState = {
 export const RegisterReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_FORM:
-      console.log(action.form);
       return {
         ...state,
         form: {

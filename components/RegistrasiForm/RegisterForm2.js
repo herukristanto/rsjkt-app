@@ -1,34 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { Layout, Text, Button } from '@ui-kitten/components';
 import { RegisterContext } from '../../context/RegisterContext';
 import { ADD_FORM } from '../../reducer/RegisterReducer';
+import { Formik } from 'formik';
+import InputText from '../InputText';
+import InputButton from '../InputButton';
 
 const RegisterForm2 = props => {
   const { setStep } = props;
   const { state, dispatch } = useContext(RegisterContext);
 
-  const [alamat, setAlamat] = useState(state.form.alamat);
-  const [rt, setRt] = useState(state.form.rt);
-  const [rw, setRw] = useState(state.form.rw);
-  const [kota, setKota] = useState(state.form.kota);
-  const [kodePos, setKodePos] = useState(state.form.kodePos);
-  const [telp, setTelp] = useState(state.form.telp);
-  const [telp2, setTelp2] = useState(state.form.telp2);
-  const [email, setEmail] = useState(state.form.email);
-
-  const handleForm = () => {
+  const handleForm = async values => {
     dispatch({
       type: ADD_FORM,
       form: {
-        alamat,
-        rt,
-        rw,
-        kota,
-        kodePos,
-        telp,
-        telp2,
-        email
+        ...values
       }
     });
     setStep(prevStep => prevStep + 1);
@@ -39,110 +26,103 @@ const RegisterForm2 = props => {
   };
 
   return (
-    <React.Fragment>
-      <Text category='h4'>Alamat</Text>
-      <Layout style={styles.form}>
-        <Input
-          label='Alamat'
-          placeholder='Masukkan Alamat'
-          multiline={true}
-          value={alamat}
-          onChangeText={text => setAlamat(text)}
-        />
-      </Layout>
-      <Layout
-        style={[
-          styles.form,
-          { flexDirection: 'row', justifyContent: 'space-between' }
-        ]}
-      >
-        <Input
-          label='RT'
-          placeholder='Masukkan RT'
-          value={rt}
-          onChangeText={text => setRt(text)}
-          keyboardType='number-pad'
-          style={{ width: '48%' }}
-        />
-        <Input
-          label='RW'
-          placeholder='Masukkan RW'
-          value={rw}
-          onChangeText={text => setRw(text)}
-          keyboardType='number-pad'
-          style={{ width: '48%' }}
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Input
-          label='Kota'
-          placeholder='Masukkan Kota'
-          value={kota}
-          onChangeText={text => setKota(text)}
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Input
-          label='Kode Pos'
-          placeholder='Masukkan Kode Pos'
-          value={kodePos}
-          onChangeText={text => setKodePos(text)}
-          keyboardType='number-pad'
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Input
-          label='Telp'
-          placeholder='Masukkan Telp'
-          value={telp}
-          onChangeText={text => setTelp(text)}
-          keyboardType='number-pad'
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Input
-          label='Telp 2'
-          placeholder='Masukkan Telp 2'
-          value={telp2}
-          onChangeText={text => setTelp2(text)}
-          keyboardType='number-pad'
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Input
-          label='Email'
-          placeholder='Masukkan Email'
-          value={email}
-          onChangeText={text => setEmail(text)}
-          keyboardType='email-address'
-        />
-      </Layout>
-      <Layout
-        style={[
-          styles.form,
-          {
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-          }
-        ]}
-      >
-        <Button
-          onPress={handleBack}
-          status='success'
-          style={{ width: '40%', marginVertical: 10 }}
+    <Formik
+      initialValues={{
+        ...state.form
+      }}
+      onSubmit={handleForm}
+    >
+      <React.Fragment>
+        <Text category='h4'>Alamat</Text>
+        <Layout style={styles.form}>
+          <InputText
+            name='alamat'
+            label='Alamat'
+            placeholder='Masukkan Alamat'
+            multiline={true}
+          />
+        </Layout>
+        <Layout
+          style={[
+            styles.form,
+            { flexDirection: 'row', justifyContent: 'space-between' }
+          ]}
         >
-          Back
-        </Button>
-        <Button
-          onPress={handleForm}
-          status='success'
-          style={{ width: '40%', marginVertical: 10 }}
+          <InputText
+            name='rt'
+            label='RT'
+            placeholder='Masukkan RT'
+            keyboardType='number-pad'
+            style={{ width: '48%' }}
+          />
+          <InputText
+            name='rw'
+            label='RW'
+            placeholder='Masukkan RW'
+            keyboardType='number-pad'
+            style={{ width: '48%' }}
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText name='kota' label='Kota' placeholder='Masukkan Kota' />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='kodePos'
+            label='Kode Pos'
+            placeholder='Masukkan Kode Pos'
+            keyboardType='number-pad'
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='telp'
+            label='Telp'
+            placeholder='Masukkan Telp'
+            keyboardType='number-pad'
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='telp2'
+            label='Telp 2'
+            placeholder='Masukkan Telp 2'
+            keyboardType='number-pad'
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='email'
+            label='Email'
+            placeholder='Masukkan Email'
+            keyboardType='email-address'
+          />
+        </Layout>
+        <Layout
+          style={[
+            styles.form,
+            {
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+            }
+          ]}
         >
-          Next
-        </Button>
-      </Layout>
-    </React.Fragment>
+          <Button
+            onPress={handleBack}
+            status='success'
+            style={{ width: '40%', marginVertical: 10 }}
+          >
+            Back
+          </Button>
+          <InputButton
+            label='Next'
+            status='success'
+            style={{ width: '40%', marginVertical: 10 }}
+          />
+        </Layout>
+      </React.Fragment>
+    </Formik>
   );
 };
 
