@@ -6,15 +6,14 @@ import {
   Input,
   RadioGroup,
   Radio,
-  Button,
-  useTheme
+  Button
 } from '@ui-kitten/components';
-import RNPickerSelect from 'react-native-picker-select';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
+import Picker from '../Picker';
+import CustomDatePicker from '../CustomDatePicker';
 
 const RegisterForm1 = props => {
   const { setForm, setStep, form } = props;
-  const theme = useTheme();
 
   const [namaLengkap, setNamaLengkap] = useState(form.namaLengkap);
   const [namaPanggilan, setNamaPanggilan] = useState(form.namaPanggilan);
@@ -25,36 +24,6 @@ const RegisterForm1 = props => {
   const [darah, setDarah] = useState(form.darah);
   const [pendidikan, setPendidikan] = useState(form.pendidikan);
   const [agama, setAgama] = useState(form.agama);
-
-  const [show, setShow] = useState(false);
-
-  const pickerSelectStyles = useMemo(
-    () =>
-      StyleSheet.create({
-        inputIOS: {
-          fontSize: 16,
-          paddingVertical: 12,
-          paddingHorizontal: 10,
-          borderWidth: 1,
-          borderColor: 'gray',
-          borderRadius: 4,
-          color: 'black',
-          paddingRight: 30 // to ensure the text is never behind the icon
-        },
-        inputAndroid: {
-          fontSize: 16,
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          borderWidth: 0.8,
-          borderColor: theme['color-basic-focus-border'],
-          borderRadius: 4,
-          color: 'black',
-          paddingRight: 30, // to ensure the text is never behind the icon
-          backgroundColor: theme['color-basic-hover']
-        }
-      }),
-    []
-  );
 
   const handleForm = () => {
     setForm(prevForm => {
@@ -72,12 +41,6 @@ const RegisterForm1 = props => {
       };
     });
     setStep(prevStep => prevStep + 1);
-  };
-
-  const onChange = (event, selectedDate) => {
-    setShow(false);
-    const currentDate = selectedDate ? selectedDate : tanggalLahir;
-    setTanggalLahir(currentDate);
   };
 
   return (
@@ -102,20 +65,14 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Identitas</Text>
-        <RNPickerSelect
-          value={identitas}
-          onValueChange={value => setIdentitas(value)}
-          items={[
+        <Picker
+          placeholder='Pilih Identitas'
+          data={[
             { label: 'KTP', value: 'ktp' },
             { label: 'SIM', value: 'sim' }
           ]}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Identitas',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          value={identitas}
+          onChange={value => setIdentitas(value)}
         />
       </Layout>
       <Layout style={styles.form}>
@@ -129,25 +86,7 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Tanggal Lahir</Text>
-        <Layout
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Text>{tanggalLahir.toDateString()}</Text>
-          <Button status='success' size='small' onPress={() => setShow(true)}>
-            Pilih Tanggal Lahir
-          </Button>
-          {show && (
-            <DateTimePicker
-              value={tanggalLahir}
-              mode='date'
-              onChange={onChange}
-            />
-          )}
-        </Layout>
+        <CustomDatePicker value={tanggalLahir} setValue={setTanggalLahir} />
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Jenis Kelamin</Text>
@@ -161,22 +100,16 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Golongan Darah</Text>
-        <RNPickerSelect
-          value={darah}
-          onValueChange={value => setDarah(value)}
-          items={[
+        <Picker
+          placeholder='Pilih Golongan Darah'
+          data={[
             { label: 'A', value: 'a' },
             { label: 'B', value: 'b' },
             { label: 'AB', value: 'ab' },
             { label: 'O', value: 'o' }
           ]}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Golongan Darah',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          value={darah}
+          onChange={value => setDarah(value)}
         />
       </Layout>
       <Layout style={styles.form}>
@@ -189,10 +122,9 @@ const RegisterForm1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Agama</Text>
-        <RNPickerSelect
-          value={agama}
-          onValueChange={value => setAgama(value)}
-          items={[
+        <Picker
+          placeholder='Pilih Agama'
+          data={[
             { label: 'Islam', value: 'islam' },
             { label: 'Kristen', value: 'kristen' },
             { label: 'Katolik', value: 'katolik' },
@@ -200,13 +132,8 @@ const RegisterForm1 = props => {
             { label: 'Budha', value: 'budha' },
             { label: 'Khong Hu Cu', value: 'khong_hu_cu' }
           ]}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Agama',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          value={agama}
+          onChange={value => setAgama(value)}
         />
       </Layout>
       <Layout style={[styles.form, { alignItems: 'center' }]}>
