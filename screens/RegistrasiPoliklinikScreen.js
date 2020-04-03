@@ -25,7 +25,7 @@ const RegistrasiPoliklinik = props => {
   });
   const [step, setStep] = useState(1);
 
-  console.log(form);
+  // console.log(form);
 
   useEffect(() => {
     setForm(prevForm => {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Text,
@@ -7,15 +7,16 @@ import {
   Button,
   RadioGroup,
   Radio,
-  useTheme
+  Spinner
 } from '@ui-kitten/components';
-import RNPickerSelect from 'react-native-picker-select';
 import useAxios from '../../utils/useAxios';
 import { getUnique } from '../../utils/helpers';
+import Picker from '../Picker';
 
 const RegistrasiPoliklinik1 = props => {
   const { setForm, setStep, form } = props;
-  const theme = useTheme();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [daftarPraktek, setDaftarPraktek] = useState([]);
   const [poliklinikName, setPoliklinikName] = useState([]);
@@ -36,8 +37,10 @@ const RegistrasiPoliklinik1 = props => {
   );
 
   const listPoliklinik = async () => {
+    setIsLoading(true);
     try {
       const { data } = await getPoli({ params: { key: 'rsjkt4231' } });
+      console.log('request');
       setDaftarPraktek(data);
       const poliUnique = await getUnique(data, 'Poli_nm');
       const poliData = await poliUnique.map(poli => {
@@ -51,39 +54,12 @@ const RegistrasiPoliklinik1 = props => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     listPoliklinik();
   }, []);
-
-  const pickerSelectStyles = useMemo(
-    () =>
-      StyleSheet.create({
-        inputIOS: {
-          fontSize: 16,
-          paddingVertical: 12,
-          paddingHorizontal: 10,
-          borderWidth: 1,
-          borderColor: 'gray',
-          borderRadius: 4,
-          color: 'black',
-          paddingRight: 30 // to ensure the text is never behind the icon
-        },
-        inputAndroid: {
-          fontSize: 16,
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          borderWidth: 0.8,
-          borderColor: theme['color-basic-focus-border'],
-          borderRadius: 4,
-          color: 'black',
-          paddingRight: 30, // to ensure the text is never behind the icon
-          backgroundColor: theme['color-basic-hover']
-        }
-      }),
-    []
-  );
 
   const handlePoliklinik = async value => {
     setPoliklinik(value);
@@ -138,10 +114,9 @@ const RegistrasiPoliklinik1 = props => {
       <>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jaminan</Text>
-          <RNPickerSelect
-            value={jaminan}
-            onValueChange={value => setJaminan(value)}
-            items={[
+          <Picker
+            placeholder='Pilih Jaminan'
+            data={[
               {
                 label: 'BPJS',
                 value: 'BPJS'
@@ -151,21 +126,15 @@ const RegistrasiPoliklinik1 = props => {
                 value: 'AIA Financial'
               }
             ]}
-            useNativeAndroidPickerStyle={false}
-            style={pickerSelectStyles}
-            placeholder={{
-              label: 'Pilih Jaminan',
-              value: null,
-              color: '#9EA0A4'
-            }}
+            value={jaminan}
+            onChange={value => setJaminan(value)}
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Perusahaan</Text>
-          <RNPickerSelect
-            onValueChange={value => setPerusahaan(value)}
-            value={perusahaan}
-            items={[
+          <Picker
+            placeholder='Pilih Perusahaan'
+            data={[
               {
                 label: 'Institut Teknologi PLN',
                 value: 'Institut Teknologi PLN'
@@ -175,13 +144,8 @@ const RegistrasiPoliklinik1 = props => {
                 value: 'WAMPLO'
               }
             ]}
-            useNativeAndroidPickerStyle={false}
-            style={pickerSelectStyles}
-            placeholder={{
-              label: 'Pilih Perusahaan',
-              value: null,
-              color: '#9EA0A4'
-            }}
+            value={perusahaan}
+            onChange={value => setPerusahaan(value)}
           />
         </Layout>
         <Layout style={styles.form}>
@@ -197,6 +161,14 @@ const RegistrasiPoliklinik1 = props => {
     );
   };
 
+  // if (isLoading) {
+  //   return (
+  //     <Layout style={styles.spinner}>
+  //       <Spinner />
+  //     </Layout>
+  //   );
+  // }
+
   return (
     <React.Fragment>
       <Text category='h4'>Registrasi Poliklinik</Text>
@@ -208,49 +180,29 @@ const RegistrasiPoliklinik1 = props => {
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Poliklinik</Text>
-        <RNPickerSelect
-          onValueChange={value => handlePoliklinik(value)}
+        <Picker
+          placeholder='Pilih Poliklinik'
+          data={poliklinikName}
           value={poliklinik}
-          items={poliklinikName}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Poliklinik',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          onChange={value => handlePoliklinik(value)}
         />
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Dokter</Text>
-        <RNPickerSelect
-          disabled={!poliklinik}
-          onValueChange={value => handleDokter(value)}
+        <Picker
+          placeholder='Pilih Dokter'
+          data={dokterName}
           value={dokter}
-          items={dokterName}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Dokter',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          onChange={value => handleDokter(value)}
         />
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Tanggal Kunjungan</Text>
-        <RNPickerSelect
-          disabled={!dokter}
-          onValueChange={value => setTanggal(value)}
+        <Picker
+          placeholder='Pilih Tanggal Kunjungan'
+          data={jadwal}
           value={tanggal}
-          items={jadwal}
-          useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
-          placeholder={{
-            label: 'Pilih Tanggal Kunjungan',
-            value: null,
-            color: '#9EA0A4'
-          }}
+          onChange={value => setTanggal(value)}
         />
       </Layout>
       <Layout style={styles.form}>
@@ -283,6 +235,11 @@ const styles = StyleSheet.create({
   label: {
     color: '#778899',
     fontSize: 12
+  },
+  spinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
