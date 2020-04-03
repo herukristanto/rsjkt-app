@@ -3,7 +3,7 @@ export const LOGOUT = 'LOGOUT';
 
 export const initialState = {
   isLogin: false,
-  user: null
+  user: {}
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -18,7 +18,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLogin: false,
-        user: null
+        user: {}
       };
     default:
       return state;

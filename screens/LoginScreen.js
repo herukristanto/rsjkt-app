@@ -62,7 +62,7 @@ const LoginScreen = () => {
 
         console.log(data);
 
-        navigation.replace('RegistrasiPoliklinik');
+        navigation.popToTop();
       } catch (e) {
         Alert.alert('Maaf', `Error : ${e.message}`);
       }

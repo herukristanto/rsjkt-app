@@ -4,18 +4,21 @@ import { Text, Layout, Button } from '@ui-kitten/components';
 import QRCode from 'react-native-qrcode-svg';
 import { LOGOUT } from '../../reducer/AppReducer';
 import { AppContext } from '../../context/AppContext';
+import { RESET_FORM } from '../../reducer/PoliklinikReducer';
+import { PoliklinikContext } from '../../context/PoliklinikContext';
 
 const { width } = Dimensions.get('screen');
 
 const RegistrasiPoliklinik3 = props => {
-  const { setForm, setStep, form, navigation } = props;
+  const { setStep, navigation } = props;
   const { dispatch } = useContext(AppContext);
+  const { state, dispatch: dispatchPoli } = useContext(PoliklinikContext);
 
   const handleForm = async btn => {
-    setForm({});
     setStep(0);
     if (btn === 'simpan') {
-      Alert.alert('Berhasil', 'Berhasil Menyimpan Data', [
+      // JSON.stringify(data, null, 2)
+      Alert.alert('Berhasil', JSON.stringify(state.form, null, 2), [
         {
           text: 'OK',
           onPress: () => navigation.popToTop()
@@ -26,6 +29,9 @@ const RegistrasiPoliklinik3 = props => {
       dispatch({ type: LOGOUT });
       navigation.popToTop();
     }
+    dispatchPoli({
+      type: RESET_FORM
+    });
   };
 
   return (
@@ -40,10 +46,10 @@ const RegistrasiPoliklinik3 = props => {
         <QRCode value='https://github.com/granitebps' size={width * 0.5} />
       </Layout>
       <Layout style={styles.form}>
-        <Text>{form.tanggal}</Text>
+        <Text>{state.form.tanggal}</Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Lokasi : {form.poliklinik}</Text>
+        <Text>Lokasi : {state.form.poliklinik}</Text>
       </Layout>
       <Layout
         style={[

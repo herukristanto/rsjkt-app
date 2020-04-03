@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, Layout, Button, Input } from '@ui-kitten/components';
+import { PoliklinikContext } from '../../context/PoliklinikContext';
+import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
 
 const RegistrasiPoliklinik2 = props => {
-  const { setForm, setStep, form } = props;
+  const { setStep } = props;
+  const { state, dispatch } = useContext(PoliklinikContext);
 
-  const [telp, setTelp] = useState(form.telp);
+  const [telp, setTelp] = useState(state.form.telp);
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_TO_FORM,
+      data: {
         telp
-      };
+      }
     });
     setStep(prevStep => prevStep + 1);
   };
@@ -29,13 +32,13 @@ const RegistrasiPoliklinik2 = props => {
     return (
       <React.Fragment>
         <Layout style={styles.form}>
-          <Text>Jaminan : {form.jaminan}</Text>
+          <Text>Jaminan : {state.form.jaminan}</Text>
         </Layout>
         <Layout style={styles.form}>
-          <Text>Perusahaan : {form.perusahaan}</Text>
+          <Text>Perusahaan : {state.form.perusahaan}</Text>
         </Layout>
         <Layout style={styles.form}>
-          <Text>No Jaminan : {form.noKartu}</Text>
+          <Text>No Jaminan : {state.form.noKartu}</Text>
         </Layout>
       </React.Fragment>
     );
@@ -45,18 +48,18 @@ const RegistrasiPoliklinik2 = props => {
     <React.Fragment>
       <Text>Registrasi Poliklinik</Text>
       <Layout style={styles.form}>
-        <Text>No Rekam Medis : {form.noRekamMedis}</Text>
+        <Text>No Rekam Medis : {state.form.noRekamMedis}</Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Tanggal Lahir : {form.tanggalLahir}</Text>
+        <Text>Tanggal Lahir : {state.form.tanggalLahir}</Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Dokter : {form.dokter}</Text>
+        <Text>Dokter : {state.form.dokter}</Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Poliklinik : {form.poliklinik}</Text>
+        <Text>Poliklinik : {state.form.poliklinik}</Text>
       </Layout>
-      {form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
+      {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
       <Layout style={styles.form}>
         <Input
           label='Telp'

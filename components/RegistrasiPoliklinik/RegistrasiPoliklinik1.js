@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Text,
@@ -9,62 +9,31 @@ import {
   Radio,
   Spinner
 } from '@ui-kitten/components';
-import useAxios from '../../utils/useAxios';
 import { getUnique } from '../../utils/helpers';
 import Picker from '../Picker';
+import { PoliklinikContext } from '../../context/PoliklinikContext';
+import {
+  GET_DAFTAR_DOKTER,
+  GET_DAFTAR_JADWAL,
+  ADD_TO_FORM,
+  GET_DAFTAR_PERUSAHAAN
+} from '../../reducer/PoliklinikReducer';
 
 const RegistrasiPoliklinik1 = props => {
-  const { setForm, setStep, form } = props;
+  const { setStep } = props;
+  const { state, dispatch } = useContext(PoliklinikContext);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [daftarPraktek, setDaftarPraktek] = useState([]);
-  const [poliklinikName, setPoliklinikName] = useState([]);
-  const [dokterName, setDokterName] = useState([]);
-  const [jadwal, setJadwal] = useState([]);
-
-  const [dokter, setDokter] = useState(form.dokter);
-  const [poliklinik, setPoliklinik] = useState(form.poliklinik);
-  const [tanggal, setTanggal] = useState(form.tanggal);
-  const [status, setStatus] = useState(form.status);
-  const [jaminan, setJaminan] = useState(form.jaminan);
-  const [perusahaan, setPerusahaan] = useState(form.perusahaan);
-  const [noKartu, setNoKartu] = useState(form.noKartu);
-
-  const [, getPoli] = useAxios(
-    { url: '/daftar_praktek', method: 'GET' },
-    { manual: true }
-  );
-
-  const listPoliklinik = async () => {
-    setIsLoading(true);
-    try {
-      const { data } = await getPoli({ params: { key: 'rsjkt4231' } });
-      console.log('request');
-      setDaftarPraktek(data);
-      const poliUnique = await getUnique(data, 'Poli_nm');
-      const poliData = await poliUnique.map(poli => {
-        return {
-          value: poli.Poli_nm.trim(),
-          label: poli.Poli_nm.trim()
-        };
-      });
-
-      setPoliklinikName(poliData);
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    listPoliklinik();
-  }, []);
+  const [dokter, setDokter] = useState(state.form.dokter);
+  const [poliklinik, setPoliklinik] = useState(state.form.poliklinik);
+  const [tanggal, setTanggal] = useState(state.form.tanggal);
+  const [status, setStatus] = useState(state.form.status);
+  const [jaminan, setJaminan] = useState(state.form.jaminan);
+  const [perusahaan, setPerusahaan] = useState(state.form.perusahaan);
 
   const handlePoliklinik = async value => {
     setPoliklinik(value);
 
-    const rawDokter = daftarPraktek.map(item => {
+    const rawDokter = state.daftarPraktek.map(item => {
       if (item.Poli_nm.trim() == value) {
         return {
           value: item.Dokter_nm.trim(),
@@ -74,13 +43,16 @@ const RegistrasiPoliklinik1 = props => {
     });
     const dokterUnique = await getUnique(rawDokter, 'label');
 
-    setDokterName(dokterUnique);
+    dispatch({
+      type: GET_DAFTAR_DOKTER,
+      daftarDokter: dokterUnique
+    });
   };
 
   const handleDokter = async value => {
     setDokter(value);
 
-    const rawJadwal = daftarPraktek.map(item => {
+    const rawJadwal = state.daftarPraktek.map(item => {
       if (item.Dokter_nm.trim() == value) {
         return {
           label: `${item.nm_day.trim()}, ${item.Jam_Awal.trim()} - ${item.Jam_Akhir.trim()}`,
@@ -90,21 +62,42 @@ const RegistrasiPoliklinik1 = props => {
       return;
     });
     const filteredJadwal = rawJadwal.filter(Boolean);
-    setJadwal(filteredJadwal);
+    dispatch({
+      type: GET_DAFTAR_JADWAL,
+      daftarJadwal: filteredJadwal
+    });
+  };
+
+  const handlePenjamin = async value => {
+    setJaminan(value);
+
+    const rawPerusahaan = state.daftarPenjamin.map(item => {
+      if (item.Nm_jaminan.trim() == value) {
+        return {
+          label: item.NM_AnakJMN.trim(),
+          value: item.NM_AnakJMN.trim()
+        };
+      }
+      return;
+    });
+    const filteredPerusahaan = rawPerusahaan.filter(Boolean);
+    dispatch({
+      type: GET_DAFTAR_PERUSAHAAN,
+      daftarPerusahaan: filteredPerusahaan
+    });
   };
 
   const handleForm = () => {
-    setForm(prevForm => {
-      return {
-        ...prevForm,
+    dispatch({
+      type: ADD_TO_FORM,
+      data: {
         dokter,
         poliklinik,
         tanggal,
         status,
         jaminan,
-        perusahaan,
-        noKartu
-      };
+        perusahaan
+      }
     });
     setStep(prevStep => prevStep + 1);
   };
@@ -116,34 +109,16 @@ const RegistrasiPoliklinik1 = props => {
           <Text style={styles.label}>Jaminan</Text>
           <Picker
             placeholder='Pilih Jaminan'
-            data={[
-              {
-                label: 'BPJS',
-                value: 'BPJS'
-              },
-              {
-                label: 'AIA Financial',
-                value: 'AIA Financial'
-              }
-            ]}
+            data={state.daftarJaminan}
             value={jaminan}
-            onChange={value => setJaminan(value)}
+            onChange={value => handlePenjamin(value)}
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Perusahaan</Text>
           <Picker
             placeholder='Pilih Perusahaan'
-            data={[
-              {
-                label: 'Institut Teknologi PLN',
-                value: 'Institut Teknologi PLN'
-              },
-              {
-                label: 'WAMPLO',
-                value: 'WAMPLO'
-              }
-            ]}
+            data={state.daftarPerusahaan}
             value={perusahaan}
             onChange={value => setPerusahaan(value)}
           />
@@ -152,37 +127,36 @@ const RegistrasiPoliklinik1 = props => {
           <Input
             label='No Kartu'
             placeholder='Masukkan No Kartu'
-            value={noKartu}
-            onChangeText={text => setNoKartu(text)}
-            keyboardType='number-pad'
+            value={`${state.form.noKartu}`}
+            disabled={true}
           />
         </Layout>
       </>
     );
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <Layout style={styles.spinner}>
-  //       <Spinner />
-  //     </Layout>
-  //   );
-  // }
+  if (state.daftarPraktek.length === 0) {
+    return <Spinner />;
+  }
 
   return (
     <React.Fragment>
       <Text category='h4'>Registrasi Poliklinik</Text>
       <Layout style={styles.form}>
-        <Input label='No Rekam Medis' value={`${form.noRekamMedis}`} disabled />
+        <Input
+          label='No Rekam Medis'
+          value={`${state.form.noRekamMedis}`}
+          disabled
+        />
       </Layout>
       <Layout style={styles.form}>
-        <Input label='Tanggal Lahir' value={form.tanggalLahir} disabled />
+        <Input label='Tanggal Lahir' value={state.form.tanggalLahir} disabled />
       </Layout>
       <Layout style={styles.form}>
         <Text style={styles.label}>Poliklinik</Text>
         <Picker
           placeholder='Pilih Poliklinik'
-          data={poliklinikName}
+          data={state.daftarPoli}
           value={poliklinik}
           onChange={value => handlePoliklinik(value)}
         />
@@ -191,7 +165,7 @@ const RegistrasiPoliklinik1 = props => {
         <Text style={styles.label}>Dokter</Text>
         <Picker
           placeholder='Pilih Dokter'
-          data={dokterName}
+          data={state.daftarDokter}
           value={dokter}
           onChange={value => handleDokter(value)}
         />
@@ -200,7 +174,7 @@ const RegistrasiPoliklinik1 = props => {
         <Text style={styles.label}>Tanggal Kunjungan</Text>
         <Picker
           placeholder='Pilih Tanggal Kunjungan'
-          data={jadwal}
+          data={state.daftarJadwal}
           value={tanggal}
           onChange={value => setTanggal(value)}
         />
