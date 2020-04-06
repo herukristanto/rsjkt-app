@@ -10,11 +10,11 @@ import InputRadio from '../InputRadio';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
   GET_DAFTAR_DOKTER,
-  GET_DAFTAR_JADWAL,
   ADD_TO_FORM,
   GET_DAFTAR_PERUSAHAAN,
 } from '../../reducer/PoliklinikReducer';
 import InputButton from '../InputButton';
+import InputDokter from '../InputDokter';
 
 const RegistrasiPoliklinik1 = (props) => {
   const { setStep } = props;
@@ -34,23 +34,6 @@ const RegistrasiPoliklinik1 = (props) => {
     dispatch({
       type: GET_DAFTAR_DOKTER,
       daftarDokter: dokterUnique,
-    });
-  };
-
-  const handleDokter = async (value) => {
-    const rawJadwal = state.daftarPraktek.map((item) => {
-      if (item.Dokter_nm.trim() == value) {
-        return {
-          label: `${item.nm_day.trim()}, ${item.Jam_Awal.trim()} - ${item.Jam_Akhir.trim()}`,
-          value: `${item.nm_day.trim()}, ${item.Jam_Awal.trim()} - ${item.Jam_Akhir.trim()}`,
-        };
-      }
-      return;
-    });
-    const filteredJadwal = rawJadwal.filter(Boolean);
-    dispatch({
-      type: GET_DAFTAR_JADWAL,
-      daftarJadwal: filteredJadwal,
     });
   };
 
@@ -142,16 +125,12 @@ const RegistrasiPoliklinik1 = (props) => {
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Dokter</Text>
-            <InputSelect
-              placeholder='Pilih Dokter'
-              items={state.daftarDokter}
-              name='dokter'
-              additionalHandler={handleDokter}
-            />
+            <InputDokter name='dokter' items={state.daftarDokter} />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Tanggal Kunjungan</Text>
             <InputSelect
+              disabled={state.daftarJadwal.length > 0 ? false : true}
               placeholder='Pilih Tanggal Kunjungan'
               items={state.daftarJadwal}
               name='tanggal'
