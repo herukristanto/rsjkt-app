@@ -1,23 +1,24 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, Layout, Button, Input } from '@ui-kitten/components';
+import { Text, Layout, Button } from '@ui-kitten/components';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
+import { Formik } from 'formik';
+import InputText from '../InputText';
+import InputButton from '../InputButton';
 
-const RegistrasiPoliklinik2 = props => {
+const RegistrasiPoliklinik2 = (props) => {
   const { setStep } = props;
   const { state, dispatch } = useContext(PoliklinikContext);
 
-  const [telp, setTelp] = useState(state.form.telp);
-
-  const handleForm = () => {
+  const handleForm = (values) => {
     dispatch({
       type: ADD_TO_FORM,
       data: {
-        telp
-      }
+        ...values,
+      },
     });
-    setStep(prevStep => prevStep + 1);
+    setStep((prevStep) => prevStep + 1);
   };
 
   const RenderPribadi = () => {
@@ -45,60 +46,63 @@ const RegistrasiPoliklinik2 = props => {
   };
 
   return (
-    <React.Fragment>
-      <Text>Registrasi Poliklinik</Text>
-      <Layout style={styles.form}>
-        <Text>No Rekam Medis : {state.form.noRekamMedis}</Text>
-      </Layout>
-      <Layout style={styles.form}>
-        <Text>Tanggal Lahir : {state.form.tanggalLahir}</Text>
-      </Layout>
-      <Layout style={styles.form}>
-        <Text>Dokter : {state.form.dokter}</Text>
-      </Layout>
-      <Layout style={styles.form}>
-        <Text>Poliklinik : {state.form.poliklinik}</Text>
-      </Layout>
-      {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
-      <Layout style={styles.form}>
-        <Input
-          label='Telp'
-          placeholder='Masukkan Telp'
-          value={telp}
-          onChangeText={text => setTelp(text)}
-          keyboardType='number-pad'
-        />
-      </Layout>
-      <Layout
-        style={[
-          styles.form,
-          { flexDirection: 'row', justifyContent: 'space-between' }
-        ]}
-      >
-        <Button
-          status='success'
-          onPress={() => setStep(prevStep => prevStep - 1)}
-          style={{ width: '45%' }}
+    <Formik
+      initialValues={{
+        telp: '',
+      }}
+      onSubmit={handleForm}
+    >
+      <React.Fragment>
+        <Text>Registrasi Poliklinik</Text>
+        <Layout style={styles.form}>
+          <Text>No Rekam Medis : {state.form.noRekamMedis}</Text>
+        </Layout>
+        <Layout style={styles.form}>
+          <Text>Tanggal Lahir : {state.form.tanggalLahir}</Text>
+        </Layout>
+        <Layout style={styles.form}>
+          <Text>Dokter : {state.form.dokter}</Text>
+        </Layout>
+        <Layout style={styles.form}>
+          <Text>Poliklinik : {state.form.poliklinik}</Text>
+        </Layout>
+        {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
+        <Layout style={styles.form}>
+          <InputText
+            name='telp'
+            label='Masukkan Telp'
+            keyboardType='number-pad'
+          />
+        </Layout>
+        <Layout
+          style={[
+            styles.form,
+            { flexDirection: 'row', justifyContent: 'space-between' },
+          ]}
         >
-          Back
-        </Button>
-        <Button status='success' onPress={handleForm} style={{ width: '45%' }}>
-          Simpan
-        </Button>
-      </Layout>
-    </React.Fragment>
+          <Button
+            status='success'
+            onPress={() => setStep((prevStep) => prevStep - 1)}
+            style={{ width: '45%' }}
+          >
+            Back
+          </Button>
+          <InputButton label='Next' status='success' style={{ width: '45%' }} />
+        </Layout>
+      </React.Fragment>
+    </Formik>
   );
 };
 
 const styles = StyleSheet.create({
   form: {
     width: '90%',
-    marginVertical: 2
+    marginVertical: 2,
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default RegistrasiPoliklinik2;

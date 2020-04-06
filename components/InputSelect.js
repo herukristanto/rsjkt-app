@@ -19,7 +19,7 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           borderColor: 'gray',
           borderRadius: 4,
           color: 'black',
-          paddingRight: 30 // to ensure the text is never behind the icon
+          paddingRight: 30, // to ensure the text is never behind the icon
         },
         inputAndroid: {
           fontSize: 16,
@@ -30,24 +30,31 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           borderRadius: 4,
           color: 'black',
           paddingRight: 30, // to ensure the text is never behind the icon
-          backgroundColor: theme['color-basic-hover']
-        }
+          backgroundColor: theme['color-basic-hover'],
+        },
       }),
     []
   );
+
+  const onChange = (value) => {
+    setFieldValue(name, value);
+    if (props.additionalHandler) {
+      props.additionalHandler(value);
+    }
+  };
 
   return (
     <React.Fragment>
       <RNPickerSelect
         {...props}
         value={getIn(values, name)}
-        onValueChange={value => setFieldValue(name, value)}
+        onValueChange={onChange}
         useNativeAndroidPickerStyle={false}
         style={pickerSelectStyles}
         placeholder={{
           label: placeholder,
           value: null,
-          color: '#9EA0A4'
+          color: '#9EA0A4',
         }}
       />
     </React.Fragment>

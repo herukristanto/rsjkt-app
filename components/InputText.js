@@ -10,7 +10,7 @@ const InputText = ({ name, ...props }) => {
       <Input
         {...props}
         value={getIn(values, name)}
-        onChangeText={value => setFieldValue(name, value)}
+        onChangeText={(value) => setFieldValue(name, value)}
       />
     </React.Fragment>
   );

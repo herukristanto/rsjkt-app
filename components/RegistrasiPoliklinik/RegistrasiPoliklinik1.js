@@ -1,18 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import {
-  Text,
-  Layout,
-  Input,
-  Button,
-  RadioGroup,
-  Radio,
-  Spinner,
-} from '@ui-kitten/components';
-import { Formik, useFormikContext, getIn } from 'formik';
+import { Text, Layout, Spinner } from '@ui-kitten/components';
+import { Formik } from 'formik';
 
 import { getUnique } from '../../utils/helpers';
+import InputText from '../InputText';
 import InputSelect from '../InputSelect';
+import InputRadio from '../InputRadio';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
   GET_DAFTAR_DOKTER,
@@ -20,22 +14,13 @@ import {
   ADD_TO_FORM,
   GET_DAFTAR_PERUSAHAAN,
 } from '../../reducer/PoliklinikReducer';
+import InputButton from '../InputButton';
 
 const RegistrasiPoliklinik1 = (props) => {
   const { setStep } = props;
   const { state, dispatch } = useContext(PoliklinikContext);
-  const { values } = useFormikContext();
-
-  const [dokter, setDokter] = useState(state.form.dokter);
-  const [poliklinik, setPoliklinik] = useState(state.form.poliklinik);
-  const [tanggal, setTanggal] = useState(state.form.tanggal);
-  const [status, setStatus] = useState(state.form.status);
-  const [jaminan, setJaminan] = useState(state.form.jaminan);
-  const [perusahaan, setPerusahaan] = useState(state.form.perusahaan);
 
   const handlePoliklinik = async (value) => {
-    setPoliklinik(value);
-
     const rawDokter = state.daftarPraktek.map((item) => {
       if (item.Poli_nm.trim() == value) {
         return {
@@ -53,8 +38,6 @@ const RegistrasiPoliklinik1 = (props) => {
   };
 
   const handleDokter = async (value) => {
-    setDokter(value);
-
     const rawJadwal = state.daftarPraktek.map((item) => {
       if (item.Dokter_nm.trim() == value) {
         return {
@@ -72,8 +55,6 @@ const RegistrasiPoliklinik1 = (props) => {
   };
 
   const handlePenjamin = async (value) => {
-    setJaminan(value);
-
     const rawPerusahaan = state.daftarPenjamin.map((item) => {
       if (item.Nm_jaminan.trim() == value) {
         return {
@@ -107,27 +88,21 @@ const RegistrasiPoliklinik1 = (props) => {
           <Text style={styles.label}>Jaminan</Text>
           <InputSelect
             placeholder='Pilih Jaminan'
-            data={state.daftarJaminan}
-            value={jaminan}
-            onChange={(value) => handlePenjamin(value)}
+            items={state.daftarJaminan}
+            name='jaminan'
+            additionalHandler={handlePenjamin}
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Perusahaan</Text>
           <InputSelect
             placeholder='Pilih Perusahaan'
-            data={state.daftarPerusahaan}
-            value={perusahaan}
-            onChange={(value) => setPerusahaan(value)}
+            items={state.daftarPerusahaan}
+            name='perusahaan'
           />
         </Layout>
         <Layout style={styles.form}>
-          <Input
-            label='No Kartu'
-            placeholder='Masukkan No Kartu'
-            value={`${state.form.noKartu}`}
-            disabled={true}
-          />
+          <InputText name='noKartu' label='No Kartu' disabled />
         </Layout>
       </>
     );
@@ -140,70 +115,67 @@ const RegistrasiPoliklinik1 = (props) => {
   return (
     <Formik
       initialValues={{
-        ...state.form,
+        noRekamMedis: state.form.noRekamMedis,
+        tanggalLahir: state.form.tanggalLahir,
+        noKartu: state.form.noKartu,
       }}
       onSubmit={handleForm}
+      enableReinitialize
     >
-      <React.Fragment>
-        <Text category='h4'>Registrasi Poliklinik</Text>
-        <Layout style={styles.form}>
-          <Input
-            label='No Rekam Medis'
-            value={`${state.form.noRekamMedis}`}
-            disabled
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Input
-            label='Tanggal Lahir'
-            value={state.form.tanggalLahir}
-            disabled
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Text style={styles.label}>Poliklinik</Text>
-          <InputSelect
-            placeholder='Pilih Poliklinik'
-            items={state.daftarPoli}
-            name='poliklinik'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Text style={styles.label}>Dokter</Text>
-          <InputSelect
-            placeholder='Pilih Dokter'
-            items={state.daftarDokter}
-            name='dokter'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Text style={styles.label}>Tanggal Kunjungan</Text>
-          <InputSelect
-            placeholder='Pilih Tanggal Kunjungan'
-            items={state.daftarJadwal}
-            name='tanggal'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputRadio
-            name='status'
-            items={['Pribadi', 'Penjamin']}
-            style={{ flexDirection: 'row', justifyContent: 'space-around' }}
-          />
-        </Layout>
+      {(props) => (
+        <React.Fragment>
+          <Text category='h4'>Registrasi Poliklinik</Text>
+          <Layout style={styles.form}>
+            <InputText name='noRekamMedis' label='No Rekam Medis' disabled />
+          </Layout>
+          <Layout style={styles.form}>
+            <InputText name='tanggalLahir' label='Tanggal Lahir' disabled />
+          </Layout>
+          <Layout style={styles.form}>
+            <Text style={styles.label}>Poliklinik</Text>
+            <InputSelect
+              placeholder='Pilih Poliklinik'
+              items={state.daftarPoli}
+              name='poliklinik'
+              additionalHandler={handlePoliklinik}
+            />
+          </Layout>
+          <Layout style={styles.form}>
+            <Text style={styles.label}>Dokter</Text>
+            <InputSelect
+              placeholder='Pilih Dokter'
+              items={state.daftarDokter}
+              name='dokter'
+              additionalHandler={handleDokter}
+            />
+          </Layout>
+          <Layout style={styles.form}>
+            <Text style={styles.label}>Tanggal Kunjungan</Text>
+            <InputSelect
+              placeholder='Pilih Tanggal Kunjungan'
+              items={state.daftarJadwal}
+              name='tanggal'
+            />
+          </Layout>
+          <Layout style={styles.form}>
+            <InputRadio
+              name='status'
+              items={['Pribadi', 'Penjamin']}
+              style={{ flexDirection: 'row', justifyContent: 'space-around' }}
+            />
+          </Layout>
 
-        {getIn(values, 'status') == 1 && <RenderJaminan />}
+          {props.values.status == 1 && <RenderJaminan />}
 
-        <Layout style={[styles.form, { flexDirection: 'row-reverse' }]}>
-          <Button
-            status='success'
-            onPress={handleForm}
-            style={{ width: '45%' }}
-          >
-            Next
-          </Button>
-        </Layout>
-      </React.Fragment>
+          <Layout style={[styles.form, { flexDirection: 'row-reverse' }]}>
+            <InputButton
+              label='Next'
+              status='success'
+              style={{ width: '45%' }}
+            />
+          </Layout>
+        </React.Fragment>
+      )}
     </Formik>
   );
 };
