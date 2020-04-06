@@ -101,6 +101,12 @@ const RegistrasiPoliklinik1 = (props) => {
         noRekamMedis: state.form.noRekamMedis,
         tanggalLahir: state.form.tanggalLahir,
         noKartu: state.form.noKartu,
+        dokter: state.form.dokter,
+        poliklinik: state.form.poliklinik,
+        tanggal: state.form.tanggal,
+        status: state.form.status,
+        jaminan: state.form.jaminan,
+        perusahaan: state.form.perusahaan,
       }}
       onSubmit={handleForm}
       enableReinitialize
