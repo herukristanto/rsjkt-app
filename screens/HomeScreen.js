@@ -6,7 +6,7 @@ import {
   FlatList,
   Image,
   View,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
 import { Layout, Text, Button, Icon, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
@@ -19,10 +19,10 @@ const { width, height } = Dimensions.get('screen');
 const images = [
   require('../assets/images/rs1.jpg'),
   require('../assets/images/rs2.png'),
-  require('../assets/images/rs3.jpg')
+  require('../assets/images/rs3.jpg'),
 ];
 
-const HomeScreen = props => {
+const HomeScreen = (props) => {
   const { navigation } = props;
   const { state, dispatch } = useContext(AppContext);
 
@@ -40,18 +40,18 @@ const HomeScreen = props => {
           flex: 1,
           alignItems: 'center',
           flexDirection: 'column',
-          paddingVertical: Constants.statusBarHeight
+          paddingVertical: Constants.statusBarHeight,
         },
         title: {
           marginVertical: 10,
           flexDirection: 'row',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         },
         buttonContainer: {
           flexDirection: 'row',
           flexWrap: 'wrap',
-          justifyContent: 'space-around'
+          justifyContent: 'space-around',
         },
         button: {
           alignItems: 'center',
@@ -62,20 +62,17 @@ const HomeScreen = props => {
           marginVertical: 15,
           borderRadius: 10,
           paddingVertical: 8,
-          elevation: 10
+          elevation: 10,
         },
         buttonText: {
           textAlign: 'center',
-          color: 'black'
-        }
+          color: 'black',
+        },
       }),
     []
   );
 
-  const linearColors = [
-    theme['color-success-700'],
-    theme['color-success-transparent-200']
-  ];
+  const linearColors = [theme['color-success-700'], theme['color-success-700']];
 
   return (
     <>
@@ -98,7 +95,7 @@ const HomeScreen = props => {
           contentContainerStyle={{
             alignItems: 'center',
             borderRadius: 10,
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
           horizontal
           pagingEnabled
@@ -114,7 +111,7 @@ const HomeScreen = props => {
               style={{
                 width,
                 height: height / 3,
-                borderRadius: 10
+                borderRadius: 10,
               }}
             />
           )}
