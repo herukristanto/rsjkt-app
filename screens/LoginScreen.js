@@ -5,13 +5,15 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Alert,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
-import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
-import { useFormik } from 'formik';
+import { Formik } from 'formik';
 
 import useAxios from '../utils/useAxios';
+import InputText from '../components/InputText';
+import InputButton from '../components/InputButton';
 import CustomDatePicker from '../components/CustomDatePicker';
 import moment from 'moment';
 import { AppContext } from '../context/AppContext';
@@ -28,124 +30,116 @@ const LoginScreen = () => {
     { manual: true }
   );
 
-  // const [password, setPassword] = useState('');
-  const [tanggalLahir, setTanggalLahir] = useState(new Date());
+  const handleForm = async (values) => {
+    try {
+      const params = {
+        rm: values.noRekamMedis,
+      };
+      const { data } = await postLogin({ params: params });
+      const tgl = moment(data.Tgl_lahir).format('YYYY-MM-DD');
 
-  const { values, setFieldValue, submitForm } = useFormik({
-    initialValues: {
-      rm: ''
-    },
-    onSubmit: async (values, { setErrors }) => {
-      setErrors({});
-
-      try {
-        const { data } = await postLogin({ params: values });
-        const tgl = moment(data.Tgl_lahir).format('YYYY-MM-DD');
-
-        if (data === '') {
-          Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
-          return;
-        }
-        if (!moment(tgl).isSame(moment(tanggalLahir).format('YYYY-MM-DD'))) {
-          Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
-          return;
-        }
-
-        const userData = {
-          nomor_cm: data.nomor_cm,
-          namaPasien: data.namaPasien,
-          Tgl_lahir: data.Tgl_lahir,
-          nm_jaminan: data.nm_jaminan
-        };
-        await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
-        dispatch({ type: LOGIN, user: userData });
-
-        console.log(data);
-
-        navigation.popToTop();
-      } catch (e) {
-        Alert.alert('Maaf', `Error : ${e.message}`);
+      if (data === '') {
+        Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
+        return;
       }
+      if (
+        !moment(tgl).isSame(moment(values.tanggalLahir).format('YYYY-MM-DD'))
+      ) {
+        Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
+        return;
+      }
+
+      const userData = {
+        nomor_cm: data.nomor_cm,
+        namaPasien: data.namaPasien,
+        Tgl_lahir: data.Tgl_lahir,
+        nm_jaminan: data.nm_jaminan,
+      };
+      await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
+      dispatch({ type: LOGIN, user: userData });
+
+      navigation.popToTop();
+    } catch (e) {
+      Alert.alert('Maaf', `Error : ${e.message}`);
     }
-  });
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.screen}
-      behavior='padding'
-      keyboardVerticalOffset={80}
+    <Formik
+      initialValues={{
+        noRekamMedis: '',
+        tanggalLahir: new Date(),
+      }}
+      onSubmit={handleForm}
     >
-      <Layout style={styles.container}>
-        <Layout style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={require('../assets/images/login-image.png')}
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Input
-            label='No Rekam Medis'
-            placeholder='Masukkan No Rekam Medis'
-            value={values.noRekamMedis}
-            onChangeText={text => setFieldValue('rm', text)}
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <Text style={styles.label}>Tanggal Lahir</Text>
-          <CustomDatePicker value={tanggalLahir} setValue={setTanggalLahir} />
-          {/* <Input
-            secureTextEntry
-            textContentType='password'
-            label='Password'
-            placeholder='Masukkan Password'
-            value={password}
-            onChangeText={text => setPassword(text)}
-          /> */}
-        </Layout>
-        <Layout style={styles.form}>
-          <Button onPress={submitForm} status='success'>
-            Login
-          </Button>
-        </Layout>
-        <Layout style={[styles.form, { alignItems: 'center' }]}>
-          <Text
-            style={{ textDecorationLine: 'underline' }}
-            onPress={() => navigation.navigate('Register')}
-          >
-            Belum Terdaftar?
-          </Text>
-        </Layout>
+      <Layout style={styles.screen}>
+        <KeyboardAvoidingView
+          style={styles.screen}
+          behavior='height'
+          keyboardVerticalOffset={100}
+        >
+          <Layout style={styles.container}>
+            <Layout style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require('../assets/images/login-image.png')}
+              />
+            </Layout>
+            <Layout style={styles.form}>
+              <InputText
+                name='noRekamMedis'
+                label='No Rekam Medis'
+                placeholder='Masukkan No Rekam Medis'
+                keyboardType='number-pad'
+              />
+            </Layout>
+            <Layout style={styles.form}>
+              <Text style={styles.label}>Tanggal Lahir</Text>
+              <CustomDatePicker name='tanggalLahir' mode='date' />
+            </Layout>
+            <Layout style={styles.form}>
+              <InputButton label='Login' status='success' />
+            </Layout>
+            <Layout style={[styles.form, { alignItems: 'center' }]}>
+              <Text
+                style={{ textDecorationLine: 'underline' }}
+                onPress={() => navigation.navigate('Register')}
+              >
+                Belum Terdaftar?
+              </Text>
+            </Layout>
+          </Layout>
+        </KeyboardAvoidingView>
       </Layout>
-    </KeyboardAvoidingView>
+    </Formik>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageContainer: {
     width: width / 2,
-    height: width / 2
+    height: width / 2,
   },
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   form: {
     width: width * 0.8,
-    marginVertical: 4
+    marginVertical: 4,
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default LoginScreen;
