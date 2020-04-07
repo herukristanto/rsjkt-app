@@ -16,6 +16,14 @@ const images = [
   require('./assets/images/rs1.jpg'),
   require('./assets/images/rs2.png'),
   require('./assets/images/rs3.jpg'),
+
+  require('./assets/icon/cek-booking.png'),
+  require('./assets/icon/login-dokter.png'),
+  require('./assets/icon/login-pasien.png'),
+  require('./assets/icon/lokasi.png'),
+  require('./assets/icon/registrasi-akun.png'),
+  require('./assets/icon/registrasi-poli.png'),
+  require('./assets/icon/logout.png'),
 ];
 
 export default function App() {

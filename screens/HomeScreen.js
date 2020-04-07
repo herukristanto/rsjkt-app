@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   Alert,
 } from 'react-native';
-import { Text, Icon, useTheme } from '@ui-kitten/components';
+import { Text, Icon, useTheme, Avatar } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppContext } from '../context/AppContext';
@@ -136,26 +136,38 @@ const HomeScreen = (props) => {
               style={styl.button}
               onPress={() => navigation.navigate('Register')}
             >
-              <Icon name='log-in-outline' width={64} height={64} fill='green' />
+              <Avatar
+                source={require('../assets/icon/registrasi-akun.png')}
+                size='giant'
+              />
               <Text style={styl.buttonText} category='h6' category='h6'>
                 Registrasi Akun
               </Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styl.button} onPress={handlePoli}>
-            <Icon name='log-in-outline' width={64} height={64} fill='green' />
+            <Avatar
+              source={require('../assets/icon/registrasi-poli.png')}
+              size='giant'
+            />
             <Text style={styl.buttonText} category='h6'>
               Registrasi Poli
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styl.button} onPress={() => {}}>
-            <Icon name='bookmark' width={64} height={64} fill='green' />
+            <Avatar
+              source={require('../assets/icon/cek-booking.png')}
+              size='giant'
+            />
             <Text style={styl.buttonText} category='h6'>
               Cek Booking
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styl.button} onPress={() => {}}>
-            <Icon name='pin' width={64} height={64} fill='green' />
+            <Avatar
+              source={require('../assets/icon/lokasi.png')}
+              size='giant'
+            />
             <Text style={styl.buttonText} category='h6'>
               Lokasi
             </Text>
@@ -166,11 +178,9 @@ const HomeScreen = (props) => {
                 style={styl.button}
                 onPress={() => navigation.navigate('Login')}
               >
-                <Icon
-                  name='log-in-outline'
-                  width={64}
-                  height={64}
-                  fill='green'
+                <Avatar
+                  source={require('../assets/icon/login-pasien.png')}
+                  size='giant'
                 />
                 <Text style={styl.buttonText} category='h6'>
                   Login Pasien
@@ -180,11 +190,9 @@ const HomeScreen = (props) => {
                 style={styl.button}
                 onPress={() => navigation.navigate('LoginDokter')}
               >
-                <Icon
-                  name='log-in-outline'
-                  width={64}
-                  height={64}
-                  fill='green'
+                <Avatar
+                  source={require('../assets/icon/login-dokter.png')}
+                  size='giant'
                 />
                 <Text style={styl.buttonText} category='h6'>
                   Login Dokter
@@ -194,11 +202,9 @@ const HomeScreen = (props) => {
           )}
           {state.isLogin && (
             <TouchableOpacity style={styl.button} onPress={handleLogout}>
-              <Icon
-                name='log-out-outline'
-                width={64}
-                height={64}
-                fill='green'
+              <Avatar
+                source={require('../assets/icon/logout.png')}
+                size='giant'
               />
               <Text style={styl.buttonText} category='h6'>
                 Logout
