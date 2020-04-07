@@ -7,6 +7,7 @@ import {
   Image,
   View,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 import { Layout, Text, Button, Icon, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
@@ -31,6 +32,18 @@ const HomeScreen = (props) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('_USERDATA_');
     dispatch({ type: LOGOUT });
+  };
+
+  const handlePoli = () => {
+    if (state.isLogin) {
+      navigation.navigate('RegistrasiPoliklinik');
+    } else {
+      Alert.alert(
+        'Peringatan',
+        'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
+        [{ text: 'Oke' }]
+      );
+    }
   };
 
   const styl = useMemo(
@@ -129,17 +142,12 @@ const HomeScreen = (props) => {
               </Text>
             </TouchableOpacity>
           )}
-          {state.isLogin && (
-            <TouchableOpacity
-              style={styl.button}
-              onPress={() => navigation.navigate('RegistrasiPoliklinik')}
-            >
-              <Icon name='log-in-outline' width={64} height={64} fill='green' />
-              <Text style={styl.buttonText} category='h6'>
-                Registrasi Poli
-              </Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity style={styl.button} onPress={handlePoli}>
+            <Icon name='log-in-outline' width={64} height={64} fill='green' />
+            <Text style={styl.buttonText} category='h6'>
+              Registrasi Poli
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styl.button} onPress={() => {}}>
             <Icon name='bookmark' width={64} height={64} fill='green' />
             <Text style={styl.buttonText} category='h6'>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -14,7 +14,7 @@ import { AppContextProvider } from './context/AppContext';
 const images = [
   require('./assets/images/login-image.png'),
   require('./assets/images/rs1.jpg'),
-  require('./assets/images/rs2.jpg'),
+  require('./assets/images/rs2.png'),
   require('./assets/images/rs3.jpg'),
 ];
 
