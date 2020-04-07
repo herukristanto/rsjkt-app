@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Layout } from '@ui-kitten/components';
 
@@ -8,7 +8,7 @@ import RegisterForm3 from '../components/RegistrasiForm/RegisterForm3';
 import RegisterForm4 from '../components/RegistrasiForm/RegisterForm4';
 import { RegisterContextProvider } from '../context/RegisterContext';
 
-const RegisterScreen = props => {
+const RegisterScreen = (props) => {
   const [step, setStep] = useState(1);
 
   return (
@@ -37,11 +37,11 @@ const RegisterScreen = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 10
+    paddingTop: 10,
   },
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default RegisterScreen;

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
-import { Layout, Input, Button, Text } from '@ui-kitten/components';
+import { Layout, Button, Text } from '@ui-kitten/components';
 
 const { width } = Dimensions.get('screen');
 
-const DokterScreen = props => {
+const DokterScreen = (props) => {
   const { navigation } = props;
 
   return (
@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   form: {
     width: width * 0.8,
-    marginVertical: 4
-  }
+    marginVertical: 4,
+  },
 });
 
 export default DokterScreen;

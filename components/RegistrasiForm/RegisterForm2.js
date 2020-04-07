@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
 import { RegisterContext } from '../../context/RegisterContext';
@@ -7,28 +7,28 @@ import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 
-const RegisterForm2 = props => {
+const RegisterForm2 = (props) => {
   const { setStep } = props;
   const { state, dispatch } = useContext(RegisterContext);
 
-  const handleForm = async values => {
+  const handleForm = async (values) => {
     dispatch({
       type: ADD_FORM,
       form: {
-        ...values
-      }
+        ...values,
+      },
     });
-    setStep(prevStep => prevStep + 1);
+    setStep((prevStep) => prevStep + 1);
   };
 
   const handleBack = () => {
-    setStep(prevStep => prevStep - 1);
+    setStep((prevStep) => prevStep - 1);
   };
 
   return (
     <Formik
       initialValues={{
-        ...state.form
+        ...state.form,
       }}
       onSubmit={handleForm}
     >
@@ -45,7 +45,7 @@ const RegisterForm2 = props => {
         <Layout
           style={[
             styles.form,
-            { flexDirection: 'row', justifyContent: 'space-between' }
+            { flexDirection: 'row', justifyContent: 'space-between' },
           ]}
         >
           <InputText
@@ -104,8 +104,8 @@ const RegisterForm2 = props => {
             {
               alignItems: 'center',
               flexDirection: 'row',
-              justifyContent: 'space-between'
-            }
+              justifyContent: 'space-between',
+            },
           ]}
         >
           <Button
@@ -129,12 +129,12 @@ const RegisterForm2 = props => {
 const styles = StyleSheet.create({
   form: {
     width: '90%',
-    marginVertical: 2
+    marginVertical: 2,
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default RegisterForm2;

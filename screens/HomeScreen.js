@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   Alert,
 } from 'react-native';
-import { Layout, Text, Button, Icon, useTheme } from '@ui-kitten/components';
+import { Text, Icon, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppContext } from '../context/AppContext';
