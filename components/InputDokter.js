@@ -61,7 +61,9 @@ const InputDokter = ({ name, label, items, ...props }) => {
           }}
         >
           <Layout style={{ flexShrink: 1 }}>
-            <Text numberOfLines={2}>{item.label}</Text>
+            <TouchableWithoutFeedback onPress={() => handleSelect(item.label)}>
+              <Text numberOfLines={2}>{item.label}</Text>
+            </TouchableWithoutFeedback>
           </Layout>
           {checked == item.label ? (
             <TouchableWithoutFeedback onPress={() => setChecked(false)}>
@@ -117,9 +119,6 @@ const InputDokter = ({ name, label, items, ...props }) => {
                 </View>
               </View>
             ))}
-            <Button onPress={() => handleSelect(item.label)} size='small'>
-              Pilih Dokter
-            </Button>
           </Layout>
         )}
       </Card>
@@ -139,7 +138,12 @@ const InputDokter = ({ name, label, items, ...props }) => {
         </View>
       </TouchableWithoutFeedback>
       <Layout style={styles.screen}>
-        <Modal backdropColor='white' isVisible={visible} coverScreen>
+        <Modal
+          backdropColor='white'
+          isVisible={visible}
+          coverScreen
+          onBackButtonPress={() => setVisible(false)}
+        >
           <Layout style={styles.screen}>
             <List data={items} renderItem={renderItem} />
             <Button
