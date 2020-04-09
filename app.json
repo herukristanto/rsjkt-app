@@ -18,13 +18,18 @@
     },
     "assetBundlePatterns": ["assets/*"],
     "ios": {
+      "bundleIdentifier": "com.wamplo.rs-jakarta-mobile",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.wamplo.rs_jakarta_mobile",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE"]
     }
   }
 }
