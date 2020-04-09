@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import React, { useState, useEffect } from 'react';
+import {
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
+  Text,
+  Button,
+} from '@ui-kitten/components';
 import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
+import * as Updates from 'expo-updates';
+import axios from 'axios';
 
 import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
 
 import RootNavigation from './navigations/RootNavigation';
 import { AppContextProvider } from './context/AppContext';
+import { Alert } from 'react-native';
 
 const images = [
   require('./assets/images/login-image.png'),
@@ -36,6 +45,56 @@ export default function App() {
 
     return Promise.all(cacheImages);
   };
+
+  const doUpdate = async () => {
+    await Updates.fetchUpdateAsync();
+    await Updates.reloadAsync();
+  };
+
+  useEffect(() => {
+    async function checkUpdate() {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+        if (update.isAvailable) {
+          await axios.get('https://granitebps.com/react-native', {
+            params: {
+              status: 'Ada Update',
+            },
+          });
+          Alert.alert(
+            'Pemberitahuan',
+            'Ada Update',
+            [
+              {
+                text: 'Update Sekarang',
+                onPress: doUpdate,
+              },
+              {
+                text: 'Update Nanti',
+              },
+            ],
+            {
+              cancelable: false,
+            }
+          );
+        } else {
+          await axios.get('https://granitebps.com/react-native', {
+            params: {
+              status: 'Tidak ada Update',
+            },
+          });
+        }
+      } catch (error) {
+        Alert.alert(
+          'Error',
+          JSON.stringify(error, null, 2),
+          [{ text: 'Okay' }],
+          { cancelable: false }
+        );
+      }
+    }
+    checkUpdate();
+  }, []);
 
   if (!isLoading) {
     return (
