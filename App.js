@@ -9,6 +9,7 @@ import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Updates from 'expo-updates';
 import NetInfo from '@react-native-community/netinfo';
+import { Asset } from 'expo-asset';
 
 import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
@@ -16,14 +17,39 @@ const theme = { ...LightTheme, ...appTheme };
 import RootNavigation from './navigations/RootNavigation';
 import { AppContextProvider } from './context/AppContext';
 
+const images = [
+  require('./assets/images/login-image.png'),
+  require('./assets/images/rs1.jpg'),
+  require('./assets/images/rs2.png'),
+  require('./assets/images/rs3.jpg'),
+
+  require('./assets/icon/cek-booking.png'),
+  require('./assets/icon/login-dokter.png'),
+  require('./assets/icon/login-pasien.png'),
+  require('./assets/icon/lokasi.png'),
+  require('./assets/icon/registrasi-akun.png'),
+  require('./assets/icon/registrasi-poli.png'),
+  require('./assets/icon/logout.png'),
+];
+
 export default function App() {
   const [checkUpdate, setCheckUpdate] = useState(true);
   const [isNew, setIsNew] = useState(false);
   const [error, setError] = useState();
 
+  const handleResourceAsync = async () => {
+    const cacheImages = images.map((img) => {
+      return Asset.fromModule(img).downloadAsync();
+    });
+
+    return Promise.all(cacheImages);
+  };
+
   useEffect(() => {
     async function checkUpdate() {
       try {
+        await handleResourceAsync();
+
         const update = await Updates.checkForUpdateAsync();
         if (update.isAvailable) {
           setIsNew(true);
