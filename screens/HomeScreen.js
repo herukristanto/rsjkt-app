@@ -14,6 +14,7 @@ import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
+import DokterScreen from './DokterScreen';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -86,6 +87,10 @@ const HomeScreen = (props) => {
   );
 
   const linearColors = [theme['color-success-700'], theme['color-success-700']];
+
+  if (state.isLogin && state.user.role === 'dokter') {
+    return <DokterScreen />;
+  }
 
   return (
     <>

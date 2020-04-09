@@ -54,6 +54,7 @@ const LoginScreen = () => {
         namaPasien: data.namaPasien,
         Tgl_lahir: data.Tgl_lahir,
         nm_jaminan: data.nm_jaminan,
+        role: 'pasien',
       };
       await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
       dispatch({ type: LOGIN, user: userData });
