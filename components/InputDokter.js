@@ -24,9 +24,26 @@ const InputDokter = ({ name, label, items, ...props }) => {
 
   const handleSelect = (value) => {
     setFieldValue(name, value);
+    let daftarJadwalDokter = daftarJadwal;
+    if (daftarJadwal.length === 0) {
+      const rawJadwal = state.daftarPraktek.map((item) => {
+        if (item.Dokter_nm.trim() == value) {
+          return {
+            hari: item.nm_day.trim(),
+            jamAwal: item.Jam_AwalFix.trim(),
+            jamAkhir: item.Jam_AkhirFix.trim(),
+            label: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+            value: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+          };
+        }
+        return;
+      });
+      const filteredJadwal = rawJadwal.filter(Boolean);
+      daftarJadwalDokter = filteredJadwal;
+    }
     dispatch({
       type: GET_DAFTAR_JADWAL,
-      daftarJadwal: daftarJadwal,
+      daftarJadwal: daftarJadwalDokter,
     });
     setVisible(false);
   };

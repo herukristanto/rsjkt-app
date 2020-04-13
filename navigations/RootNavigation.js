@@ -9,20 +9,16 @@ import RegisterScreen from '../screens/RegisterScreen';
 import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
 import LoginDokterScreen from '../screens/LoginDokterScreen';
 import DokterScreen from '../screens/DokterScreen';
-import { useTheme } from '@ui-kitten/components';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
-  const theme = useTheme();
   return (
     <HomeStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor:
-            Platform.OS === 'android' ? theme['color-success-700'] : ''
+          backgroundColor: Platform.OS === 'android' ? 'rgb(7,94,85)' : '',
         },
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : theme['color-success-700']
+        headerTintColor: Platform.OS === 'android' ? 'white' : 'rgb(7,94,85)',
       }}
     >
       <HomeStack.Screen
@@ -36,7 +32,7 @@ const HomeStackNavigator = () => {
         name='LoginDokter'
         component={LoginDokterScreen}
         options={({ navigation }) => ({
-          headerTitle: 'Login Dokter'
+          headerTitle: 'Login Dokter',
         })}
       />
       <HomeStack.Screen name='Register' component={RegisterScreen} />
@@ -44,7 +40,7 @@ const HomeStackNavigator = () => {
         name='RegistrasiPoliklinik'
         component={RegistrasiPoliklinik}
         options={({ navigation }) => ({
-          headerTitle: 'Registrasi Poliklinik'
+          headerTitle: 'Registrasi Poliklinik',
         })}
       />
     </HomeStack.Navigator>

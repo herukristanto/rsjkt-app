@@ -58,6 +58,8 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
       type: ADD_TO_FORM,
       data: {
         ...values,
+        noRekamMedis: state.form.noRekamMedis,
+        tanggalLahir: state.form.tanggalLahir,
       },
     });
     setStep((prevStep) => prevStep + 1);
@@ -97,8 +99,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
   return (
     <Formik
       initialValues={{
-        noRekamMedis: state.form.noRekamMedis,
-        tanggalLahir: state.form.tanggalLahir,
         noKartu: state.form.noKartu,
         dokter: state.form.dokter,
         poliklinik: state.form.poliklinik,
@@ -114,10 +114,24 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         <React.Fragment>
           <Text category='h4'>Registrasi Poliklinik</Text>
           <Layout style={styles.form}>
-            <InputText name='noRekamMedis' label='No Rekam Medis' disabled />
+            <InputText
+              name='noRekamMedis'
+              label='No Rekam Medis'
+              disabled
+              placeholder={state.form.noRekamMedis}
+              placeholderTextColor='black'
+              style={{ backgroundColor: '#FEFDCB' }}
+            />
           </Layout>
           <Layout style={styles.form}>
-            <InputText name='tanggalLahir' label='Tanggal Lahir' disabled />
+            <InputText
+              name='tanggalLahir'
+              label='Tanggal Lahir'
+              placeholder={state.form.tanggalLahir}
+              placeholderTextColor='black'
+              disabled
+              style={{ backgroundColor: '#FEFDCB' }}
+            />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Poliklinik</Text>

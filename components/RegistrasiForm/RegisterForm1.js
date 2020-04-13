@@ -11,24 +11,24 @@ import InputText from '../InputText';
 import InputRadio from '../InputRadio';
 import InputButton from '../InputButton';
 
-const RegisterForm1 = props => {
+const RegisterForm1 = (props) => {
   const { state, dispatch } = useContext(RegisterContext);
   const { setStep } = props;
 
-  const handleForm = async values => {
+  const handleForm = async (values) => {
     await dispatch({
       type: ADD_FORM,
       form: {
-        ...values
-      }
+        ...values,
+      },
     });
-    setStep(prevStep => prevStep + 1);
+    setStep((prevStep) => prevStep + 1);
   };
 
   return (
     <Formik
       initialValues={{
-        ...state.form
+        ...state.form,
       }}
       onSubmit={handleForm}
     >
@@ -55,7 +55,7 @@ const RegisterForm1 = props => {
             placeholder='Pilih Identitas'
             items={[
               { label: 'KTP', value: 'ktp' },
-              { label: 'SIM', value: 'sim' }
+              { label: 'SIM', value: 'sim' },
             ]}
             name='identitas'
           />
@@ -84,7 +84,7 @@ const RegisterForm1 = props => {
               { label: 'A', value: 'a' },
               { label: 'B', value: 'b' },
               { label: 'AB', value: 'ab' },
-              { label: 'O', value: 'o' }
+              { label: 'O', value: 'o' },
             ]}
             name='darah'
           />
@@ -106,7 +106,7 @@ const RegisterForm1 = props => {
               { label: 'Katolik', value: 'katolik' },
               { label: 'Hindu', value: 'hindu' },
               { label: 'Budha', value: 'budha' },
-              { label: 'Khong Hu Cu', value: 'khong_hu_cu' }
+              { label: 'Khong Hu Cu', value: 'khong_hu_cu' },
             ]}
             name='agama'
           />
@@ -126,12 +126,12 @@ const RegisterForm1 = props => {
 const styles = StyleSheet.create({
   form: {
     width: '90%',
-    marginVertical: 2
+    marginVertical: 2,
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default RegisterForm1;

@@ -52,6 +52,7 @@ export const PoliklinikContextProvider = ({ children }) => {
         daftarPenjamin: dataPenjamin,
         daftarJaminan: penjaminData,
         user: {
+          namaPasien: stateApp.user.namaPasien,
           noRekamMedis: `${stateApp.user.nomor_cm}`,
           tanggalLahir: moment(stateApp.user.Tgl_lahir).format('DD MMMM YYYY'),
           noKartu: stateApp.user.nm_jaminan.trim(),

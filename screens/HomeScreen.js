@@ -2,33 +2,25 @@ import React, { useMemo, useContext } from 'react';
 import {
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
-  FlatList,
   Image,
   View,
   AsyncStorage,
   Alert,
 } from 'react-native';
-import { Text, Icon, useTheme, Avatar } from '@ui-kitten/components';
+import { Text, Avatar } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
 import DokterScreen from './DokterScreen';
+import Card from '../components/Card';
+import Slider from '../components/Slider';
 
-const { width, height } = Dimensions.get('screen');
-
-const images = [
-  require('../assets/images/rs1.jpg'),
-  require('../assets/images/rs2.png'),
-  require('../assets/images/rs3.jpg'),
-];
+const { width } = Dimensions.get('screen');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
   const { state, dispatch } = useContext(AppContext);
-
-  const theme = useTheme();
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('_USERDATA_');
@@ -57,36 +49,27 @@ const HomeScreen = (props) => {
           paddingVertical: Constants.statusBarHeight,
         },
         title: {
-          marginVertical: 10,
+          paddingVertical: 10,
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: 'rgb(7,94,85)',
+          width: '100%',
         },
         buttonContainer: {
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'space-around',
         },
-        button: {
-          alignItems: 'center',
-          width: width * 0.4,
-          backgroundColor: theme['color-basic-200'],
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginVertical: 15,
-          borderRadius: 10,
-          paddingVertical: 8,
-          elevation: 10,
-        },
         buttonText: {
           textAlign: 'center',
-          color: 'black',
+          color: 'white',
         },
       }),
     []
   );
 
-  const linearColors = [theme['color-success-700'], theme['color-success-700']];
+  const linearColors = ['#ecf2f2', '#ecf2f2'];
 
   if (state.isLogin && state.user.role === 'dokter') {
     return <DokterScreen />;
@@ -103,44 +86,19 @@ const HomeScreen = (props) => {
           <Text
             category='h2'
             numberOfLines={2}
-            style={{ textAlign: 'center', marginLeft: 8 }}
+            style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
           >
             RS Jakarta Mobile
           </Text>
         </View>
 
-        <FlatList
-          contentContainerStyle={{
-            alignItems: 'center',
-            borderRadius: 10,
-            overflow: 'hidden',
-          }}
-          horizontal
-          pagingEnabled
-          scrollEnabled
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment='center'
-          data={images}
-          keyExtractor={(item, index) => `${item}-${index}`}
-          renderItem={({ item }) => (
-            <Image
-              source={item}
-              resizeMode='contain'
-              style={{
-                width,
-                height: height / 3,
-                borderRadius: 10,
-              }}
-            />
-          )}
-        />
+        <Slider />
+
+        {state.isLogin && <Text>Selamat Datang, {state.user.namaPasien}</Text>}
 
         <View style={styl.buttonContainer}>
           {!state.isLogin && (
-            <TouchableOpacity
-              style={styl.button}
-              onPress={() => navigation.navigate('Register')}
-            >
+            <Card onPressHandler={() => navigation.navigate('Login')}>
               <Avatar
                 source={require('../assets/icon/registrasi-akun.png')}
                 size='giant'
@@ -148,9 +106,9 @@ const HomeScreen = (props) => {
               <Text style={styl.buttonText} category='h6' category='h6'>
                 Registrasi Akun
               </Text>
-            </TouchableOpacity>
+            </Card>
           )}
-          <TouchableOpacity style={styl.button} onPress={handlePoli}>
+          <Card onPressHandler={handlePoli}>
             <Avatar
               source={require('../assets/icon/registrasi-poli.png')}
               size='giant'
@@ -158,8 +116,8 @@ const HomeScreen = (props) => {
             <Text style={styl.buttonText} category='h6'>
               Registrasi Poli
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styl.button} onPress={() => {}}>
+          </Card>
+          <Card onPressHandler={() => {}}>
             <Avatar
               source={require('../assets/icon/cek-booking.png')}
               size='giant'
@@ -167,8 +125,8 @@ const HomeScreen = (props) => {
             <Text style={styl.buttonText} category='h6'>
               Cek Booking
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styl.button} onPress={() => {}}>
+          </Card>
+          <Card onPressHandler={() => {}}>
             <Avatar
               source={require('../assets/icon/lokasi.png')}
               size='giant'
@@ -176,13 +134,10 @@ const HomeScreen = (props) => {
             <Text style={styl.buttonText} category='h6'>
               Lokasi
             </Text>
-          </TouchableOpacity>
+          </Card>
           {!state.isLogin && (
             <>
-              <TouchableOpacity
-                style={styl.button}
-                onPress={() => navigation.navigate('Login')}
-              >
+              <Card onPressHandler={() => navigation.navigate('Login')}>
                 <Avatar
                   source={require('../assets/icon/login-pasien.png')}
                   size='giant'
@@ -190,11 +145,8 @@ const HomeScreen = (props) => {
                 <Text style={styl.buttonText} category='h6'>
                   Login Pasien
                 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styl.button}
-                onPress={() => navigation.navigate('LoginDokter')}
-              >
+              </Card>
+              <Card onPressHandler={() => navigation.navigate('LoginDokter')}>
                 <Avatar
                   source={require('../assets/icon/login-dokter.png')}
                   size='giant'
@@ -202,11 +154,11 @@ const HomeScreen = (props) => {
                 <Text style={styl.buttonText} category='h6'>
                   Login Dokter
                 </Text>
-              </TouchableOpacity>
+              </Card>
             </>
           )}
           {state.isLogin && (
-            <TouchableOpacity style={styl.button} onPress={handleLogout}>
+            <Card onPressHandler={handleLogout}>
               <Avatar
                 source={require('../assets/icon/logout.png')}
                 size='giant'
@@ -214,7 +166,7 @@ const HomeScreen = (props) => {
               <Text style={styl.buttonText} category='h6'>
                 Logout
               </Text>
-            </TouchableOpacity>
+            </Card>
           )}
         </View>
       </LinearGradient>
