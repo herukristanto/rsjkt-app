@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { StyleSheet, Alert, Dimensions, AsyncStorage } from 'react-native';
 import { Text, Layout, Button } from '@ui-kitten/components';
 import QRCode from 'react-native-qrcode-svg';
+import { useNavigation } from '@react-navigation/native';
+
 import { LOGOUT } from '../../reducer/AppReducer';
 import { AppContext } from '../../context/AppContext';
 import { RESET_FORM } from '../../reducer/PoliklinikReducer';
@@ -9,20 +11,20 @@ import { PoliklinikContext } from '../../context/PoliklinikContext';
 
 const { width } = Dimensions.get('screen');
 
-const RegistrasiPoliklinik3 = props => {
-  const { setStep, navigation } = props;
+const RegistrasiPoliklinik3 = ({ setStep }) => {
+  const navigation = useNavigation();
   const { dispatch } = useContext(AppContext);
   const { state, dispatch: dispatchPoli } = useContext(PoliklinikContext);
 
-  const handleForm = async btn => {
+  const handleForm = async (btn) => {
     setStep(0);
     if (btn === 'simpan') {
       // JSON.stringify(data, null, 2)
       Alert.alert('Berhasil', JSON.stringify(state.form, null, 2), [
         {
           text: 'OK',
-          onPress: () => navigation.popToTop()
-        }
+          onPress: () => navigation.popToTop(),
+        },
       ]);
     } else {
       await AsyncStorage.removeItem('_USERDATA_');
@@ -30,7 +32,7 @@ const RegistrasiPoliklinik3 = props => {
       navigation.popToTop();
     }
     dispatchPoli({
-      type: RESET_FORM
+      type: RESET_FORM,
     });
   };
 
@@ -54,7 +56,7 @@ const RegistrasiPoliklinik3 = props => {
       <Layout
         style={[
           styles.form,
-          { flexDirection: 'row', justifyContent: 'space-between' }
+          { flexDirection: 'row', justifyContent: 'space-between' },
         ]}
       >
         <Button
@@ -80,12 +82,12 @@ const styles = StyleSheet.create({
   form: {
     width: '90%',
     marginVertical: 2,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default RegistrasiPoliklinik3;

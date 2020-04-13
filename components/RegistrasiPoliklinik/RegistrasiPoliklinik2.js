@@ -7,8 +7,7 @@ import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 
-const RegistrasiPoliklinik2 = (props) => {
-  const { setStep } = props;
+const RegistrasiPoliklinik2 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
 
   const handleForm = (values) => {

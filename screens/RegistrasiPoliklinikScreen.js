@@ -7,7 +7,7 @@ import RegistrasiPoliklinik2 from '../components/RegistrasiPoliklinik/Registrasi
 import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik3';
 import { PoliklinikContextProvider } from '../context/PoliklinikContext';
 
-const RegistrasiPoliklinik = props => {
+const RegistrasiPoliklinik = () => {
   const [step, setStep] = useState(1);
 
   return (
@@ -21,12 +21,7 @@ const RegistrasiPoliklinik = props => {
           >
             {step === 1 && <RegistrasiPoliklinik1 setStep={setStep} />}
             {step === 2 && <RegistrasiPoliklinik2 setStep={setStep} />}
-            {step === 3 && (
-              <RegistrasiPoliklinik3
-                setStep={setStep}
-                navigation={props.navigation}
-              />
-            )}
+            {step === 3 && <RegistrasiPoliklinik3 setStep={setStep} />}
           </KeyboardAvoidingView>
         </ScrollView>
       </Layout>
@@ -37,13 +32,13 @@ const RegistrasiPoliklinik = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 10
+    paddingTop: 10,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default RegistrasiPoliklinik;

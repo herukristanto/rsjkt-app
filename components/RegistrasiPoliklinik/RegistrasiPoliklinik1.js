@@ -16,8 +16,7 @@ import {
 import InputButton from '../InputButton';
 import InputDokter from '../InputDokter';
 
-const RegistrasiPoliklinik1 = (props) => {
-  const { setStep } = props;
+const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
 
   const handlePoliklinik = async (value) => {
@@ -91,7 +90,7 @@ const RegistrasiPoliklinik1 = (props) => {
     );
   };
 
-  if (state.daftarPraktek.length === 0) {
+  if (state.isLoading) {
     return <Spinner />;
   }
 
