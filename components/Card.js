@@ -1,31 +1,21 @@
-import React, { useMemo } from 'react';
-import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React from 'react';
+import { Dimensions } from 'react-native';
+import AwesomeButton from 'react-native-really-awesome-button';
 
 const { width } = Dimensions.get('screen');
 
 const Card = ({ children, onPressHandler }) => {
-  const styl = useMemo(
-    () =>
-      StyleSheet.create({
-        button: {
-          alignItems: 'center',
-          width: width * 0.4,
-          backgroundColor: 'rgb(7,94,85)',
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginVertical: 15,
-          borderRadius: 10,
-          paddingVertical: 8,
-          elevation: 10,
-        },
-      }),
-    []
-  );
-
   return (
-    <TouchableOpacity style={styl.button} onPress={onPressHandler}>
+    <AwesomeButton
+      backgroundColor='rgb(7,94,85)'
+      onPress={onPressHandler}
+      style={{
+        marginVertical: 10,
+      }}
+      width={width * 0.6}
+    >
       {children}
-    </TouchableOpacity>
+    </AwesomeButton>
   );
 };
 

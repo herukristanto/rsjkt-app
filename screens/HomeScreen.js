@@ -6,10 +6,10 @@ import {
   View,
   AsyncStorage,
   Alert,
+  ScrollView,
 } from 'react-native';
-import { Text, Avatar } from '@ui-kitten/components';
+import { Text, Avatar, Layout } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import { LinearGradient } from 'expo-linear-gradient';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
 import DokterScreen from './DokterScreen';
@@ -46,7 +46,8 @@ const HomeScreen = (props) => {
           flex: 1,
           alignItems: 'center',
           flexDirection: 'column',
-          paddingVertical: Constants.statusBarHeight,
+          paddingTop: Constants.statusBarHeight,
+          backgroundColor: '#ecf2f2',
         },
         title: {
           paddingVertical: 10,
@@ -57,9 +58,7 @@ const HomeScreen = (props) => {
           width: '100%',
         },
         buttonContainer: {
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
+          alignItems: 'center',
         },
         buttonText: {
           textAlign: 'center',
@@ -69,107 +68,109 @@ const HomeScreen = (props) => {
     []
   );
 
-  const linearColors = ['#ecf2f2', '#ecf2f2'];
-
   if (state.isLogin && state.user.role === 'dokter') {
     return <DokterScreen />;
   }
 
   return (
     <>
-      <LinearGradient colors={linearColors} style={styl.screen}>
-        <View style={styl.title}>
-          <Image
-            source={require('../assets/images/login-image.png')}
-            style={{ width: width * 0.15, height: width * 0.15 }}
-          />
-          <Text
-            category='h2'
-            numberOfLines={2}
-            style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
-          >
-            RS Jakarta Mobile
-          </Text>
-        </View>
+      <Layout style={styl.screen}>
+        <ScrollView>
+          <View style={styl.title}>
+            <Image
+              source={require('../assets/images/login-image.png')}
+              style={{ width: width * 0.15, height: width * 0.15 }}
+            />
+            <Text
+              category='h2'
+              numberOfLines={2}
+              style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
+            >
+              RS Jakarta Mobile
+            </Text>
+          </View>
 
-        <Slider />
+          <Slider />
 
-        {state.isLogin && <Text>Selamat Datang, {state.user.namaPasien}</Text>}
-
-        <View style={styl.buttonContainer}>
-          {!state.isLogin && (
-            <Card onPressHandler={() => navigation.navigate('Login')}>
-              <Avatar
-                source={require('../assets/icon/registrasi-akun.png')}
-                size='giant'
-              />
-              <Text style={styl.buttonText} category='h6' category='h6'>
-                Registrasi Akun
-              </Text>
-            </Card>
+          {state.isLogin && (
+            <Text>Selamat Datang, {state.user.namaPasien}</Text>
           )}
-          <Card onPressHandler={handlePoli}>
-            <Avatar
-              source={require('../assets/icon/registrasi-poli.png')}
-              size='giant'
-            />
-            <Text style={styl.buttonText} category='h6'>
-              Registrasi Poli
-            </Text>
-          </Card>
-          <Card onPressHandler={() => {}}>
-            <Avatar
-              source={require('../assets/icon/cek-booking.png')}
-              size='giant'
-            />
-            <Text style={styl.buttonText} category='h6'>
-              Cek Booking
-            </Text>
-          </Card>
-          <Card onPressHandler={() => {}}>
-            <Avatar
-              source={require('../assets/icon/lokasi.png')}
-              size='giant'
-            />
-            <Text style={styl.buttonText} category='h6'>
-              Lokasi
-            </Text>
-          </Card>
-          {!state.isLogin && (
-            <>
+
+          <View style={styl.buttonContainer}>
+            {!state.isLogin && (
               <Card onPressHandler={() => navigation.navigate('Login')}>
                 <Avatar
-                  source={require('../assets/icon/login-pasien.png')}
-                  size='giant'
+                  source={require('../assets/icon/registrasi-akun.png')}
+                  size='large'
                 />
-                <Text style={styl.buttonText} category='h6'>
-                  Login Pasien
+                <Text style={styl.buttonText} category='h6' category='h6'>
+                  Registrasi Akun
                 </Text>
               </Card>
-              <Card onPressHandler={() => navigation.navigate('LoginDokter')}>
-                <Avatar
-                  source={require('../assets/icon/login-dokter.png')}
-                  size='giant'
-                />
-                <Text style={styl.buttonText} category='h6'>
-                  Login Dokter
-                </Text>
-              </Card>
-            </>
-          )}
-          {state.isLogin && (
-            <Card onPressHandler={handleLogout}>
+            )}
+            <Card onPressHandler={handlePoli}>
               <Avatar
-                source={require('../assets/icon/logout.png')}
-                size='giant'
+                source={require('../assets/icon/registrasi-poli.png')}
+                size='large'
               />
               <Text style={styl.buttonText} category='h6'>
-                Logout
+                Registrasi Poli
               </Text>
             </Card>
-          )}
-        </View>
-      </LinearGradient>
+            <Card onPressHandler={() => {}}>
+              <Avatar
+                source={require('../assets/icon/cek-booking.png')}
+                size='large'
+              />
+              <Text style={styl.buttonText} category='h6'>
+                Cek Booking
+              </Text>
+            </Card>
+            <Card onPressHandler={() => {}}>
+              <Avatar
+                source={require('../assets/icon/lokasi.png')}
+                size='large'
+              />
+              <Text style={styl.buttonText} category='h6'>
+                Lokasi
+              </Text>
+            </Card>
+            {!state.isLogin && (
+              <>
+                <Card onPressHandler={() => navigation.navigate('Login')}>
+                  <Avatar
+                    source={require('../assets/icon/login-pasien.png')}
+                    size='large'
+                  />
+                  <Text style={styl.buttonText} category='h6'>
+                    Login Pasien
+                  </Text>
+                </Card>
+                <Card onPressHandler={() => navigation.navigate('LoginDokter')}>
+                  <Avatar
+                    source={require('../assets/icon/login-dokter.png')}
+                    size='large'
+                  />
+                  <Text style={styl.buttonText} category='h6'>
+                    Login Dokter
+                  </Text>
+                </Card>
+              </>
+            )}
+            {state.isLogin && (
+              <Card onPressHandler={handleLogout}>
+                <Avatar
+                  source={require('../assets/icon/logout.png')}
+                  size='large'
+                />
+                <Text style={styl.buttonText} category='h6'>
+                  Logout
+                </Text>
+              </Card>
+            )}
+          </View>
+        </ScrollView>
+      </Layout>
     </>
   );
 };

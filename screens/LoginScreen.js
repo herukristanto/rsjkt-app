@@ -11,7 +11,7 @@ import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 
-import useAxios from '../utils/useAxios';
+import { baseAxios } from '../utils/useAxios';
 import InputText from '../components/InputText';
 import InputButton from '../components/InputButton';
 import moment from 'moment';
@@ -25,17 +25,13 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const { dispatch } = useContext(AppContext);
 
-  const [, postLogin] = useAxios(
-    { url: '/pasien', method: 'GET' },
-    { manual: true }
-  );
-
   const handleForm = async (values) => {
     try {
-      const params = {
-        rm: values.noRekamMedis,
-      };
-      const { data } = await postLogin({ params: params });
+      const { data } = await baseAxios.get('/pasien', {
+        params: {
+          rm: values.noRekamMedis,
+        },
+      });
       const tgl = moment(data.Tgl_lahir).format('DD/MM/YYYY');
 
       if (data === '') {

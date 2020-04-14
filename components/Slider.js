@@ -57,6 +57,7 @@ const Slider = () => {
             width,
             height: height / 3,
             borderRadius: 10,
+            marginTop: 10,
           }}
         />
       )}
