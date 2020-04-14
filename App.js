@@ -33,7 +33,7 @@ const images = [
 ];
 
 export default function App() {
-  const [checkUpdate, setCheckUpdate] = useState(false); // False in dev, True in prod
+  const [checkUpdate, setCheckUpdate] = useState(true); // False in dev, True in prod
   const [isNew, setIsNew] = useState(false);
   const [error, setError] = useState();
 

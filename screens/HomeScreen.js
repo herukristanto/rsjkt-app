@@ -93,7 +93,9 @@ const HomeScreen = (props) => {
           <Slider />
 
           {state.isLogin && (
-            <Text>Selamat Datang, {state.user.namaPasien}</Text>
+            <Text style={{ textAlign: 'center', marginTop: 5 }}>
+              Selamat Datang, {state.user.namaPasien}
+            </Text>
           )}
 
           <View style={styl.buttonContainer}>
@@ -136,26 +138,15 @@ const HomeScreen = (props) => {
               </Text>
             </Card>
             {!state.isLogin && (
-              <>
-                <Card onPressHandler={() => navigation.navigate('Login')}>
-                  <Avatar
-                    source={require('../assets/icon/login-pasien.png')}
-                    size='large'
-                  />
-                  <Text style={styl.buttonText} category='h6'>
-                    Login Pasien
-                  </Text>
-                </Card>
-                <Card onPressHandler={() => navigation.navigate('LoginDokter')}>
-                  <Avatar
-                    source={require('../assets/icon/login-dokter.png')}
-                    size='large'
-                  />
-                  <Text style={styl.buttonText} category='h6'>
-                    Login Dokter
-                  </Text>
-                </Card>
-              </>
+              <Card onPressHandler={() => navigation.navigate('Login')}>
+                <Avatar
+                  source={require('../assets/icon/login-pasien.png')}
+                  size='large'
+                />
+                <Text style={styl.buttonText} category='h6'>
+                  Login
+                </Text>
+              </Card>
             )}
             {state.isLogin && (
               <Card onPressHandler={handleLogout}>
