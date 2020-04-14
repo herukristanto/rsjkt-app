@@ -16,7 +16,7 @@ const RegisterScreen = (props) => {
       <Layout style={styles.screen}>
         <KeyboardAvoidingView
           style={styles.container}
-          behavior='padding'
+          behavior='height'
           keyboardVerticalOffset={80}
           enabled
         >

@@ -14,10 +14,10 @@ import { Formik } from 'formik';
 import useAxios from '../utils/useAxios';
 import InputText from '../components/InputText';
 import InputButton from '../components/InputButton';
-import CustomDatePicker from '../components/CustomDatePicker';
 import moment from 'moment';
 import { AppContext } from '../context/AppContext';
 import { LOGIN } from '../reducer/AppReducer';
+import InputDateMask from '../components/InputDateMask';
 
 const { width } = Dimensions.get('screen');
 
@@ -36,15 +36,13 @@ const LoginScreen = () => {
         rm: values.noRekamMedis,
       };
       const { data } = await postLogin({ params: params });
-      const tgl = moment(data.Tgl_lahir).format('YYYY-MM-DD');
+      const tgl = moment(data.Tgl_lahir).format('DD/MM/YYYY');
 
       if (data === '') {
         Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
         return;
       }
-      if (
-        !moment(tgl).isSame(moment(values.tanggalLahir).format('YYYY-MM-DD'))
-      ) {
+      if (tgl != values.tanggalLahir) {
         Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
         return;
       }
@@ -69,7 +67,7 @@ const LoginScreen = () => {
     <Formik
       initialValues={{
         noRekamMedis: '',
-        tanggalLahir: new Date(),
+        tanggalLahir: '',
       }}
       onSubmit={handleForm}
     >
@@ -77,7 +75,7 @@ const LoginScreen = () => {
         <KeyboardAvoidingView
           style={styles.screen}
           behavior='height'
-          keyboardVerticalOffset={100}
+          keyboardVerticalOffset={120}
         >
           <Layout style={styles.container}>
             <Layout style={styles.imageContainer}>
@@ -96,14 +94,19 @@ const LoginScreen = () => {
             </Layout>
             <Layout style={styles.form}>
               <Text style={styles.label}>Tanggal Lahir</Text>
-              <CustomDatePicker name='tanggalLahir' mode='date' />
+              <InputDateMask name='tanggalLahir' />
             </Layout>
             <Layout style={styles.form}>
               <InputButton label='Login' status='success' />
             </Layout>
-            <Layout style={[styles.form, { alignItems: 'center' }]}>
+            <Layout
+              style={[
+                styles.form,
+                { alignItems: 'center', marginVertical: 10 },
+              ]}
+            >
               <Text
-                style={{ textDecorationLine: 'underline' }}
+                style={{ textDecorationLine: 'underline', fontSize: 16 }}
                 onPress={() => navigation.navigate('Register')}
               >
                 Belum Terdaftar?
