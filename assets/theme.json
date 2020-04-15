@@ -75,6 +75,5 @@
   "color-danger-transparent-500": "rgba(255, 72, 48, 0.4)",
   "color-danger-transparent-600": "rgba(255, 72, 48, 0.48)",
 
-  "color-primary-disabled": "red",
   "background-basic-color-1": "#ecf2f2"
 }

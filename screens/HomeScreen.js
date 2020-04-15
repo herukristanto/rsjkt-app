@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -8,12 +8,12 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { Text, Avatar, Layout } from '@ui-kitten/components';
+import { Text, Layout } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
 import DokterScreen from './DokterScreen';
-import Card from '../components/Card';
+import ButtonHome from '../components/ButtonHome';
 import Slider from '../components/Slider';
 
 const { width } = Dimensions.get('screen');
@@ -38,35 +38,6 @@ const HomeScreen = (props) => {
       );
     }
   };
-
-  const styl = useMemo(
-    () =>
-      StyleSheet.create({
-        screen: {
-          flex: 1,
-          alignItems: 'center',
-          flexDirection: 'column',
-          paddingTop: Constants.statusBarHeight,
-          backgroundColor: '#ecf2f2',
-        },
-        title: {
-          paddingVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgb(7,94,85)',
-          width: '100%',
-        },
-        buttonContainer: {
-          alignItems: 'center',
-        },
-        buttonText: {
-          textAlign: 'center',
-          color: 'white',
-        },
-      }),
-    []
-  );
 
   if (state.isLogin && state.user.role === 'dokter') {
     return <DokterScreen />;
@@ -100,64 +71,40 @@ const HomeScreen = (props) => {
 
           <View style={styl.buttonContainer}>
             {!state.isLogin && (
-              <Card onPressHandler={() => navigation.navigate('Login')}>
-                <Avatar
-                  source={require('../assets/icon/registrasi-akun.png')}
-                  size='large'
-                />
-                <Text style={styl.buttonText} category='h6' category='h6'>
-                  Registrasi Akun
-                </Text>
-              </Card>
+              <ButtonHome
+                onPressHandler={() => navigation.navigate('Login')}
+                label='Registrasi Akun'
+                avatar={require('../assets/icon/registrasi-akun.png')}
+              />
             )}
-            <Card onPressHandler={handlePoli}>
-              <Avatar
-                source={require('../assets/icon/registrasi-poli.png')}
-                size='large'
-              />
-              <Text style={styl.buttonText} category='h6'>
-                Registrasi Poli
-              </Text>
-            </Card>
-            <Card onPressHandler={() => {}}>
-              <Avatar
-                source={require('../assets/icon/cek-booking.png')}
-                size='large'
-              />
-              <Text style={styl.buttonText} category='h6'>
-                Cek Booking
-              </Text>
-            </Card>
-            <Card onPressHandler={() => {}}>
-              <Avatar
-                source={require('../assets/icon/lokasi.png')}
-                size='large'
-              />
-              <Text style={styl.buttonText} category='h6'>
-                Lokasi
-              </Text>
-            </Card>
+            <ButtonHome
+              onPressHandler={handlePoli}
+              label='Registrasi Poli'
+              avatar={require('../assets/icon/registrasi-poli.png')}
+            />
+            <ButtonHome
+              onPressHandler={() => {}}
+              label='Cek Booking'
+              avatar={require('../assets/icon/cek-booking.png')}
+            />
+            <ButtonHome
+              onPressHandler={() => {}}
+              label='Lokasi'
+              avatar={require('../assets/icon/lokasi.png')}
+            />
             {!state.isLogin && (
-              <Card onPressHandler={() => navigation.navigate('Login')}>
-                <Avatar
-                  source={require('../assets/icon/login-pasien.png')}
-                  size='large'
-                />
-                <Text style={styl.buttonText} category='h6'>
-                  Login
-                </Text>
-              </Card>
+              <ButtonHome
+                onPressHandler={() => navigation.navigate('Login')}
+                avatar={require('../assets/icon/login-pasien.png')}
+                label='Login'
+              />
             )}
             {state.isLogin && (
-              <Card onPressHandler={handleLogout}>
-                <Avatar
-                  source={require('../assets/icon/logout.png')}
-                  size='large'
-                />
-                <Text style={styl.buttonText} category='h6'>
-                  Logout
-                </Text>
-              </Card>
+              <ButtonHome
+                onPressHandler={handleLogout}
+                label='Logout'
+                avatar={require('../assets/icon/logout.png')}
+              />
             )}
           </View>
         </ScrollView>
@@ -165,5 +112,25 @@ const HomeScreen = (props) => {
     </>
   );
 };
+
+const styl = StyleSheet.create({
+  screen: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf2f2',
+  },
+  title: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(7,94,85)',
+    width: '100%',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+  },
+});
 
 export default HomeScreen;

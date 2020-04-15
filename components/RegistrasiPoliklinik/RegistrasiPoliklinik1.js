@@ -60,6 +60,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         ...values,
         noRekamMedis: state.form.noRekamMedis,
         tanggalLahir: state.form.tanggalLahir,
+        noKartu: state.form.noKartu,
       },
     });
     setStep((prevStep) => prevStep + 1);
@@ -86,7 +87,14 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText name='noKartu' label='No Kartu' disabled />
+          <InputText
+            name='noKartu'
+            label='No Kartu'
+            disabled
+            placeholder={state.form.noKartu}
+            placeholderTextColor='black'
+            style={{ backgroundColor: '#FEFDCB' }}
+          />
         </Layout>
       </>
     );
@@ -99,7 +107,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
   return (
     <Formik
       initialValues={{
-        noKartu: state.form.noKartu,
         dokter: state.form.dokter,
         poliklinik: state.form.poliklinik,
         tanggal: state.form.tanggal,
