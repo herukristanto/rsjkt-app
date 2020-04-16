@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "415818993510",
+    "firebase_url": "https://rs-jakarta.firebaseio.com",
+    "project_id": "rs-jakarta",
+    "storage_bucket": "rs-jakarta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415818993510:android:13d23707cfef7fc3a942a7",
+        "android_client_info": {
+          "package_name": "com.wamplo.rs_jakarta_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415818993510-jobdbhgvbkgcr7sscg78lnocs3p604of.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaD6Og1kcdxPbi7T7ICDEbm_K3hrSavac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415818993510-jobdbhgvbkgcr7sscg78lnocs3p604of.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
