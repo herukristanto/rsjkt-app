@@ -46,7 +46,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    async function checkUpdate() {
+    async function checkAndUpdate() {
       try {
         await handleResourceAsync();
 
@@ -65,7 +65,7 @@ export default function App() {
     }
     NetInfo.fetch().then((state) => {
       if (state.isConnected) {
-        checkUpdate();
+        checkAndUpdate();
       } else {
         setError('No Internet Connection');
         return;
