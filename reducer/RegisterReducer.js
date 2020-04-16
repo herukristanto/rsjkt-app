@@ -7,7 +7,7 @@ export const initialState = {
     namaPanggilan: '',
     identitas: '',
     noIndentitas: '',
-    tanggalLahir: new Date(),
+    tanggalLahir: '',
     kelamin: 0,
     darah: '',
     pendidikan: '',
@@ -36,8 +36,8 @@ export const initialState = {
     alamatPekerjaan: '',
     telpPekerjaan: '',
     departemen: '',
-    jabatan: ''
-  }
+    jabatan: '',
+  },
 };
 
 export const RegisterReducer = (state = initialState, action) => {
@@ -47,19 +47,19 @@ export const RegisterReducer = (state = initialState, action) => {
         ...state,
         form: {
           ...state.form,
-          ...action.form
-        }
+          ...action.form,
+        },
       };
     case RESET_FORM:
       return {
         ...state,
         form: {
-          ...initialState.form
-        }
+          ...initialState.form,
+        },
       };
     default:
       return {
-        ...state
+        ...state,
       };
   }
 };

@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { RegisterContext } from '../../context/RegisterContext';
 import { ADD_FORM } from '../../reducer/RegisterReducer';
 import InputSelect from '../InputSelect';
-import CustomDatePicker from '../CustomDatePicker';
+import InputDateMask from '../InputDateMask';
 import InputText from '../InputText';
 import InputRadio from '../InputRadio';
 import InputButton from '../InputButton';
@@ -70,7 +70,7 @@ const RegisterForm1 = (props) => {
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Tanggal Lahir</Text>
-          <CustomDatePicker name='tanggalLahir' mode='date' />
+          <InputDateMask name='tanggalLahir' />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jenis Kelamin</Text>
