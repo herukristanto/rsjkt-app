@@ -10,8 +10,6 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Updates from 'expo-updates';
 import NetInfo from '@react-native-community/netinfo';
 import { Asset } from 'expo-asset';
-import { Notifications } from 'expo';
-import { Vibration } from 'react-native';
 
 import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
@@ -35,16 +33,9 @@ const images = [
 ];
 
 export default function App() {
-  const [checkUpdate, setCheckUpdate] = useState(true); // False in dev, True in prod
+  const [checkUpdate, setCheckUpdate] = useState(__DEV__ ? false : true); // False in dev, True in prod
   const [isNew, setIsNew] = useState(false);
   const [error, setError] = useState();
-  const [notify, setNotify] = useState({});
-
-  // Handle Notification listener
-  const handleNotification = (notification) => {
-    Vibration.vibrate();
-    setNotify(notification);
-  };
 
   const handleResourceAsync = async () => {
     const cacheImages = images.map((img) => {
@@ -75,11 +66,6 @@ export default function App() {
     NetInfo.fetch().then((state) => {
       if (state.isConnected) {
         checkAndUpdate();
-
-        // Add event listener for push notification
-        const notificationSubscription = Notifications.addListener(
-          handleNotification
-        );
       } else {
         setError('No Internet Connection');
         return;

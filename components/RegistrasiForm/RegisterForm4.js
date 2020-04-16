@@ -52,7 +52,7 @@ const RegisterForm4 = (props) => {
         name: 'default',
         sound: true,
         priority: 'max',
-        vibrate: [0, 250, 250, 250],
+        vibrate: true,
       });
     }
   };
