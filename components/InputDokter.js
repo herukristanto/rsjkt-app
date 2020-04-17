@@ -12,8 +12,10 @@ import {
 } from '@ui-kitten/components';
 import { useFormikContext, getIn } from 'formik';
 import Modal from 'react-native-modal';
+
 import { PoliklinikContext } from '../context/PoliklinikContext';
 import { GET_DAFTAR_JADWAL } from '../reducer/PoliklinikReducer';
+import { getDateFromDay } from '../utils/helpers';
 
 const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);
@@ -22,24 +24,34 @@ const InputDokter = ({ name, label, items, ...props }) => {
   const { values, setFieldValue } = useFormikContext();
   const { state, dispatch } = useContext(PoliklinikContext);
 
+  const getJadwalFromDokter = (dokter) => {
+    const rawJadwal = state.daftarPraktek.map((item) => {
+      if (item.Dokter_nm.trim() == dokter) {
+        const date = getDateFromDay(item.DayofWeek);
+        return {
+          hari: item.nm_day.trim(),
+          jamAwal: item.Jam_AwalFix.trim(),
+          jamAkhir: item.Jam_AkhirFix.trim(),
+          tanggal: date.format('DD MMMM YYYY'),
+          label: `${item.nm_day.trim()}, ${date.format(
+            'DD MMMM YYYY'
+          )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+          value: `${item.nm_day.trim()}, ${date.format(
+            'DD MMMM YYYY'
+          )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+        };
+      }
+      return;
+    });
+    const filteredJadwal = rawJadwal.filter(Boolean);
+    return filteredJadwal;
+  };
+
   const handleSelect = (value) => {
     setFieldValue(name, value);
     let daftarJadwalDokter = daftarJadwal;
     if (daftarJadwal.length === 0) {
-      const rawJadwal = state.daftarPraktek.map((item) => {
-        if (item.Dokter_nm.trim() == value) {
-          return {
-            hari: item.nm_day.trim(),
-            jamAwal: item.Jam_AwalFix.trim(),
-            jamAkhir: item.Jam_AkhirFix.trim(),
-            label: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
-            value: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
-          };
-        }
-        return;
-      });
-      const filteredJadwal = rawJadwal.filter(Boolean);
-      daftarJadwalDokter = filteredJadwal;
+      daftarJadwalDokter = getJadwalFromDokter(value);
     }
     dispatch({
       type: GET_DAFTAR_JADWAL,
@@ -50,20 +62,8 @@ const InputDokter = ({ name, label, items, ...props }) => {
 
   const getJadwal = (value) => {
     setChecked(value);
-    const rawJadwal = state.daftarPraktek.map((item) => {
-      if (item.Dokter_nm.trim() == value) {
-        return {
-          hari: item.nm_day.trim(),
-          jamAwal: item.Jam_AwalFix.trim(),
-          jamAkhir: item.Jam_AkhirFix.trim(),
-          label: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
-          value: `${item.nm_day.trim()}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
-        };
-      }
-      return;
-    });
-    const filteredJadwal = rawJadwal.filter(Boolean);
-    setDaftarJadwal(filteredJadwal);
+    const jadwalDokter = getJadwalFromDokter(value);
+    setDaftarJadwal(jadwalDokter);
   };
 
   const renderItem = ({ item, index }) => (
@@ -100,39 +100,29 @@ const InputDokter = ({ name, label, items, ...props }) => {
               justifyContent: 'space-around',
             }}
           >
-            <View
-              key={index}
-              style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row' }}
-            >
-              <View style={{ flex: 1, alignSelf: 'stretch' }}>
+            <View key={index} style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ width: '25%' }}>
                 <Text>Hari</Text>
               </View>
-              <View style={{ flex: 1, alignSelf: 'stretch' }}>
-                <Text>Jam Awal</Text>
+              <View style={{ width: '40%' }}>
+                <Text>Tanggal</Text>
               </View>
-              <View style={{ flex: 1, alignSelf: 'stretch' }}>
-                <Text>Jam Akhir</Text>
+              <View style={{ width: '35%' }}>
+                <Text>Jam</Text>
               </View>
             </View>
             {daftarJadwal.map((jadwal, index) => (
-              <View
-                key={index}
-                style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row' }}
-              >
-                <View
-                  style={{ flex: 1, alignSelf: 'stretch', paddingVertical: 2 }}
-                >
+              <View key={index} style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{ width: '25%', paddingVertical: 5 }}>
                   <Text>{jadwal.hari}</Text>
                 </View>
-                <View
-                  style={{ flex: 1, alignSelf: 'stretch', paddingVertical: 2 }}
-                >
-                  <Text>{jadwal.jamAwal}</Text>
+                <View style={{ width: '40%', paddingVertical: 5 }}>
+                  <Text>{jadwal.tanggal}</Text>
                 </View>
-                <View
-                  style={{ flex: 1, alignSelf: 'stretch', paddingVertical: 2 }}
-                >
-                  <Text>{jadwal.jamAkhir}</Text>
+                <View style={{ width: '35%', paddingVertical: 5 }}>
+                  <Text>
+                    {jadwal.jamAwal} - {jadwal.jamAkhir}
+                  </Text>
                 </View>
               </View>
             ))}
