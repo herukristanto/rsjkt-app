@@ -9,6 +9,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
 import LoginDokterScreen from '../screens/LoginDokterScreen';
 import DokterScreen from '../screens/DokterScreen';
+import BookingScreen from '../screens/BookingScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -28,6 +29,7 @@ const HomeStackNavigator = () => {
       />
       <HomeStack.Screen name='Login' component={LoginScreen} />
       <HomeStack.Screen name='Dokter' component={DokterScreen} />
+      <HomeStack.Screen name='Booking' component={BookingScreen} />
       <HomeStack.Screen
         name='LoginDokter'
         component={LoginDokterScreen}
