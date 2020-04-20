@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 
@@ -66,6 +66,30 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     setStep((prevStep) => prevStep + 1);
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.poliklinik) {
+      errors.poliklinik = 'Poliklinik Tidak Boleh Kosong';
+    }
+    if (!values.dokter) {
+      errors.dokter = 'Dokter Tidak Boleh Kosong';
+    }
+    if (!values.tanggal) {
+      errors.tanggal = 'Tanggal Tidak Boleh Kosong';
+    }
+    if (values.status === 1) {
+      if (!values.jaminan) {
+        errors.jaminan = 'Jaminan Tidak Boleh Kosong';
+      }
+      if (!values.perusahaan) {
+        errors.perusahaan = 'Perusahaan Tidak Boleh Kosong';
+      }
+    }
+
+    return errors;
+  };
+
   const RenderJaminan = () => {
     return (
       <>
@@ -116,6 +140,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
       }}
       onSubmit={handleForm}
       enableReinitialize
+      validate={onValidate}
     >
       {(props) => (
         <React.Fragment>

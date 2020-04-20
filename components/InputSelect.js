@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { useTheme } from '@ui-kitten/components';
+import { useTheme, Text } from '@ui-kitten/components';
 import { getIn, useFormikContext } from 'formik';
 
 const InputSelect = ({ placeholder, name, ...props }) => {
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, errors, touched } = useFormikContext();
+  const error = getIn(errors, name);
+  const touch = getIn(touched, name);
 
   const theme = useTheme();
   const pickerSelectStyles = useMemo(
@@ -26,14 +28,19 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           paddingHorizontal: 10,
           paddingVertical: 5,
           borderWidth: 0.8,
-          borderColor: theme['color-basic-focus-border'],
+          borderColor:
+            error && touch ? 'red' : theme['color-basic-focus-border'],
           borderRadius: 4,
           color: 'black',
           paddingRight: 30, // to ensure the text is never behind the icon
           backgroundColor: theme['color-basic-hover'],
         },
+        textHelp: {
+          color: 'red',
+          fontSize: 12,
+        },
       }),
-    []
+    [error, touch]
   );
 
   const onChange = (value) => {
@@ -57,6 +64,9 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           color: '#9EA0A4',
         }}
       />
+      {error && touch ? (
+        <Text style={pickerSelectStyles.textHelp}>{error}</Text>
+      ) : null}
     </React.Fragment>
   );
 };

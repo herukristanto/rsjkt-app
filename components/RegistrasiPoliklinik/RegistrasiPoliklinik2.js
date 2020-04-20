@@ -20,6 +20,16 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
     setStep((prevStep) => prevStep + 1);
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.telp) {
+      errors.telp = 'Telp Tidak Boleh Kosong';
+    }
+
+    return errors;
+  };
+
   const RenderPribadi = () => {
     return (
       <Layout style={styles.form}>
@@ -50,6 +60,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         telp: '',
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text>Registrasi Poliklinik</Text>
@@ -71,6 +82,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
             name='telp'
             label='Masukkan Telp'
             keyboardType='number-pad'
+            placeholder='+628*******'
           />
         </Layout>
         <Layout

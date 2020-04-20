@@ -3,8 +3,9 @@ import { getIn, useFormikContext } from 'formik';
 import { Input } from '@ui-kitten/components';
 
 const InputText = ({ name, ...props }) => {
-  const { values, setFieldValue, errors } = useFormikContext();
+  const { values, setFieldValue, errors, touched } = useFormikContext();
   const error = getIn(errors, name);
+  const touch = getIn(touched, name);
 
   return (
     <React.Fragment>
@@ -12,8 +13,8 @@ const InputText = ({ name, ...props }) => {
         {...props}
         value={getIn(values, name)}
         onChangeText={(value) => setFieldValue(name, value)}
-        status={error ? 'danger' : 'basic'}
-        caption={error ? error : ''}
+        status={error && touch ? 'danger' : 'basic'}
+        caption={error && touch ? error : ''}
       />
     </React.Fragment>
   );
