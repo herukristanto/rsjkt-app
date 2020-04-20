@@ -1,95 +1,119 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Alert, Platform } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
+import NetInfo from '@react-native-community/netinfo';
 
 import { RegisterContext } from '../../context/RegisterContext';
-import { ADD_FORM, RESET_FORM } from '../../reducer/RegisterReducer';
 import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 
 const RegisterForm4 = (props) => {
   const { setStep, navigation } = props;
-  const { state, dispatch } = useContext(RegisterContext);
-  const [isSave, setIsSave] = useState(false);
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const { state } = useContext(RegisterContext);
 
   // Register Push Notification (Only when user registering)
   const registerForPushNotificationsAsync = async () => {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(
+    try {
+      if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(
           Permissions.NOTIFICATIONS
         );
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Permissions.askAsync(
+            Permissions.NOTIFICATIONS
+          );
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          Alert.alert(
+            'Error',
+            'Failed to get push token for push notification!',
+            [{ text: 'OK' }]
+          );
+          return;
+        }
+        const token = await Notifications.getExpoPushTokenAsync();
+        console.log(token);
+        // TODO Send Expo Push Token to server
+      } else {
         Alert.alert(
           'Error',
-          'Failed to get push token for push notification!',
+          'Must use physical device for Push Notifications',
           [{ text: 'OK' }]
         );
+      }
+
+      if (Platform.OS === 'android') {
+        Notifications.createChannelAndroidAsync('default', {
+          name: 'default',
+          sound: true,
+          priority: 'max',
+          vibrate: true,
+        });
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
+    }
+  };
+
+  const handleForm = async (values) => {
+    try {
+      // Check internet connection
+      const connect = await NetInfo.fetch();
+      if (!connect.isConnected && !connect.isInternetReachable) {
+        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
         return;
       }
-      const token = await Notifications.getExpoPushTokenAsync();
-      setExpoPushToken(token);
-      setIsSave(true);
-    } else {
-      Alert.alert('Error', 'Must use physical device for Push Notifications', [
-        { text: 'OK' },
-      ]);
-    }
 
-    if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('default', {
-        name: 'default',
-        sound: true,
-        priority: 'max',
-        vibrate: true,
-      });
-    }
-  };
+      // Send Notification Token To Server
+      registerForPushNotificationsAsync();
 
-  const handleForm = (values) => {
-    dispatch({
-      type: ADD_FORM,
-      form: {
+      // TODO Send Data User to Server
+      const data = {
+        ...state.form,
         ...values,
-      },
-    });
-
-    // Send Notification Token To Server
-    registerForPushNotificationsAsync();
-  };
-
-  useEffect(() => {
-    if (isSave) {
-      // Send To Server
-
+      };
       // JSON.stringify(data, null, 2)
-      Alert.alert(
-        'Berhasil',
-        JSON.stringify({ token: expoPushToken, ...state.form }, null, 2),
-        [{ text: 'OK', onPress: () => navigation.popToTop() }]
-      );
-      dispatch({
-        type: RESET_FORM,
-      });
-      setIsSave(false);
-      setStep(1);
+      Alert.alert('Berhasil', JSON.stringify(data, null, 2), [
+        { text: 'OK', onPress: () => navigation.popToTop() },
+      ]);
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
     }
-    return () => {};
-  }, [isSave]);
+  };
 
   const handleBack = () => {
     setStep((prevStep) => prevStep - 1);
+  };
+
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.pekerjaan) {
+      errors.pekerjaan = 'Pekerjaan Wajib Diisi';
+    }
+    if (!values.namaPekerjaan) {
+      errors.namaPekerjaan = 'Nama Pekerjaan Wajib Diisi';
+    }
+    if (!values.alamatPekerjaan) {
+      errors.alamatPekerjaan = 'Alamat Wajib Diisi';
+    }
+    if (!values.telpPekerjaan) {
+      errors.telpPekerjaan = 'Telp Wajib Diisi';
+    }
+    if (!values.departemen) {
+      errors.departemen = 'Dept / Bagian Wajib Diisi';
+    }
+    if (!values.jabatan) {
+      errors.jabatan = 'Jabatan Wajib Diisi';
+    }
+
+    return errors;
   };
 
   return (
@@ -98,6 +122,7 @@ const RegisterForm4 = (props) => {
         ...state.form,
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text category='h4'>Data Pekerjaan</Text>
@@ -127,7 +152,7 @@ const RegisterForm4 = (props) => {
           <InputText
             name='telpPekerjaan'
             label='Telp'
-            placeholder='Masukkan Telp'
+            placeholder='Masukkan Telp (+628*******)'
             keyboardType='number-pad'
           />
         </Layout>

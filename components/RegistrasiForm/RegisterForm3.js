@@ -8,30 +8,77 @@ import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 
-const RegisterForm3 = props => {
+const RegisterForm3 = (props) => {
   const { setStep } = props;
   const { state, dispatch } = useContext(RegisterContext);
 
-  const handleForm = async values => {
+  const handleForm = async (values) => {
     dispatch({
       type: ADD_FORM,
       form: {
-        ...values
-      }
+        ...values,
+      },
     });
-    setStep(prevStep => prevStep + 1);
+    setStep((prevStep) => prevStep + 1);
   };
 
   const handleBack = () => {
-    setStep(prevStep => prevStep - 1);
+    setStep((prevStep) => prevStep - 1);
+  };
+
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.namaKeluarga) {
+      errors.namaKeluarga = 'Nama Wajib Diisi';
+    }
+    if (!values.hubunganKeluarga) {
+      errors.hubunganKeluarga = 'Hubungan Wajib Diisi';
+    }
+    if (!values.alamatKeluarga) {
+      errors.alamatKeluarga = 'Alamat Wajib Diisi';
+    }
+    if (!values.rtKeluarga) {
+      errors.rtKeluarga = 'RT Wajib Diisi';
+    }
+    if (!values.rwKeluarga) {
+      errors.rwKeluarga = 'RW Wajib Diisi';
+    }
+    if (!values.kotaKeluarga) {
+      errors.kotaKeluarga = 'Kota Wajib Diisi';
+    }
+    if (!values.kodePosKeluarga) {
+      errors.kodePosKeluarga = 'Kode Pos Wajib Diisi';
+    }
+    if (!values.telpKeluarga) {
+      errors.telpKeluarga = 'No Telp Wajib Diisi';
+    }
+    if (!values.telp2Keluarga) {
+      errors.telp2Keluarga = 'No Telp 2 Wajib Diisi';
+    }
+    if (!values.emailKeluarga) {
+      errors.emailKeluarga = 'Email Wajib Diisi';
+    }
+    if (!values.namaAyah) {
+      errors.namaAyah = 'Nama Ayah Wajib Diisi';
+    }
+    if (!values.pekerjaanAyah) {
+      errors.pekerjaanAyah = 'Pekerjaan Ayah Wajib Diisi';
+    }
+    if (!values.namaIbu) {
+      errors.namaIbu = 'Nama Ibu Wajib Diisi';
+    }
+
+    return errors;
   };
 
   return (
     <Formik
       initialValues={{
-        ...state.form
+        ...state.form,
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text category='h4'>Keluarga Terdekat</Text>
@@ -60,7 +107,7 @@ const RegisterForm3 = props => {
         <Layout
           style={[
             styles.form,
-            { flexDirection: 'row', justifyContent: 'space-between' }
+            { flexDirection: 'row', justifyContent: 'space-between' },
           ]}
         >
           <InputText
@@ -144,8 +191,8 @@ const RegisterForm3 = props => {
             {
               alignItems: 'center',
               flexDirection: 'row',
-              justifyContent: 'space-between'
-            }
+              justifyContent: 'space-between',
+            },
           ]}
         >
           <Button
@@ -169,12 +216,12 @@ const RegisterForm3 = props => {
 const styles = StyleSheet.create({
   form: {
     width: '90%',
-    marginVertical: 2
+    marginVertical: 2,
   },
   label: {
     color: '#778899',
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 export default RegisterForm3;

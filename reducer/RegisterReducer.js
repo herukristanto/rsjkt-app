@@ -20,6 +20,8 @@ export const initialState = {
     telp: '',
     telp2: '',
     email: '',
+    namaKeluarga: '',
+    hubunganKeluarga: '',
     alamatKeluarga: '',
     rtKeluarga: '',
     rwKeluarga: '',

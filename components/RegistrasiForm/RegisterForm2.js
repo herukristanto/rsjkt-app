@@ -25,12 +25,44 @@ const RegisterForm2 = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.alamat) {
+      errors.alamat = 'Alamat Wajib Diisi';
+    }
+    if (!values.rt) {
+      errors.rt = 'RT Wajib Diisi';
+    }
+    if (!values.rw) {
+      errors.rw = 'RW Wajib Diisi';
+    }
+    if (!values.kota) {
+      errors.kota = 'Kota Wajib Diisi';
+    }
+    if (!values.kodePos) {
+      errors.kodePos = 'Kode Pos Wajib Diisi';
+    }
+    if (!values.telp) {
+      errors.telp = 'No Telp Wajib Diisi';
+    }
+    if (!values.telp2) {
+      errors.telp2 = 'No Telp 2 Wajib Diisi';
+    }
+    if (!values.email) {
+      errors.email = 'Email Wajib Diisi';
+    }
+
+    return errors;
+  };
+
   return (
     <Formik
       initialValues={{
         ...state.form,
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text category='h4'>Alamat</Text>
@@ -78,7 +110,7 @@ const RegisterForm2 = (props) => {
           <InputText
             name='telp'
             label='Telp'
-            placeholder='Masukkan Telp'
+            placeholder='Masukkan Telp (+628*******)'
             keyboardType='number-pad'
           />
         </Layout>
@@ -86,7 +118,7 @@ const RegisterForm2 = (props) => {
           <InputText
             name='telp2'
             label='Telp 2'
-            placeholder='Masukkan Telp 2'
+            placeholder='Masukkan Telp 2 (+628*******)'
             keyboardType='number-pad'
           />
         </Layout>

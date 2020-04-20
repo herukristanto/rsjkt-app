@@ -21,8 +21,11 @@ const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState('');
   const [daftarJadwal, setDaftarJadwal] = useState([]);
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, errors, touched } = useFormikContext();
   const { state, dispatch } = useContext(PoliklinikContext);
+
+  const error = getIn(errors, name);
+  const touch = getIn(touched, name);
 
   const getJadwalFromDokter = (dokter) => {
     const rawJadwal = state.daftarPraktek.map((item) => {
@@ -140,7 +143,14 @@ const InputDokter = ({ name, label, items, ...props }) => {
       >
         <View>
           <View pointerEvents='none'>
-            <Input placeholder='Pilih Dokter' value={getIn(values, name)} />
+            <Input
+              placeholder='Pilih Dokter'
+              value={getIn(values, name)}
+              status={error && touch ? 'danger' : 'basic'}
+            />
+            {error && touch ? (
+              <Text style={styles.textHelp}>{error}</Text>
+            ) : null}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -173,6 +183,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     // width: 400,
+  },
+  textHelp: {
+    color: 'red',
+    fontSize: 12,
   },
 });
 
