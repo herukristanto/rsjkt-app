@@ -27,7 +27,7 @@ const Slider = () => {
         animated: true,
       });
       setSlideIndex(nextIndex);
-    }, 3000);
+    }, 10000);
 
     return () => {
       clearInterval(slideTimer);
