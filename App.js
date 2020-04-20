@@ -3,13 +3,14 @@ import {
   ApplicationProvider,
   IconRegistry,
   Layout,
-  Text,
 } from '@ui-kitten/components';
 import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Updates from 'expo-updates';
 import NetInfo from '@react-native-community/netinfo';
 import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import { View, Text } from 'react-native';
 
 import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
@@ -32,8 +33,11 @@ const images = [
   require('./assets/icon/logout.png'),
 ];
 
+const strictTheme = { ['text-font-family']: 'calibri' };
+const customMapping = { strict: strictTheme };
+
 export default function App() {
-  const [checkUpdate, setCheckUpdate] = useState(__DEV__ ? false : true); // False in dev, True in prod
+  const [checkUpdate, setCheckUpdate] = useState(true);
   const [isNew, setIsNew] = useState(false);
   const [error, setError] = useState();
 
@@ -46,15 +50,23 @@ export default function App() {
   };
 
   useEffect(() => {
-    async function checkAndUpdate() {
+    const checkAndUpdate = async () => {
       try {
         await handleResourceAsync();
+        await Font.loadAsync({
+          calibri: require('./assets/fonts/Calibri-Regular.ttf'),
+        });
 
-        const update = await Updates.checkForUpdateAsync();
-        if (update.isAvailable) {
-          setIsNew(true);
-          await Updates.fetchUpdateAsync();
-          await Updates.reloadAsync();
+        if (!__DEV__) {
+          // Run only on Prod
+          const update = await Updates.checkForUpdateAsync();
+          if (update.isAvailable) {
+            setIsNew(true);
+            await Updates.fetchUpdateAsync();
+            await Updates.reloadAsync();
+          } else {
+            setCheckUpdate(false);
+          }
         } else {
           setCheckUpdate(false);
         }
@@ -62,9 +74,9 @@ export default function App() {
         setError(JSON.stringify(error, null, 2));
         return;
       }
-    }
+    };
     NetInfo.fetch().then((state) => {
-      if (state.isConnected) {
+      if (state.isConnected && state.isInternetReachable) {
         checkAndUpdate();
       } else {
         setError('No Internet Connection');
@@ -73,7 +85,7 @@ export default function App() {
     });
   }, []);
 
-  const Status = () => {
+  if (checkUpdate) {
     let status;
     if (error) {
       status = error;
@@ -83,19 +95,21 @@ export default function App() {
       status = 'Loading...';
     }
     return (
-      <Layout
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      >
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>{status}</Text>
-      </Layout>
+      </View>
     );
-  };
+  }
 
   return (
-    <ApplicationProvider mapping={mapping} theme={theme}>
+    <ApplicationProvider
+      mapping={mapping}
+      customMapping={customMapping}
+      theme={theme}
+    >
       <AppContextProvider>
         <IconRegistry icons={EvaIconsPack} />
-        {checkUpdate ? <Status /> : <RootNavigation />}
+        <RootNavigation />
       </AppContextProvider>
     </ApplicationProvider>
   );
