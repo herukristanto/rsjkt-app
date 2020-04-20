@@ -1,5 +1,7 @@
 import React, { createContext, useReducer, useEffect, useContext } from 'react';
 import moment from 'moment';
+import NetInfo from '@react-native-community/netinfo';
+import { Alert } from 'react-native';
 
 import {
   PoliklinikReducer,
@@ -18,6 +20,13 @@ export const PoliklinikContextProvider = ({ children }) => {
 
   const getPoli = async () => {
     try {
+      // Check internet connection
+      const connect = await NetInfo.fetch();
+      if (!connect.isConnected && !connect.isInternetReachable) {
+        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
+        return;
+      }
+
       const { data: dataPenjamin } = await baseAxios.get('/penjaminAll', {
         params: {
           key: 'rsjkt4231',

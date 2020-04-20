@@ -10,6 +10,7 @@ import {
 import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
+import NetInfo from '@react-native-community/netinfo';
 
 import { baseAxios } from '../utils/useAxios';
 import InputText from '../components/InputText';
@@ -36,6 +37,13 @@ const LoginScreen = () => {
 
   const handleForm = async (values) => {
     try {
+      // Check internet connection
+      const connect = await NetInfo.fetch();
+      if (!connect.isConnected && !connect.isInternetReachable) {
+        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
+        return;
+      }
+
       // Check apakah values.noRekamMedis ada di kode dokter
       // const { data: dataDokter } = await baseAxios.get('/pasien', {
       //   params: {
@@ -79,7 +87,7 @@ const LoginScreen = () => {
         navigation.popToTop();
       }
     } catch (e) {
-      Alert.alert('Maaf', `Error : ${e.message}`);
+      Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
     }
   };
 

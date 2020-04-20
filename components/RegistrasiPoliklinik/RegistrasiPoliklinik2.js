@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Text, Layout, Button } from '@ui-kitten/components';
+import NetInfo from '@react-native-community/netinfo';
+
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
 import { Formik } from 'formik';
@@ -10,14 +12,27 @@ import InputButton from '../InputButton';
 const RegistrasiPoliklinik2 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
 
-  const handleForm = (values) => {
-    dispatch({
-      type: ADD_TO_FORM,
-      data: {
-        ...values,
-      },
-    });
-    setStep((prevStep) => prevStep + 1);
+  const handleForm = async (values) => {
+    try {
+      // Check internet connection
+      const connect = await NetInfo.fetch();
+      if (!connect.isConnected && !connect.isInternetReachable) {
+        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
+      }
+
+      dispatch({
+        type: ADD_TO_FORM,
+        data: {
+          ...values,
+        },
+      });
+
+      // TODO Send data antrian to server
+
+      setStep((prevStep) => prevStep + 1);
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
+    }
   };
 
   const onValidate = (values) => {
