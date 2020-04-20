@@ -25,12 +25,44 @@ const RegisterForm1 = (props) => {
     setStep((prevStep) => prevStep + 1);
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.namaLengkap) {
+      errors.namaLengkap = 'Nama Lengkap Wajib Diisi';
+    }
+    if (!values.namaPanggilan) {
+      errors.namaPanggilan = 'Nama Panggilan Wajib Diisi';
+    }
+    if (!values.identitas) {
+      errors.identitas = 'Identitas Wajib Diisi';
+    }
+    if (!values.noIndentitas) {
+      errors.noIndentitas = 'No Identitas Wajib Diisi';
+    }
+    if (!values.tanggalLahir) {
+      errors.tanggalLahir = 'Tanggal Lahir Wajib Diisi';
+    }
+    if (!values.darah) {
+      errors.darah = 'Golongan Darah Wajib Diisi';
+    }
+    if (!values.pendidikan) {
+      errors.pendidikan = 'Pendidikan Wajib Diisi';
+    }
+    if (!values.agama) {
+      errors.agama = 'Agama Wajib Diisi';
+    }
+
+    return errors;
+  };
+
   return (
     <Formik
       initialValues={{
         ...state.form,
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text category='h4'>Data Pasien</Text>
@@ -40,6 +72,7 @@ const RegisterForm1 = (props) => {
             autoCapitalize='words'
             label='Nama Lengkap'
             placeholder='Masukkan Nama Lengkap'
+            required
           />
         </Layout>
         <Layout style={styles.form}>

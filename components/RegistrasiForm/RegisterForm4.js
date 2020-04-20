@@ -66,6 +66,7 @@ const RegisterForm4 = (props) => {
     });
 
     // Send Notification Token To Server
+    // TODO Send expo push token to server
     registerForPushNotificationsAsync();
   };
 
@@ -92,12 +93,38 @@ const RegisterForm4 = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.pekerjaan) {
+      errors.pekerjaan = 'Pekerjaan Wajib Diisi';
+    }
+    if (!values.namaPekerjaan) {
+      errors.namaPekerjaan = 'Nama Pekerjaan Wajib Diisi';
+    }
+    if (!values.alamatPekerjaan) {
+      errors.alamatPekerjaan = 'Alamat Wajib Diisi';
+    }
+    if (!values.telpPekerjaan) {
+      errors.telpPekerjaan = 'Telp Wajib Diisi';
+    }
+    if (!values.departemen) {
+      errors.departemen = 'Dept / Bagian Wajib Diisi';
+    }
+    if (!values.jabatan) {
+      errors.jabatan = 'Jabatan Wajib Diisi';
+    }
+
+    return errors;
+  };
+
   return (
     <Formik
       initialValues={{
         ...state.form,
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <React.Fragment>
         <Text category='h4'>Data Pekerjaan</Text>
@@ -127,7 +154,7 @@ const RegisterForm4 = (props) => {
           <InputText
             name='telpPekerjaan'
             label='Telp'
-            placeholder='Masukkan Telp'
+            placeholder='Masukkan Telp (+628*******)'
             keyboardType='number-pad'
           />
         </Layout>
