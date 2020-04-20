@@ -4,14 +4,14 @@ import {
   Dimensions,
   Image,
   View,
-  AsyncStorage,
   Alert,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import { Text, Layout } from '@ui-kitten/components';
+import { Text, Layout, Icon } from '@ui-kitten/components';
 import Constants from 'expo-constants';
+
 import { AppContext } from '../context/AppContext';
-import { LOGOUT } from '../reducer/AppReducer';
 import DokterScreen from './DokterScreen';
 import ButtonHome from '../components/ButtonHome';
 import Slider from '../components/Slider';
@@ -20,12 +20,7 @@ const { width } = Dimensions.get('screen');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
-  const { state, dispatch } = useContext(AppContext);
-
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('_USERDATA_');
-    dispatch({ type: LOGOUT });
-  };
+  const { state } = useContext(AppContext);
 
   const handlePoli = () => {
     if (state.isLogin) {
@@ -47,18 +42,29 @@ const HomeScreen = (props) => {
     <>
       <Layout style={styl.screen}>
         <ScrollView>
-          <View style={styl.title}>
-            <Image
-              source={require('../assets/images/login-image.png')}
-              style={{ width: width * 0.15, height: width * 0.15 }}
-            />
-            <Text
-              category='h2'
-              numberOfLines={2}
-              style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
-            >
-              RS Jakarta Mobile
-            </Text>
+          <View style={styl.header}>
+            <View style={styl.menu}>
+              <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                <Icon
+                  style={{ width: 32, height: 32 }}
+                  fill='white'
+                  name='menu'
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styl.title}>
+              <Image
+                source={require('../assets/images/login-image.png')}
+                style={{ width: width * 0.15, height: width * 0.15 }}
+              />
+              <Text
+                category='h4'
+                numberOfLines={2}
+                style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
+              >
+                RS Jakarta Mobile
+              </Text>
+            </View>
           </View>
 
           <Slider />
@@ -92,20 +98,6 @@ const HomeScreen = (props) => {
               label='Lokasi'
               avatar={require('../assets/icon/lokasi.png')}
             />
-            {!state.isLogin && (
-              <ButtonHome
-                onPressHandler={() => navigation.navigate('Login')}
-                avatar={require('../assets/icon/login-pasien.png')}
-                label='Login'
-              />
-            )}
-            {state.isLogin && (
-              <ButtonHome
-                onPressHandler={handleLogout}
-                label='Logout'
-                avatar={require('../assets/icon/logout.png')}
-              />
-            )}
           </View>
         </ScrollView>
       </Layout>
@@ -120,16 +112,25 @@ const styl = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf2f2',
   },
-  title: {
+  header: {
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'rgb(7,94,85)',
     width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '85%',
   },
   buttonContainer: {
     alignItems: 'center',
+  },
+  menu: {
+    paddingLeft: 15,
+    width: '15%',
   },
 });
 

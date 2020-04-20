@@ -1,7 +1,9 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Platform } from 'react-native';
+import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import { Platform, SafeAreaView, AsyncStorage } from 'react-native';
+import { Layout, Button } from '@ui-kitten/components';
+import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -10,6 +12,8 @@ import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
 import LoginDokterScreen from '../screens/LoginDokterScreen';
 import DokterScreen from '../screens/DokterScreen';
 import BookingScreen from '../screens/BookingScreen';
+import { AppContext } from '../context/AppContext';
+import { LOGOUT } from '../reducer/AppReducer';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -49,10 +53,53 @@ const HomeStackNavigator = () => {
   );
 };
 
+const HomeDrawer = createDrawerNavigator();
+const HomeDrawerNavigator = () => {
+  const { state, dispatch } = useContext(AppContext);
+
+  const handleLogout = (props) => {
+    const { navigation } = props;
+    AsyncStorage.removeItem('_USERDATA_');
+    dispatch({ type: LOGOUT });
+    navigation.closeDrawer();
+  };
+
+  const handleLogin = (props) => {
+    const { navigation } = props;
+    navigation.navigate('Login');
+  };
+
+  return (
+    <HomeDrawer.Navigator
+      drawerContent={(props) => {
+        return (
+          <Layout style={{ flex: 1, paddingTop: 25 }}>
+            <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+              <DrawerItem label='RS Jakarta Mobile' />
+              {state.isLogin && (
+                <Button status='success' onPress={() => handleLogout(props)}>
+                  Logout
+                </Button>
+              )}
+              {!state.isLogin && (
+                <Button status='success' onPress={() => handleLogin(props)}>
+                  Login
+                </Button>
+              )}
+            </SafeAreaView>
+          </Layout>
+        );
+      }}
+    >
+      <HomeDrawer.Screen name='Dashboard' component={HomeStackNavigator} />
+    </HomeDrawer.Navigator>
+  );
+};
+
 const RootNavigation = () => {
   return (
     <NavigationContainer>
-      <HomeStackNavigator />
+      <HomeDrawerNavigator />
     </NavigationContainer>
   );
 };
