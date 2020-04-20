@@ -67,6 +67,7 @@ const RegisterForm4 = (props) => {
       const connect = await NetInfo.fetch();
       if (!connect.isConnected && !connect.isInternetReachable) {
         Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
+        return;
       }
 
       // Send Notification Token To Server

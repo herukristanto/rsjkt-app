@@ -17,7 +17,8 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
       // Check internet connection
       const connect = await NetInfo.fetch();
       if (!connect.isConnected && !connect.isInternetReachable) {
-        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
+        Alert.alert('Error', 'No Internet Connection', [{ text: 'OK' }]);
+        return;
       }
 
       dispatch({

@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useEffect, useContext } from 'react';
 import moment from 'moment';
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   PoliklinikReducer,
@@ -17,14 +18,16 @@ export const PoliklinikContext = createContext();
 export const PoliklinikContextProvider = ({ children }) => {
   const { state: stateApp } = useContext(AppContext);
   const [state, dispatch] = useReducer(PoliklinikReducer, initialState);
+  const navigation = useNavigation();
 
   const getPoli = async () => {
     try {
       // Check internet connection
       const connect = await NetInfo.fetch();
       if (!connect.isConnected && !connect.isInternetReachable) {
-        Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
-        return;
+        Alert.alert('Error', 'No Internet Connection', [
+          { text: 'OK', onPress: () => navigation.popToTop() },
+        ]);
       }
 
       const { data: dataPenjamin } = await baseAxios.get('/penjaminAll', {
@@ -69,7 +72,11 @@ export const PoliklinikContextProvider = ({ children }) => {
       });
       return;
     } catch (error) {
-      console.log(error);
+      Alert.alert(
+        'Error',
+        'Something Wrong! Please Contact Customer Service!',
+        [{ text: 'OK', onPress: () => navigation.popToTop() }]
+      );
     }
   };
 
