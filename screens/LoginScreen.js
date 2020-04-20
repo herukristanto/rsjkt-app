@@ -83,6 +83,16 @@ const LoginScreen = () => {
     }
   };
 
+  const onValidate = (values) => {
+    const errors = {};
+
+    if (!values.noRekamMedis) {
+      errors.noRekamMedis = 'No Rekam Tidak Boleh Kosong';
+    }
+
+    return errors;
+  };
+
   return (
     <Formik
       initialValues={{
@@ -90,6 +100,7 @@ const LoginScreen = () => {
         tanggalLahir: '',
       }}
       onSubmit={handleForm}
+      validate={onValidate}
     >
       <Layout style={styles.screen}>
         <ModalDokter
