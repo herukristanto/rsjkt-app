@@ -46,7 +46,19 @@ const LoginScreen = () => {
           },
         });
         // Dokter Login
-        setDataDokter(dataDokter);
+        const { data } = await baseAxios.get('/daftar_praktek', {
+          params: {
+            key: 'rsjkt4231',
+          },
+        });
+        const dokterLogin = data.find(
+          (dokter) => dokter.Dokter_ID === dataDokter.PERSONILID
+        );
+        const dataLoginDokter = {
+          ...dataDokter,
+          poli: dokterLogin.Poli_nm.trim(),
+        };
+        setDataDokter(dataLoginDokter);
         setShowModal(true);
       } catch (error) {
         try {
