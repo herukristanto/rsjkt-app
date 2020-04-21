@@ -23,12 +23,6 @@ import ModalDokter from '../components/ModalDokter';
 
 const { width } = Dimensions.get('screen');
 
-const dummyDokter = {
-  namaDokter: 'Y.Rohedi Yosi Asmara,dr. SpAn. FIPM.FIPP.CIPS',
-  poli: 'Jakarta Pain Clinic',
-  password: '12345678',
-};
-
 const LoginScreen = () => {
   const navigation = useNavigation();
   const { dispatch } = useContext(AppContext);
@@ -45,49 +39,52 @@ const LoginScreen = () => {
       }
 
       // Check apakah values.noRekamMedis ada di kode dokter
-      // const { data: dataDokter } = await baseAxios.get('/pasien', {
-      //   params: {
-      //     key: 'rsjkt4231'
-      //   },
-      // });
-      // const checkDokter = dataDokter.find(dokter => dokter.Dokter_ID == values.noRekamMedis)
-      // if(checkDokter !== undefined) Check if dokter not undefined then set data dokter to state, if undefined check pasien
-
-      if (values.noRekamMedis === 'D123123123') {
-        setDataDokter(dummyDokter);
-        setShowModal(true);
-      } else {
-        const { data } = await baseAxios.get('/pasien', {
+      try {
+        const { data: dataDokter } = await baseAxios.get('/dokter', {
           params: {
-            rm: values.noRekamMedis,
+            dok_login: values.noRekamMedis,
           },
         });
-        const tgl = moment(data.Tgl_lahir).format('DD/MM/YYYY');
+        // Dokter Login
+        setDataDokter(dataDokter);
+        setShowModal(true);
+      } catch (error) {
+        try {
+          // Pasien Login
+          const { data } = await baseAxios.get('/pasien', {
+            params: {
+              rm: values.noRekamMedis,
+            },
+          });
+          const tgl = moment(data.Tgl_lahir).format('DD/MM/YYYY');
 
-        if (data === '') {
+          if (data === '') {
+            Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
+            return;
+          }
+          if (tgl != values.tanggalLahir) {
+            Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
+            return;
+          }
+
+          const userData = {
+            nomor_cm: data.nomor_cm,
+            namaPasien: data.namaPasien,
+            Tgl_lahir: data.Tgl_lahir,
+            nm_jaminan: data.nm_jaminan,
+            role: 'pasien',
+          };
+
+          await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
+          dispatch({ type: LOGIN, user: userData });
+
+          navigation.popToTop();
+        } catch (err) {
           Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
-          return;
         }
-        if (tgl != values.tanggalLahir) {
-          Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
-          return;
-        }
-
-        const userData = {
-          nomor_cm: data.nomor_cm,
-          namaPasien: data.namaPasien,
-          Tgl_lahir: data.Tgl_lahir,
-          nm_jaminan: data.nm_jaminan,
-          role: 'pasien',
-        };
-
-        await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
-        dispatch({ type: LOGIN, user: userData });
-
-        navigation.popToTop();
       }
     } catch (e) {
-      Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
+      Alert.alert('Maaf', JSON.stringify(e.response, null, 2));
     }
   };
 

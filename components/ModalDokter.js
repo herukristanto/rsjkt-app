@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, Alert, AsyncStorage } from 'react-native';
 import { Layout, Input, Button } from '@ui-kitten/components';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
+import { baseAxios } from '../utils/useAxios';
 
 import { LOGIN } from '../reducer/AppReducer';
 
@@ -13,10 +14,21 @@ const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
   const navigation = useNavigation();
 
   const handlePassword = async () => {
-    if (dataDokter.password === password) {
+    if (dataDokter.Password === password) {
+      const { data } = await baseAxios.get('/daftar_praktek', {
+        params: {
+          key: 'rsjkt4231',
+        },
+      });
+      const dokterLogin = data.find(
+        (dokter) => dokter.Dokter_ID === dataDokter.PERSONILID
+      );
+
       const userData = {
-        namaDokter: dataDokter.namaDokter,
-        poli: dataDokter.poli,
+        idDokter: dataDokter.PERSONILID,
+        namaDokter: dataDokter.NMPERSONIL.trim(),
+        poli: dokterLogin.Poli_nm.trim(),
+        avatar: dataDokter.img,
         role: 'dokter',
       };
 
