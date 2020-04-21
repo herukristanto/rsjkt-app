@@ -17,6 +17,7 @@ import 'moment/locale/id';
 
 import { PoliklinikContext } from '../context/PoliklinikContext';
 import { GET_DAFTAR_JADWAL } from '../reducer/PoliklinikReducer';
+import { getUnique } from '../utils/helpers';
 
 const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);
@@ -186,7 +187,10 @@ const InputDokter = ({ name, label, items, ...props }) => {
           onBackButtonPress={() => setVisible(false)}
         >
           <Layout style={styles.screen}>
-            <List data={items} renderItem={renderItem} />
+            <List
+              data={items.length > 0 ? getUnique(items, 'Dokter_ID') : []}
+              renderItem={renderItem}
+            />
             <Button
               status='warning'
               textStyle={{ color: 'black' }}

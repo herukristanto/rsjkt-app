@@ -1,9 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 
-import { getUnique } from '../../utils/helpers';
 import InputText from '../InputText';
 import InputSelect from '../InputSelect';
 import InputRadio from '../InputRadio';
@@ -19,7 +18,6 @@ import SelectJadwal from '../SelectJadwal';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
-  const [selectDokter, setSelectDokter] = useState([]);
 
   const handlePoliklinik = (value) => {
     const rawDokter = state.daftarPraktek.map((item) => {
@@ -31,8 +29,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         };
       }
     });
-    const dokterUnique = getUnique(rawDokter, 'Dokter_ID');
-    setSelectDokter(dokterUnique);
 
     const filteredDokter = rawDokter.filter(Boolean);
     dispatch({
@@ -142,6 +138,8 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         status: state.form.status,
         jaminan: state.form.jaminan,
         perusahaan: state.form.perusahaan,
+        _label_dokter: state.form._label_dokter,
+        _label_tanggal: state.form._label_tanggal,
       }}
       onSubmit={handleForm}
       enableReinitialize
@@ -181,7 +179,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Dokter</Text>
-            <InputDokter name='dokter' items={selectDokter} />
+            <InputDokter name='dokter' items={state.daftarDokter} />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Tanggal Kunjungan</Text>
