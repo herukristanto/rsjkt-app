@@ -15,14 +15,14 @@ export const getUnique = (arr, comp) => {
   return unique;
 };
 
-export const getDateFromDay = (day) => {
-  let date;
-  for (let index = 1; index <= 7; index++) {
-    const today = moment();
-    today.add(index, 'days');
-    if (day === today.day() + 1) {
-      date = today;
-    }
-  }
-  return date;
-};
+// export const getDateFromDay = (day) => {
+//   let date;
+//   for (let index = 1; index <= 7; index++) {
+//     const today = moment();
+//     today.add(index, 'days');
+//     if (day === today.day() + 1) {
+//       date = today;
+//     }
+//   }
+//   return date;
+// };

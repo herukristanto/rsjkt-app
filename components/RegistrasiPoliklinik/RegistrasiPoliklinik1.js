@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 
@@ -15,28 +15,33 @@ import {
 } from '../../reducer/PoliklinikReducer';
 import InputButton from '../InputButton';
 import InputDokter from '../InputDokter';
+import SelectJadwal from '../SelectJadwal';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
+  const [selectDokter, setSelectDokter] = useState([]);
 
-  const handlePoliklinik = async (value) => {
+  const handlePoliklinik = (value) => {
     const rawDokter = state.daftarPraktek.map((item) => {
-      if (item.Poli_nm.trim() == value) {
+      if (item.Poli_ID === value) {
         return {
-          value: item.Dokter_nm.trim(),
+          ...item,
+          value: item.Dokter_ID,
           label: item.Dokter_nm.trim(),
         };
       }
     });
-    const dokterUnique = await getUnique(rawDokter, 'label');
+    const dokterUnique = getUnique(rawDokter, 'Dokter_ID');
+    setSelectDokter(dokterUnique);
 
+    const filteredDokter = rawDokter.filter(Boolean);
     dispatch({
       type: GET_DAFTAR_DOKTER,
-      daftarDokter: dokterUnique,
+      daftarDokter: filteredDokter,
     });
   };
 
-  const handlePenjamin = async (value) => {
+  const handlePenjamin = (value) => {
     const rawPerusahaan = state.daftarPenjamin.map((item) => {
       if (item.Nm_jaminan.trim() == value) {
         return {
@@ -176,15 +181,15 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Dokter</Text>
-            <InputDokter name='dokter' items={state.daftarDokter} />
+            <InputDokter name='dokter' items={selectDokter} />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Tanggal Kunjungan</Text>
-            <InputSelect
-              disabled={state.daftarJadwal.length > 0 ? false : true}
-              placeholder='Pilih Tanggal Kunjungan'
+            <SelectJadwal
               items={state.daftarJadwal}
+              placeholder='Pilih Jadwal Kunjungan'
               name='tanggal'
+              disabled={state.daftarJadwal.length ? false : true}
             />
           </Layout>
           <Layout style={styles.form}>

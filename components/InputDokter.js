@@ -12,46 +12,58 @@ import {
 } from '@ui-kitten/components';
 import { useFormikContext, getIn } from 'formik';
 import Modal from 'react-native-modal';
+import moment from 'moment';
+import 'moment/locale/id';
 
 import { PoliklinikContext } from '../context/PoliklinikContext';
 import { GET_DAFTAR_JADWAL } from '../reducer/PoliklinikReducer';
-import { getDateFromDay } from '../utils/helpers';
 
 const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState('');
   const [daftarJadwal, setDaftarJadwal] = useState([]);
-  const { values, setFieldValue, errors, touched } = useFormikContext();
+  const { setFieldValue, errors, touched, values } = useFormikContext();
   const { state, dispatch } = useContext(PoliklinikContext);
 
   const error = getIn(errors, name);
   const touch = getIn(touched, name);
 
   const getJadwalFromDokter = (dokter) => {
-    const rawJadwal = state.daftarPraktek.map((item) => {
-      if (item.Dokter_nm.trim() == dokter) {
-        const date = getDateFromDay(item.DayofWeek);
+    const rawJadwal = state.daftarDokter.map((item) => {
+      if (item.Dokter_ID === dokter) {
+        const hari = moment(item.Tanggal).format('dddd');
         return {
-          hari: item.nm_day.trim(),
+          poli: item.Poli_nm.trim(),
+          hari: hari,
           jamAwal: item.Jam_AwalFix.trim(),
           jamAkhir: item.Jam_AkhirFix.trim(),
-          tanggal: date.format('DD MMMM YYYY'),
-          label: `${item.nm_day.trim()}, ${date.format(
-            'DD MMMM YYYY'
+          date: moment(item.Tanggal).format('YYYY-MM-DD'),
+          tanggal: moment(item.Tanggal).format('DD/MM/YYYY'),
+          TidakPraktek: item.TidakPraktek,
+          color: item.TidakPraktek ? 'red' : 'black',
+          label: `${hari}, ${moment(item.Tanggal).format(
+            'DD/MM/YYYY'
           )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
-          value: `${item.nm_day.trim()}, ${date.format(
-            'DD MMMM YYYY'
+          value: `${hari}, ${moment(item.Tanggal).format(
+            'DD/MM/YYYY'
           )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
         };
       }
       return;
     });
     const filteredJadwal = rawJadwal.filter(Boolean);
+    filteredJadwal.sort(
+      (a, b) =>
+        new moment(a.date).format('YYYYMMDD') -
+        new moment(b.date).format('YYYYMMDD')
+    );
+
     return filteredJadwal;
   };
 
-  const handleSelect = (value) => {
+  const handleSelect = (label, value) => {
     setFieldValue(name, value);
+    setFieldValue(`_label_${name}`, label);
     let daftarJadwalDokter = daftarJadwal;
     if (daftarJadwal.length === 0) {
       daftarJadwalDokter = getJadwalFromDokter(value);
@@ -81,21 +93,23 @@ const InputDokter = ({ name, label, items, ...props }) => {
           }}
         >
           <Layout style={{ flexShrink: 1 }}>
-            <TouchableWithoutFeedback onPress={() => handleSelect(item.label)}>
+            <TouchableWithoutFeedback
+              onPress={() => handleSelect(item.label, item.value)}
+            >
               <Text numberOfLines={2}>{item.label}</Text>
             </TouchableWithoutFeedback>
           </Layout>
-          {checked == item.label ? (
+          {checked == item.value ? (
             <TouchableWithoutFeedback onPress={() => setChecked(false)}>
               <Icon name='arrow-ios-upward' width={32} height={32} />
             </TouchableWithoutFeedback>
           ) : (
-            <TouchableWithoutFeedback onPress={() => getJadwal(item.label)}>
+            <TouchableWithoutFeedback onPress={() => getJadwal(item.value)}>
               <Icon name='arrow-ios-downward' width={32} height={32} />
             </TouchableWithoutFeedback>
           )}
         </Layout>
-        {checked == item.label && (
+        {checked == item.value && (
           <Layout
             style={{
               borderTopWidth: 1,
@@ -117,13 +131,23 @@ const InputDokter = ({ name, label, items, ...props }) => {
             {daftarJadwal.map((jadwal, index) => (
               <View key={index} style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ width: '25%', paddingVertical: 5 }}>
-                  <Text>{jadwal.hari}</Text>
+                  <Text
+                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
+                  >
+                    {jadwal.hari} {jadwal.TidakPraktek ? '(Tidak Praktek)' : ''}
+                  </Text>
                 </View>
                 <View style={{ width: '40%', paddingVertical: 5 }}>
-                  <Text>{jadwal.tanggal}</Text>
+                  <Text
+                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
+                  >
+                    {jadwal.tanggal}
+                  </Text>
                 </View>
                 <View style={{ width: '35%', paddingVertical: 5 }}>
-                  <Text>
+                  <Text
+                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
+                  >
                     {jadwal.jamAwal} - {jadwal.jamAkhir}
                   </Text>
                 </View>
@@ -145,7 +169,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
           <View pointerEvents='none'>
             <Input
               placeholder='Pilih Dokter'
-              value={getIn(values, name)}
+              value={getIn(values, `_label_${name}`)}
               status={error && touch ? 'danger' : 'basic'}
             />
             {error && touch ? (

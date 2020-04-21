@@ -49,10 +49,10 @@ export const PoliklinikContextProvider = ({ children }) => {
         },
       });
 
-      const poliUnique = getUnique(data, 'Poli_nm');
+      const poliUnique = getUnique(data, 'Poli_ID');
       const poliData = poliUnique.map((poli) => {
         return {
-          value: poli.Poli_nm.trim(),
+          value: poli.Poli_ID,
           label: poli.Poli_nm.trim(),
         };
       });

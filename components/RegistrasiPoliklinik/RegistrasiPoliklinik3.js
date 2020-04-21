@@ -35,7 +35,7 @@ const RegistrasiPoliklinik3 = ({ setStep }) => {
           qrCode: base64Icon,
           urut: 'A301',
           tanggal: state.form.tanggal,
-          lokasi: state.form.poliklinik,
+          lokasi: state.daftarJadwal[0].poli,
         };
         await AsyncStorage.setItem('_USER_QR_CODE_', JSON.stringify(antrian));
         setQrBase64(data);
@@ -76,7 +76,7 @@ const RegistrasiPoliklinik3 = ({ setStep }) => {
         type: RESET_FORM,
       });
     } catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
     }
   };
 
@@ -99,7 +99,7 @@ const RegistrasiPoliklinik3 = ({ setStep }) => {
         <Text>{state.form.tanggal}</Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Lokasi : {state.form.poliklinik}</Text>
+        <Text>Lokasi : {state.daftarJadwal[0].poli}</Text>
       </Layout>
       <Layout
         style={[

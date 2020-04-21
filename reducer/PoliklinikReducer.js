@@ -10,6 +10,7 @@ export const initialState = {
     noRekamMedis: '',
     tanggalLahir: '',
     dokter: '',
+    _label_dokter: '',
     poliklinik: '',
     tanggal: '',
     status: 0,
