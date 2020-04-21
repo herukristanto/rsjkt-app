@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, AsyncStorage } from 'react-native';
-import { Layout, Button, Text } from '@ui-kitten/components';
+import { Layout, Button, Text, Avatar } from '@ui-kitten/components';
 import moment from 'moment';
 
 import { AppContext } from '../context/AppContext';
@@ -99,6 +99,14 @@ const DokterScreen = () => {
   return (
     <Layout style={styles.screen}>
       <Layout style={styles.card}>
+        <Avatar
+          source={{ uri: state.user.avatar }}
+          width={width * 0.5}
+          height={width * 0.5}
+          style={styles.avatar}
+        />
+      </Layout>
+      <Layout style={styles.card}>
         <Text category='h6' style={{ textAlign: 'center' }}>
           {state.user.namaDokter}
         </Text>
@@ -144,6 +152,11 @@ const styles = StyleSheet.create({
   card: {
     width: '90%',
     marginVertical: 5,
+  },
+  avatar: {
+    width: width * 0.5,
+    height: width * 0.5,
+    alignSelf: 'center',
   },
 });
 
