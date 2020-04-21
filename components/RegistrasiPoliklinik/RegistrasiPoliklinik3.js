@@ -47,8 +47,30 @@ const RegistrasiPoliklinik3 = ({ setStep }) => {
   const handleForm = async (btn) => {
     try {
       if (btn === 'simpan') {
+        const {
+          status: existingStatus,
+        } = await MediaLibrary.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await MediaLibrary.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          Alert.alert('Error', 'Failed to save qr code to gallery', [
+            { text: 'OK' },
+          ]);
+          return;
+        }
+
+        await FileSystem.makeDirectoryAsync(
+          `${FileSystem.cacheDirectory}qrcode`,
+          {
+            intermediates: true,
+          }
+        );
+
         const file = `${
-          FileSystem.documentDirectory
+          FileSystem.cacheDirectory
         }qrcode/qrcode-${moment().format('YYYY-MM-DD')}.png`;
 
         await FileSystem.writeAsStringAsync(file, qrBase64, {
@@ -76,7 +98,7 @@ const RegistrasiPoliklinik3 = ({ setStep }) => {
         type: RESET_FORM,
       });
     } catch (error) {
-      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
+      Alert.alert('Error', JSON.stringify(error, null, 2));
     }
   };
 
