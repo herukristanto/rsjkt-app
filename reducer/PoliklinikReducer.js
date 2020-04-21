@@ -13,6 +13,7 @@ export const initialState = {
     _label_dokter: '',
     poliklinik: '',
     tanggal: '',
+    _label_tanggal: '',
     status: 0,
     jaminan: '',
     perusahaan: '',

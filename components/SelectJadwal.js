@@ -25,13 +25,14 @@ const CustomSelect = ({ items, placeholder, name, disabled }) => {
   const touch = getIn(touched, name);
 
   const onSelect = (value) => {
+    setFieldValue(`_label_${name}`, value.label);
     setFieldValue(name, value);
     setVisible(false);
   };
 
   const renderItem = ({ item }) => (
     <ListItem
-      onPress={() => onSelect(item.value)}
+      onPress={() => onSelect(item)}
       disabled={item.TidakPraktek ? true : false}
       style={styles.list}
     >
@@ -53,7 +54,7 @@ const CustomSelect = ({ items, placeholder, name, disabled }) => {
           <View pointerEvents='none'>
             <Input
               placeholder={placeholder}
-              value={getIn(values, name)}
+              value={getIn(values, `_label_${name}`)}
               status={error && touch ? 'danger' : 'basic'}
             />
             {error && touch ? (

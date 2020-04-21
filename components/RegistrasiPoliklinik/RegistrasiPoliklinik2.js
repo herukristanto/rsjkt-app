@@ -81,16 +81,16 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
       <React.Fragment>
         <Text>Registrasi Poliklinik</Text>
         <Layout style={styles.form}>
-          <Text>No Rekam Medis : {state.form.noRekamMedis}</Text>
+          <Text>Medical Record : {state.form.noRekamMedis}</Text>
         </Layout>
         <Layout style={styles.form}>
           <Text>Tanggal Lahir : {state.form.tanggalLahir}</Text>
         </Layout>
         <Layout style={styles.form}>
-          <Text>Dokter : {state.form.dokter}</Text>
+          <Text>Dokter : {state.form._label_dokter}</Text>
         </Layout>
         <Layout style={styles.form}>
-          <Text>Poliklinik : {state.form.poliklinik}</Text>
+          <Text>Poliklinik : {state.daftarJadwal[0].poli}</Text>
         </Layout>
         {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
         <Layout style={styles.form}>
