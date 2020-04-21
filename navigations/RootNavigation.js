@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { Platform, SafeAreaView, AsyncStorage } from 'react-native';
-import { Layout, Button } from '@ui-kitten/components';
+import { Layout, Button, Text } from '@ui-kitten/components';
 import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -24,6 +24,9 @@ const HomeStackNavigator = () => {
           backgroundColor: Platform.OS === 'android' ? 'rgb(7,94,85)' : '',
         },
         headerTintColor: Platform.OS === 'android' ? 'white' : 'rgb(7,94,85)',
+        headerTitleStyle: {
+          fontFamily: 'calibri',
+        },
       }}
     >
       <HomeStack.Screen
@@ -75,7 +78,10 @@ const HomeDrawerNavigator = () => {
         return (
           <Layout style={{ flex: 1, paddingTop: 25 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <DrawerItem label='RS Jakarta Mobile' />
+              <DrawerItem
+                label='RS Jakarta Mobile'
+                labelStyle={{ fontFamily: 'calibri', fontSize: 16 }}
+              />
               {state.isLogin && (
                 <Button status='success' onPress={() => handleLogout(props)}>
                   Logout

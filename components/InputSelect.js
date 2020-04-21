@@ -22,6 +22,7 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           borderRadius: 4,
           color: 'black',
           paddingRight: 30, // to ensure the text is never behind the icon
+          fontFamily: 'calibri',
         },
         inputAndroid: {
           fontSize: 16,
@@ -34,6 +35,7 @@ const InputSelect = ({ placeholder, name, ...props }) => {
           color: 'black',
           paddingRight: 30, // to ensure the text is never behind the icon
           backgroundColor: theme['color-basic-hover'],
+          fontFamily: 'calibri',
         },
         textHelp: {
           color: 'red',
