@@ -41,7 +41,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     const rawPerusahaan = state.daftarPenjamin.map((item) => {
       if (item.Nm_jaminan.trim() == value) {
         return {
-          label: item.NM_AnakJMN.trim(),
+          label: item.kd_anakjmn.trim(),
           value: item.NM_AnakJMN.trim(),
         };
       }

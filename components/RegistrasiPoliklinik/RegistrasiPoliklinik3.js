@@ -110,11 +110,8 @@ const RegistrasiPoliklinik3 = () => {
       await MediaLibrary.saveToLibraryAsync(file);
 
       ToastAndroid.show('QR Code Berhasil Disimpan', ToastAndroid.SHORT);
-
-      // JSON.stringify(data, null, 2);
-      Alert.alert('Berhasil', JSON.stringify(state.form, null, 2));
     } catch (error) {
-      Alert.alert('Error', JSON.stringify(error, null, 2));
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
     }
   };
 

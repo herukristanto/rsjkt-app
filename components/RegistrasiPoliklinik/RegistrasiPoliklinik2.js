@@ -2,12 +2,15 @@ import React, { useContext } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 import { Text, Layout, Button } from '@ui-kitten/components';
 import NetInfo from '@react-native-community/netinfo';
+import moment from 'moment';
+import { Formik } from 'formik';
+import cuid from 'cuid';
 
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
-import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
+import { baseAxios } from '../../utils/useAxios';
 
 const RegistrasiPoliklinik2 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
@@ -28,9 +31,29 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         },
       });
 
-      // TODO Send data antrian to server
+      const uid = cuid();
+      const request = {
+        no_reg: uid,
+        tgl_reg: moment().format('DD/MM/YYYY'),
+        nomor_cm: state.form.noRekamMedis,
+        poli_id: state.form.poliklinik,
+        poli_nm: state.daftarJadwal[0].poli,
+        dokter_id: state.form.dokter,
+        dokter_nm: state.form._label_dokter,
+        tgl_pesan: state.form.tanggal.tanggal,
+        jam: `${state.form.tanggal.jamAwal} - ${state.form.tanggal.jamAkhir}`,
+        jenis_penjamin: state.form.status === 0 ? 'Pribadi' : 'Jaminan',
+        kd_jaminan: state.form.jaminan,
+        kd_anakjaminan: state.form.perusahaan,
+        hand_phone: values.telp,
+      };
 
-      setStep((prevStep) => prevStep + 1);
+      // TODO Do Something with response data
+      // const { data } = await baseAxios.post('/regpoli', request);
+
+      Alert.alert('Berhasil', 'Pendaftaran Berhasil Dilakukan', [
+        { text: 'OK', onPress: () => setStep((prevStep) => prevStep + 1) },
+      ]);
     } catch (error) {
       Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
     }
@@ -98,7 +121,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
             name='telp'
             label='Masukkan Telp'
             keyboardType='number-pad'
-            placeholder='+628*******'
+            placeholder='08*******'
           />
         </Layout>
         <Layout
@@ -114,7 +137,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
           >
             Back
           </Button>
-          <InputButton label='Next' status='success' style={{ width: '45%' }} />
+          <InputButton label='Save' status='success' style={{ width: '45%' }} />
         </Layout>
       </React.Fragment>
     </Formik>

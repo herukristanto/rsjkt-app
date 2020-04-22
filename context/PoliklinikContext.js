@@ -38,7 +38,7 @@ export const PoliklinikContextProvider = ({ children }) => {
       const penjaminUnique = getUnique(dataPenjamin, 'Nm_jaminan');
       const penjaminData = penjaminUnique.map((penjamin) => {
         return {
-          value: penjamin.Nm_jaminan.trim(),
+          value: penjamin.Kd_Jaminan.trim(),
           label: penjamin.Nm_jaminan.trim(),
         };
       });
