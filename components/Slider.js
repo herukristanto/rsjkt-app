@@ -44,7 +44,7 @@ const Slider = () => {
         });
         setSlideIndex(nextIndex);
       }
-    }, 3000);
+    }, 10000);
 
     return () => {
       clearInterval(slideTimer);

@@ -52,6 +52,13 @@ const RegistrasiPoliklinik3 = () => {
     try {
       const share = await Sharing.isAvailableAsync();
       if (share) {
+        await FileSystem.makeDirectoryAsync(
+          `${FileSystem.cacheDirectory}qrcode`,
+          {
+            intermediates: true,
+          }
+        );
+
         const file = `${
           FileSystem.cacheDirectory
         }qrcode/qrcode-${moment().format('YYYY-MM-DD')}.png`;
@@ -65,7 +72,7 @@ const RegistrasiPoliklinik3 = () => {
         Alert.alert('Error', 'Failed to share qr code', [{ text: 'OK' }]);
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to share qr code', [{ text: 'OK' }]);
+      Alert.alert('Error', JSON.stringify(error, null, 2), [{ text: 'OK' }]);
     }
   };
 
