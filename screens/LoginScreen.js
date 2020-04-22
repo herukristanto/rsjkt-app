@@ -96,7 +96,7 @@ const LoginScreen = () => {
         }
       }
     } catch (e) {
-      Alert.alert('Maaf', JSON.stringify(e.response, null, 2));
+      Alert.alert('Maaf', 'Something Wrong! Please Contact Customer Service!');
     }
   };
 

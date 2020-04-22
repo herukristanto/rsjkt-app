@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Text, Layout, Icon } from '@ui-kitten/components';
 import Constants from 'expo-constants';
+import RunningText from '../components/RunningText';
 
 import { AppContext } from '../context/AppContext';
 import DokterScreen from './DokterScreen';
@@ -41,40 +42,40 @@ const HomeScreen = (props) => {
   return (
     <>
       <Layout style={styl.screen}>
-        <ScrollView>
-          <View style={styl.header}>
-            <View style={styl.menu}>
-              <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                <Icon
-                  style={{ width: 32, height: 32 }}
-                  fill='white'
-                  name='menu'
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styl.title}>
-              <Image
-                source={require('../assets/images/login-image.png')}
-                style={{ width: width * 0.15, height: width * 0.15 }}
+        <View style={styl.header}>
+          <View style={styl.menu}>
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Icon
+                style={{ width: 32, height: 32 }}
+                fill='white'
+                name='menu'
               />
-              <Text
-                category='h4'
-                numberOfLines={2}
-                style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
-              >
-                RS Jakarta Mobile
-              </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-
-          <Slider />
-
-          {state.isLogin && (
-            <Text style={{ textAlign: 'center', marginTop: 5 }}>
-              Selamat Datang, {state.user.namaPasien}
+          <View style={styl.title}>
+            <Image
+              source={require('../assets/images/login-image.png')}
+              style={{ width: width * 0.15, height: width * 0.15 }}
+            />
+            <Text
+              category='h4'
+              numberOfLines={2}
+              style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
+            >
+              RS Jakarta Mobile
             </Text>
-          )}
+          </View>
+        </View>
 
+        <Slider />
+
+        {state.isLogin && (
+          <Text style={{ textAlign: 'center', marginTop: 5 }}>
+            Selamat Datang, {state.user.namaPasien}
+          </Text>
+        )}
+
+        <ScrollView>
           <View style={styl.buttonContainer}>
             {!state.isLogin && (
               <ButtonHome
@@ -100,6 +101,8 @@ const HomeScreen = (props) => {
             />
           </View>
         </ScrollView>
+
+        <RunningText text={state.scrollText} />
       </Layout>
     </>
   );
