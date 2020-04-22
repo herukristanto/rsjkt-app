@@ -8,7 +8,9 @@ const { width } = Dimensions.get('screen');
 const ButtonHome = ({ onPressHandler, label, avatar }) => {
   return (
     <AwesomeButton
-      backgroundColor='rgb(7,94,85)'
+      backgroundColor='white'
+      borderColor='#075e55'
+      borderWidth={3}
       onPress={onPressHandler}
       style={{
         marginVertical: 10,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     width: '65%',
   },
   buttonText: {
-    color: 'white',
+    color: 'rgb(7,94,85)',
   },
 });
 

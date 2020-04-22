@@ -20,6 +20,7 @@ const images = [
   require('./assets/icon/cek-pendaftaran.png'),
   require('./assets/icon/lokasi.png'),
   require('./assets/icon/registrasi.png'),
+  require('./assets/icon/login.png'),
 ];
 
 const strictTheme = { ['text-font-family']: 'calibri' };
