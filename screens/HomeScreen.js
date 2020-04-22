@@ -54,15 +54,24 @@ const HomeScreen = (props) => {
           <View style={styl.title}>
             <Image
               source={require('../assets/images/login-image.png')}
-              style={{ width: width * 0.15, height: width * 0.15 }}
+              style={{ width: width * 0.09, height: width * 0.09 }}
             />
             <Text
-              category='h4'
+              category='h6'
               numberOfLines={2}
               style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
             >
               RS Jakarta Mobile
             </Text>
+          </View>
+          <View style={styl.menu}>
+            <TouchableOpacity onPress={() => {}}>
+              <Icon
+                style={{ width: 32, height: 32 }}
+                fill='yellow'
+                name='bell'
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -113,16 +122,18 @@ const styl = StyleSheet.create({
   },
   header: {
     paddingVertical: 10,
+    paddingHorizontal: 10,
     backgroundColor: 'rgb(7,94,85)',
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '85%',
+    // width: '85%',
   },
   buttonContainer: {
     flex: 1,
@@ -130,8 +141,7 @@ const styl = StyleSheet.create({
     justifyContent: 'center',
   },
   menu: {
-    paddingLeft: 15,
-    width: '15%',
+    // width: '15%',
   },
 });
 
