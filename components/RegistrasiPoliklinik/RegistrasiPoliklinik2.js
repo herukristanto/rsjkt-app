@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, Dimensions } from 'react-native';
 import { Text, Layout, Button } from '@ui-kitten/components';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
@@ -12,6 +12,8 @@ import InputText from '../InputText';
 import InputButton from '../InputButton';
 import { baseAxios } from '../../utils/useAxios';
 
+const { width } = Dimensions.get('screen');
+
 const RegistrasiPoliklinik2 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
 
@@ -22,6 +24,11 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
       if (!connect.isConnected && !connect.isInternetReachable) {
         Alert.alert('Error', 'No Internet Connection', [{ text: 'OK' }]);
         return;
+      }
+
+      // Check if telp change
+      if (values.telp != state.form.telp) {
+        // TODO Send to server that telp is change
       }
 
       dispatch({
@@ -71,8 +78,9 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
 
   const RenderPribadi = () => {
     return (
-      <Layout style={styles.form}>
-        <Text>Jaminan : Pribadi</Text>
+      <Layout style={[styles.form, { flexDirection: 'row' }]}>
+        <Text style={{ width: width * 0.4 }}>Jaminan</Text>
+        <Text style={{ width: width * 0.6 }}>: Pribadi</Text>
       </Layout>
     );
   };
@@ -80,14 +88,21 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
   const RenderPenjamin = () => {
     return (
       <React.Fragment>
-        <Layout style={styles.form}>
-          <Text>Jaminan : {state.form.jaminan}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Jaminan</Text>
+          <Text style={{ width: width * 0.5 }}>
+            : {state.daftarPerusahaan[0].Nm_jaminan.trim()}
+          </Text>
         </Layout>
-        <Layout style={styles.form}>
-          <Text>Perusahaan : {state.form.perusahaan}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Perusahaan</Text>
+          <Text style={{ width: width * 0.5 }}>
+            : {state.form._label_perusahaan}
+          </Text>
         </Layout>
-        <Layout style={styles.form}>
-          <Text>No Jaminan : {state.form.noKartu}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>No Jaminan</Text>
+          <Text style={{ width: width * 0.6 }}>: {state.form.noKartu}</Text>
         </Layout>
       </React.Fragment>
     );
@@ -96,24 +111,35 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
   return (
     <Formik
       initialValues={{
-        telp: '',
+        telp: state.form.telp,
       }}
       onSubmit={handleForm}
       validate={onValidate}
     >
       <React.Fragment>
-        <Text>Registrasi Poliklinik</Text>
-        <Layout style={styles.form}>
-          <Text>Medical Record : {state.form.noRekamMedis}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Medical Record</Text>
+          <Text style={{ width: width * 0.6 }}>
+            : {state.form.noRekamMedis}
+          </Text>
         </Layout>
-        <Layout style={styles.form}>
-          <Text>Tanggal Lahir : {state.form.tanggalLahir}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Tanggal Lahir</Text>
+          <Text style={{ width: width * 0.6 }}>
+            : {state.form.tanggalLahir}
+          </Text>
         </Layout>
-        <Layout style={styles.form}>
-          <Text>Dokter : {state.form._label_dokter}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Dokter</Text>
+          <Text style={{ width: width * 0.5 }}>
+            : {state.form._label_dokter}
+          </Text>
         </Layout>
-        <Layout style={styles.form}>
-          <Text>Poliklinik : {state.daftarJadwal[0].poli}</Text>
+        <Layout style={[styles.form, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Poliklinik</Text>
+          <Text style={{ width: width * 0.5 }}>
+            : {state.daftarJadwal[0].poli}
+          </Text>
         </Layout>
         {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
         <Layout style={styles.form}>

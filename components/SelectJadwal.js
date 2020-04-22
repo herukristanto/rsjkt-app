@@ -39,7 +39,7 @@ const CustomSelect = ({ items, placeholder, name, disabled }) => {
       <Text
         style={{ fontSize: 16, color: item.TidakPraktek ? 'red' : 'black' }}
       >
-        {item.label} {item.TidakPraktek ? '- Tidak Praktek' : ''}
+        {item.label}
       </Text>
     </ListItem>
   );

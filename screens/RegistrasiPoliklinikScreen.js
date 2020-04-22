@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
-import { StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Dimensions,
+} from 'react-native';
 import { Layout } from '@ui-kitten/components';
 
 import RegistrasiPoliklinik1 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik1';
 import RegistrasiPoliklinik2 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik2';
 import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik3';
 import { PoliklinikContextProvider } from '../context/PoliklinikContext';
+import UserName from '../components/UserName';
+import { AppContext } from '../context/AppContext';
+
+const { width } = Dimensions.get('screen');
 
 const RegistrasiPoliklinik = () => {
   const [step, setStep] = useState(1);
+  const { state } = useContext(AppContext);
 
   return (
     <PoliklinikContextProvider>
@@ -19,6 +29,7 @@ const RegistrasiPoliklinik = () => {
             behavior='padding'
             keyboardVerticalOffset={150}
           >
+            <UserName name={state.user.namaPasien} style={styles.username} />
             {step === 1 && <RegistrasiPoliklinik1 setStep={setStep} />}
             {step === 2 && <RegistrasiPoliklinik2 setStep={setStep} />}
             {step === 3 && <RegistrasiPoliklinik3 setStep={setStep} />}
@@ -32,12 +43,17 @@ const RegistrasiPoliklinik = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 10,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  username: {
+    backgroundColor: 'white',
+    width,
+    paddingLeft: 20,
+    marginBottom: 10,
   },
 });
 

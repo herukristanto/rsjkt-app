@@ -39,10 +39,11 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
 
   const handlePenjamin = (value) => {
     const rawPerusahaan = state.daftarPenjamin.map((item) => {
-      if (item.Nm_jaminan.trim() == value) {
+      if (item.Kd_Jaminan.trim() == value) {
         return {
-          label: item.kd_anakjmn.trim(),
-          value: item.NM_AnakJMN.trim(),
+          ...item,
+          value: item.kd_anakjmn.trim(),
+          label: item.NM_AnakJMN.trim(),
         };
       }
       return;
@@ -55,10 +56,19 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
   };
 
   const handleForm = (values) => {
+    let namaPerusahaan = '';
+    if (values.status === 1) {
+      const perusahaan = state.daftarPerusahaan.find(
+        (perusahaan) => values.perusahaan == perusahaan.value
+      );
+      namaPerusahaan = perusahaan.NM_AnakJMN.trim();
+    }
+
     dispatch({
       type: ADD_TO_FORM,
       data: {
         ...values,
+        _label_perusahaan: namaPerusahaan,
         noRekamMedis: state.form.noRekamMedis,
         tanggalLahir: state.form.tanggalLahir,
         noKartu: state.form.noKartu,
@@ -133,13 +143,16 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     <Formik
       initialValues={{
         dokter: state.form.dokter,
+        _label_dokter: state.form._label_dokter,
         poliklinik: state.form.poliklinik,
+        _label_poliklinik: state.form._label_poliklinik,
         tanggal: state.form.tanggal,
+        _label_tanggal: state.form._label_tanggal,
         status: state.form.status,
         jaminan: state.form.jaminan,
+        _label_jaminan: state.form._label_jaminan,
         perusahaan: state.form.perusahaan,
-        _label_dokter: state.form._label_dokter,
-        _label_tanggal: state.form._label_tanggal,
+        _label_perusahaan: state.form._label_perusahaan,
       }}
       onSubmit={handleForm}
       enableReinitialize
@@ -147,7 +160,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     >
       {(props) => (
         <React.Fragment>
-          <Text category='h4'>Registrasi Poliklinik</Text>
           <Layout style={styles.form}>
             <InputText
               name='noRekamMedis'

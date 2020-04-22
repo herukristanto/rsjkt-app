@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
-import { Platform, SafeAreaView, AsyncStorage } from 'react-native';
-import { Layout, Button } from '@ui-kitten/components';
+import {
+  Platform,
+  SafeAreaView,
+  AsyncStorage,
+  TouchableOpacity,
+} from 'react-native';
+import { Layout, Button, Icon } from '@ui-kitten/components';
 import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -33,16 +38,34 @@ const HomeStackNavigator = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <HomeStack.Screen name='Login' component={LoginScreen} />
+      <HomeStack.Screen
+        name='Login'
+        component={LoginScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
       <HomeStack.Screen name='Dokter' component={DokterScreen} />
       <HomeStack.Screen name='Booking' component={BookingScreen} />
       <HomeStack.Screen name='Register' component={RegisterScreen} />
       <HomeStack.Screen
         name='RegistrasiPoliklinik'
         component={RegistrasiPoliklinik}
-        options={({ navigation }) => ({
-          headerTitle: 'Registrasi Poliklinik',
-        })}
+        options={({ navigation, route }) => {
+          return {
+            headerTitle: route.params
+              ? route.params.title
+              : 'Registrasi Poliklinik',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 32, height: 32 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: 'center',
+          };
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -59,11 +82,6 @@ const HomeDrawerNavigator = () => {
     navigation.closeDrawer();
   };
 
-  const handleLogin = (props) => {
-    const { navigation } = props;
-    navigation.navigate('Login');
-  };
-
   return (
     <HomeDrawer.Navigator
       drawerContent={(props) => {
@@ -77,11 +95,6 @@ const HomeDrawerNavigator = () => {
               {state.isLogin && (
                 <Button status='success' onPress={() => handleLogout(props)}>
                   Logout
-                </Button>
-              )}
-              {!state.isLogin && (
-                <Button status='success' onPress={() => handleLogin(props)}>
-                  Login
                 </Button>
               )}
             </SafeAreaView>

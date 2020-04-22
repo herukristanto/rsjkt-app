@@ -28,6 +28,7 @@ const RegistrasiPoliklinik3 = () => {
   const [qrBase64, setQrBase64] = useState();
 
   useEffect(() => {
+    navigation.setParams({ title: 'QR CODE' });
     async function saveQrCode() {
       qrcode.current.toDataURL(async (data) => {
         const base64Icon = `data:image/png;base64,${data}`;
@@ -117,40 +118,44 @@ const RegistrasiPoliklinik3 = () => {
 
   return (
     <React.Fragment>
-      <Layout style={styles.form}>
-        <Text category='h5' style={{ textDecorationLine: 'underline' }}>
-          {stateApp.user.namaPasien}
+      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+        <Text style={{ width: width * 0.4 }}>Medical Record</Text>
+        <Text style={{ width: width * 0.5 }}>: {stateApp.user.nomor_cm}</Text>
+      </Layout>
+      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+        <Text style={{ width: width * 0.4 }}>Poli Tujuan</Text>
+        <Text style={{ width: width * 0.4 }}>
+          : {state.daftarJadwal[0].poli}
         </Text>
       </Layout>
-      <Layout style={styles.desc}>
-        <Layout>
-          <Text>Medical Record : {stateApp.user.nomor_cm}</Text>
-        </Layout>
-        <Layout>
-          <Text>Poli Tujuan : {state.daftarJadwal[0].poli}</Text>
-        </Layout>
-        <Layout>
-          <Text>
-            Waktu Booking :{' '}
-            {`${state.form.tanggal.hari}, ${state.form.tanggal.tanggal}`}
-          </Text>
-        </Layout>
-        <Layout>
-          <Text>No Antrian : A301</Text>
-        </Layout>
+      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+        <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
+        <Text style={{ width: width * 0.5 }}>
+          {`: ${state.form.tanggal.hari}, ${state.form.tanggal.tanggal}`}
+        </Text>
+      </Layout>
+      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+        <Text style={{ width: width * 0.4 }}>No Antrian</Text>
+        <Text style={{ width: width * 0.5 }}>: A301</Text>
       </Layout>
       <Layout style={styles.qrCode}>
         <QRCode
           value='https://github.com/granitebps'
-          size={width * 0.5}
+          size={width * 0.65}
           getRef={qrcode}
         />
       </Layout>
       <Layout style={styles.form}>
-        <Text>Kode Booking</Text>
+        <Text style={{ fontWeight: 'bold' }} category='h6'>
+          Kode Booking
+        </Text>
       </Layout>
       <Layout style={styles.form}>
-        <Text>Z5745Z</Text>
+        <Layout style={styles.bookingContainer}>
+          <Text style={{ fontWeight: 'bold' }} category='h6'>
+            Z5745Z
+          </Text>
+        </Layout>
       </Layout>
       <Layout style={styles.icons}>
         <TouchableOpacity onPress={handleHome}>
@@ -169,14 +174,13 @@ const RegistrasiPoliklinik3 = () => {
 
 const styles = StyleSheet.create({
   form: {
-    width: '90%',
+    width: '70%',
     marginVertical: 2,
     alignItems: 'center',
   },
   desc: {
-    flex: 1,
     marginVertical: 2,
-    width: '60%',
+    width: '70%',
   },
   label: {
     color: '#778899',
@@ -191,11 +195,21 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20,
+    marginTop: 25,
   },
   icon: {
     width: 32,
     height: 32,
+  },
+  bookingContainer: {
+    backgroundColor: 'white',
+    width: '100%',
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#778899',
+    borderWidth: 2,
+    borderRadius: 5,
   },
 });
 

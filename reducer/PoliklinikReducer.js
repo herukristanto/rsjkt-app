@@ -17,6 +17,7 @@ export const initialState = {
     status: 0,
     jaminan: '',
     perusahaan: '',
+    _label_perusahaan: '',
     noKartu: '',
     telp: '',
   },

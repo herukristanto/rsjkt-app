@@ -35,7 +35,7 @@ export const PoliklinikContextProvider = ({ children }) => {
           key: 'rsjkt4231',
         },
       });
-      const penjaminUnique = getUnique(dataPenjamin, 'Nm_jaminan');
+      const penjaminUnique = getUnique(dataPenjamin, 'Kd_Jaminan');
       const penjaminData = penjaminUnique.map((penjamin) => {
         return {
           value: penjamin.Kd_Jaminan.trim(),
@@ -68,6 +68,8 @@ export const PoliklinikContextProvider = ({ children }) => {
           noRekamMedis: `${stateApp.user.nomor_cm}`,
           tanggalLahir: moment(stateApp.user.Tgl_lahir).format('DD MMMM YYYY'),
           noKartu: stateApp.user.nm_jaminan.trim(),
+          telp: '081319144618',
+          // telp: stateApp.user.Hand_phone.trim(),
         },
       });
       return;

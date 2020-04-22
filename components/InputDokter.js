@@ -135,7 +135,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
                   <Text
                     style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
                   >
-                    {jadwal.hari} {jadwal.TidakPraktek ? '(Tidak Praktek)' : ''}
+                    {jadwal.hari}
                   </Text>
                 </View>
                 <View style={{ width: '40%', paddingVertical: 5 }}>

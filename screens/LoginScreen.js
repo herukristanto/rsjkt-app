@@ -84,6 +84,7 @@ const LoginScreen = () => {
             namaPasien: data.namaPasien,
             Tgl_lahir: data.Tgl_lahir,
             nm_jaminan: data.nm_jaminan,
+            Hand_phone: data.Hand_phone,
             role: 'pasien',
           };
 
