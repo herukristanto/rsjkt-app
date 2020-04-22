@@ -5,7 +5,6 @@ import {
   Image,
   View,
   Alert,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import { Text, Layout, Icon } from '@ui-kitten/components';
@@ -67,7 +66,7 @@ const HomeScreen = (props) => {
           </View>
         </View>
 
-        <Slider />
+        <Slider sliders={state.slider} />
 
         {state.isLogin && (
           <Text style={{ textAlign: 'center', marginTop: 5 }}>
@@ -75,32 +74,30 @@ const HomeScreen = (props) => {
           </Text>
         )}
 
-        <ScrollView>
-          <View style={styl.buttonContainer}>
-            {!state.isLogin && (
-              <ButtonHome
-                onPressHandler={() => navigation.navigate('Login')}
-                label='Registrasi Akun'
-                avatar={require('../assets/icon/registrasi-akun.png')}
-              />
-            )}
+        <View style={styl.buttonContainer}>
+          {!state.isLogin && (
             <ButtonHome
-              onPressHandler={handlePoli}
-              label='Registrasi Poli'
-              avatar={require('../assets/icon/registrasi-poli.png')}
+              onPressHandler={() => navigation.navigate('Login')}
+              label='Registrasi Akun'
+              avatar={require('../assets/icon/registrasi-akun.png')}
             />
-            <ButtonHome
-              onPressHandler={() => navigation.navigate('Booking')}
-              label='Cek Booking'
-              avatar={require('../assets/icon/cek-booking.png')}
-            />
-            <ButtonHome
-              onPressHandler={() => {}}
-              label='Lokasi'
-              avatar={require('../assets/icon/lokasi.png')}
-            />
-          </View>
-        </ScrollView>
+          )}
+          <ButtonHome
+            onPressHandler={handlePoli}
+            label='Registrasi Poli'
+            avatar={require('../assets/icon/registrasi-poli.png')}
+          />
+          <ButtonHome
+            onPressHandler={() => navigation.navigate('Booking')}
+            label='Cek Booking'
+            avatar={require('../assets/icon/cek-booking.png')}
+          />
+          <ButtonHome
+            onPressHandler={() => {}}
+            label='Lokasi'
+            avatar={require('../assets/icon/lokasi.png')}
+          />
+        </View>
 
         <RunningText text={state.scrollText} />
       </Layout>
@@ -111,7 +108,6 @@ const HomeScreen = (props) => {
 const styl = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'column',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf2f2',
   },
@@ -129,7 +125,9 @@ const styl = StyleSheet.create({
     width: '85%',
   },
   buttonContainer: {
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   menu: {
     paddingLeft: 15,

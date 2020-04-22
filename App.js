@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ApplicationProvider,
-  IconRegistry,
-  Layout,
-} from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Updates from 'expo-updates';
@@ -20,9 +16,6 @@ import { AppContextProvider } from './context/AppContext';
 
 const images = [
   require('./assets/images/login-image.png'),
-  require('./assets/images/rs1.jpg'),
-  require('./assets/images/rs2.png'),
-  require('./assets/images/rs3.jpg'),
 
   require('./assets/icon/cek-booking.png'),
   require('./assets/icon/login-dokter.png'),

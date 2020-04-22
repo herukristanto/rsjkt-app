@@ -1,15 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { FlatList, Image, Dimensions } from 'react-native';
+import { FlatList, Image, Dimensions, View } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 
-const images = [
-  require('../assets/images/rs1.jpg'),
-  require('../assets/images/rs2.png'),
-  require('../assets/images/rs3.jpg'),
-];
-
-const Slider = () => {
+const Slider = ({ sliders }) => {
   const [slideIndex, setSlideIndex] = useState(0);
   const slides = useRef(0);
 
@@ -27,7 +21,7 @@ const Slider = () => {
         animated: true,
       });
       setSlideIndex(nextIndex);
-    }, 10000);
+    }, 3000);
 
     return () => {
       clearInterval(slideTimer);
@@ -35,27 +29,30 @@ const Slider = () => {
   }, [slideIndex]);
 
   return (
-    <FlatList
-      contentContainerStyle={{
-        overflow: 'hidden',
-      }}
-      ref={slides}
-      horizontal
-      pagingEnabled
-      scrollEnabled
-      showsHorizontalScrollIndicator={false}
-      data={images}
-      keyExtractor={(item, index) => `${item}-${index}`}
-      renderItem={({ item }) => (
-        <Image
-          source={item}
-          resizeMode='stretch'
-          style={{
-            width,
-          }}
-        />
-      )}
-    />
+    <View style={{ flex: 0.5 }}>
+      <FlatList
+        contentContainerStyle={{
+          overflow: 'hidden',
+        }}
+        ref={slides}
+        horizontal
+        pagingEnabled
+        scrollEnabled
+        showsHorizontalScrollIndicator={false}
+        data={sliders}
+        keyExtractor={(item, index) => `${item}-${index}`}
+        renderItem={({ item }) => (
+          <Image
+            source={{ uri: item.url }}
+            resizeMode='stretch'
+            style={{
+              width,
+            }}
+            width={width}
+          />
+        )}
+      />
+    </View>
   );
 };
 
