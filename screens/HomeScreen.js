@@ -43,13 +43,15 @@ const HomeScreen = (props) => {
       <Layout style={styl.screen}>
         <View style={styl.header}>
           <View style={styl.menu}>
-            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Icon
-                style={{ width: 32, height: 32 }}
-                fill='white'
-                name='menu'
-              />
-            </TouchableOpacity>
+            {state.isLogin && (
+              <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                <Icon
+                  style={{ width: 32, height: 32 }}
+                  fill='white'
+                  name='menu'
+                />
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styl.title}>
             <Image
