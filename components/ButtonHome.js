@@ -12,17 +12,15 @@ const ButtonHome = ({ onPressHandler, label, avatar }) => {
       borderColor='#075e55'
       borderWidth={3}
       onPress={onPressHandler}
-      style={{
-        marginVertical: 10,
-      }}
-      width={width * 0.65}
+      width={width * 0.9}
+      height={70}
     >
       <View style={styles.card}>
         <View style={styles.iconButton}>
-          <Avatar source={avatar} size='medium' />
+          <Avatar source={avatar} size='giant' />
         </View>
         <View style={styles.buttonTextContainer}>
-          <Text style={styles.buttonText} category='h6'>
+          <Text style={styles.buttonText} category='h5'>
             {label}
           </Text>
         </View>

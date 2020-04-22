@@ -15,6 +15,7 @@ import { AppContext } from '../context/AppContext';
 import DokterScreen from './DokterScreen';
 import ButtonHome from '../components/ButtonHome';
 import Slider from '../components/Slider';
+import UserName from '../components/UserName';
 
 const { width } = Dimensions.get('screen');
 
@@ -80,21 +81,26 @@ const HomeScreen = (props) => {
         <Slider />
 
         {state.isLogin && (
-          <Text style={{ textAlign: 'center', marginTop: 5 }}>
-            Selamat Datang, {state.user.namaPasien}
-          </Text>
+          <Layout style={{ marginLeft: 15 }}>
+            <UserName name={state.user.namaPasien} />
+          </Layout>
         )}
 
         <View style={styl.buttonContainer}>
           <ButtonHome
             onPressHandler={handlePoli}
-            label='Registrasi Poli'
+            label='Registrasi'
             avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
-            onPressHandler={() => navigation.navigate('Booking')}
-            label='Cek Booking'
+            onPressHandler={() => {}}
+            label='Cek Pendaftaran'
             avatar={require('../assets/icon/cek-pendaftaran.png')}
+          />
+          <ButtonHome
+            onPressHandler={() => {}}
+            label='Feedback'
+            avatar={require('../assets/icon/feedback.png')}
           />
           <ButtonHome
             onPressHandler={() => {}}
