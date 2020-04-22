@@ -13,6 +13,7 @@ import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinik/Registrasi
 import { PoliklinikContextProvider } from '../context/PoliklinikContext';
 import UserName from '../components/UserName';
 import { AppContext } from '../context/AppContext';
+import FooterPoli from '../components/FooterPoli';
 
 const { width } = Dimensions.get('screen');
 
@@ -35,6 +36,7 @@ const RegistrasiPoliklinik = () => {
             {step === 3 && <RegistrasiPoliklinik3 setStep={setStep} />}
           </KeyboardAvoidingView>
         </ScrollView>
+        <FooterPoli />
       </Layout>
     </PoliklinikContextProvider>
   );
