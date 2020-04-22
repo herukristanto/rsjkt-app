@@ -1,16 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FlatList, Image, Dimensions, View } from 'react-native';
+import { Spinner } from '@ui-kitten/components';
 
 const { width } = Dimensions.get('screen');
 
 const Slider = ({ sliders }) => {
   const [slideIndex, setSlideIndex] = useState(0);
-  const slides = useRef(0);
+  const slides = useRef();
 
   useEffect(() => {
+    const sliderLength = sliders.length;
     const slideTimer = setInterval(() => {
       let nextIndex = slideIndex;
-      if (slideIndex < 2) {
+      if (slideIndex < sliderLength - 1) {
         nextIndex = nextIndex + 1;
       } else {
         nextIndex = 0;
@@ -26,7 +28,17 @@ const Slider = ({ sliders }) => {
     return () => {
       clearInterval(slideTimer);
     };
-  }, [slideIndex]);
+  }, [slideIndex, sliders]);
+
+  if (sliders.length === 0) {
+    return (
+      <View
+        style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Spinner status='success' />
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 0.5 }}>
