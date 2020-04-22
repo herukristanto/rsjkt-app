@@ -126,7 +126,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
   };
 
   if (state.isLoading) {
-    return <Spinner />;
+    return <Spinner status='success' />;
   }
 
   return (

@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { Platform, SafeAreaView, AsyncStorage } from 'react-native';
-import { Layout, Button, Text } from '@ui-kitten/components';
+import { Layout, Button } from '@ui-kitten/components';
 import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
-import LoginDokterScreen from '../screens/LoginDokterScreen';
 import DokterScreen from '../screens/DokterScreen';
 import BookingScreen from '../screens/BookingScreen';
 import { AppContext } from '../context/AppContext';
@@ -37,13 +36,6 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen name='Login' component={LoginScreen} />
       <HomeStack.Screen name='Dokter' component={DokterScreen} />
       <HomeStack.Screen name='Booking' component={BookingScreen} />
-      <HomeStack.Screen
-        name='LoginDokter'
-        component={LoginDokterScreen}
-        options={({ navigation }) => ({
-          headerTitle: 'Login Dokter',
-        })}
-      />
       <HomeStack.Screen name='Register' component={RegisterScreen} />
       <HomeStack.Screen
         name='RegistrasiPoliklinik'

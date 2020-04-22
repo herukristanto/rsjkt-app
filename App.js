@@ -17,13 +17,9 @@ import { AppContextProvider } from './context/AppContext';
 const images = [
   require('./assets/images/login-image.png'),
 
-  require('./assets/icon/cek-booking.png'),
-  require('./assets/icon/login-dokter.png'),
-  require('./assets/icon/login-pasien.png'),
+  require('./assets/icon/cek-pendaftaran.png'),
   require('./assets/icon/lokasi.png'),
-  require('./assets/icon/registrasi-akun.png'),
-  require('./assets/icon/registrasi-poli.png'),
-  require('./assets/icon/logout.png'),
+  require('./assets/icon/registrasi.png'),
 ];
 
 const strictTheme = { ['text-font-family']: 'calibri' };

@@ -75,22 +75,22 @@ const HomeScreen = (props) => {
         )}
 
         <View style={styl.buttonContainer}>
-          {!state.isLogin && (
+          {/* {!state.isLogin && (
             <ButtonHome
               onPressHandler={() => navigation.navigate('Login')}
               label='Registrasi Akun'
-              avatar={require('../assets/icon/registrasi-akun.png')}
+              avatar={require('../assets/icon/registrasi.png')}
             />
-          )}
+          )} */}
           <ButtonHome
             onPressHandler={handlePoli}
             label='Registrasi Poli'
-            avatar={require('../assets/icon/registrasi-poli.png')}
+            avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
-            onPressHandler={() => navigation.navigate('Booking')}
+            onPressHandler={() => {}}
             label='Cek Booking'
-            avatar={require('../assets/icon/cek-booking.png')}
+            avatar={require('../assets/icon/cek-pendaftaran.png')}
           />
           <ButtonHome
             onPressHandler={() => {}}
