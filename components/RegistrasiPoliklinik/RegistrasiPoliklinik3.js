@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
+import * as Sharing from 'expo-sharing';
 
 import { AppContext } from '../../context/AppContext';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
@@ -45,6 +46,27 @@ const RegistrasiPoliklinik3 = () => {
 
   const handleHome = () => {
     navigation.popToTop();
+  };
+
+  const handleShare = async () => {
+    try {
+      const share = await Sharing.isAvailableAsync();
+      if (share) {
+        const file = `${
+          FileSystem.cacheDirectory
+        }qrcode/qrcode-${moment().format('YYYY-MM-DD')}.png`;
+
+        await FileSystem.writeAsStringAsync(file, qrBase64, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        await Sharing.shareAsync(file);
+      } else {
+        Alert.alert('Error', 'Failed to share qr code', [{ text: 'OK' }]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to share qr code', [{ text: 'OK' }]);
+    }
   };
 
   const handleSave = async () => {
@@ -130,7 +152,7 @@ const RegistrasiPoliklinik3 = () => {
         <TouchableOpacity onPress={handleHome}>
           <Icon style={styles.icon} name='home-outline' />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleShare}>
           <Icon style={styles.icon} name='share' />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSave}>
