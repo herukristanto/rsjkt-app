@@ -66,7 +66,7 @@ const HomeScreen = (props) => {
           </View>
         </View>
 
-        <Slider sliders={state.slider} />
+        <Slider />
 
         {state.isLogin && (
           <Text style={{ textAlign: 'center', marginTop: 5 }}>
@@ -99,7 +99,7 @@ const HomeScreen = (props) => {
           />
         </View>
 
-        <RunningText text={state.scrollText} />
+        <RunningText />
       </Layout>
     </>
   );

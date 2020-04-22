@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import AutoScrolling from 'react-native-auto-scrolling';
 
-const RunningText = ({ text }) => {
+import { baseAxios } from '../utils/useAxios';
+
+const RunningText = () => {
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    const loadText = async () => {
+      try {
+        const { data: dataText } = await baseAxios.get('/get', {
+          params: {
+            p: 'runtext',
+          },
+        });
+        setText(dataText[0].runtext);
+      } catch (error) {
+        setText('Error');
+      }
+    };
+    loadText();
+  }, []);
+
   return (
     <View style={styles.container}>
       <AutoScrolling style={styles.scrolling2} duration={6000}>
@@ -28,6 +48,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 10,
+    fontFamily: 'calibri',
   },
 });
 
