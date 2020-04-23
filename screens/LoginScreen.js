@@ -76,10 +76,12 @@ const LoginScreen = () => {
           const tgl = moment(data.Tgl_lahir).format('DD/MM/YYYY');
 
           if (data === '') {
+            setLoading(false);
             Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
             return;
           }
           if (tgl != values.tanggalLahir) {
+            setLoading(false);
             Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
             return;
           }
