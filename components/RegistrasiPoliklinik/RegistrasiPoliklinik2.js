@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
 import cuid from 'cuid';
+import base64 from 'react-native-base64';
 
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
@@ -31,15 +32,26 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         // TODO Send to server that telp is change
       }
 
+      // QR Code String Encoding (Use base64 Hash)
+      const string = `${state.form.namaPasien}:${moment(
+        state.form.tanggalLahir
+      ).format('YYYY-MM-DD')}:${state.form._label_dokter}:${
+        state.form.tanggal.date
+      }`;
+      const encode = base64.encode(string);
+      // TODO Send to antrian
+
       dispatch({
         type: ADD_TO_FORM,
         data: {
           ...values,
+          qrCode: encode,
         },
       });
 
       const uid = cuid();
       const request = {
+        key: 'rsjkt4231',
         no_reg: uid,
         tgl_reg: moment().format('DD/MM/YYYY'),
         nomor_cm: state.form.noRekamMedis,
@@ -55,8 +67,11 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         hand_phone: values.telp,
       };
 
+      // Nama:tanggal lahir:nama dokter:tanggal
       // TODO Do Something with response data
       // const { data } = await baseAxios.post('/regpoli', request);
+
+      // return;
 
       Alert.alert('Berhasil', 'Pendaftaran Berhasil Dilakukan', [
         { text: 'OK', onPress: () => setStep((prevStep) => prevStep + 1) },
@@ -126,7 +141,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         <Layout style={[styles.form, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>Tanggal Lahir</Text>
           <Text style={{ width: width * 0.6 }}>
-            : {state.form.tanggalLahir}
+            : {moment(state.form.tanggalLahir).format('DD MMMM YYYY')}
           </Text>
         </Layout>
         <Layout style={[styles.form, { flexDirection: 'row' }]}>

@@ -66,7 +66,7 @@ export const PoliklinikContextProvider = ({ children }) => {
         user: {
           namaPasien: stateApp.user.namaPasien,
           noRekamMedis: `${stateApp.user.nomor_cm}`,
-          tanggalLahir: moment(stateApp.user.Tgl_lahir).format('DD MMMM YYYY'),
+          tanggalLahir: moment(stateApp.user.Tgl_lahir),
           noKartu: stateApp.user.nm_jaminan.trim(),
           telp: stateApp.user.Hand_phone.trim(),
         },

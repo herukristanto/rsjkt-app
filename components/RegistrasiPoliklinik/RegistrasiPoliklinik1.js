@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
+import moment from 'moment';
 
 import InputText from '../InputText';
 import InputSelect from '../InputSelect';
@@ -174,7 +175,9 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
             <InputText
               name='tanggalLahir'
               label='Tanggal Lahir'
-              placeholder={state.form.tanggalLahir}
+              placeholder={moment(state.form.tanggalLahir).format(
+                'DD MMMM YYYY'
+              )}
               placeholderTextColor='black'
               disabled
               style={{ backgroundColor: '#FEFDCB' }}

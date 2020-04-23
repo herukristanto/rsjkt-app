@@ -14,6 +14,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
 import * as Sharing from 'expo-sharing';
+import base64 from 'react-native-base64';
 
 import { AppContext } from '../../context/AppContext';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
@@ -26,6 +27,11 @@ const RegistrasiPoliklinik3 = () => {
   const { state } = useContext(PoliklinikContext);
   const qrcode = useRef();
   const [qrBase64, setQrBase64] = useState();
+
+  // Testing Only
+  // const encode = base64.encode(
+  //   'ATET AKHMADSARI:1979-05-06:Vika Novia Zamri, Drg, Sp Ort.:2020-04-24'
+  // );
 
   useEffect(() => {
     navigation.setParams({ title: 'QR CODE' });
@@ -140,7 +146,8 @@ const RegistrasiPoliklinik3 = () => {
       </Layout>
       <Layout style={styles.qrCode}>
         <QRCode
-          value='Adam Ramadhan:19930414:Joko Widodo:20200412'
+          // value={encode}
+          value={state.form.qrCode}
           size={width * 0.65}
           getRef={qrcode}
         />

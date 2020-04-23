@@ -20,6 +20,7 @@ export const initialState = {
     _label_perusahaan: '',
     noKartu: '',
     telp: '',
+    qrCode: '',
   },
   daftarPraktek: [],
   daftarPoli: [],
