@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 import {
   Input,
@@ -10,6 +10,9 @@ import {
 } from '@ui-kitten/components';
 import { useFormikContext, getIn } from 'formik';
 
+import { PoliklinikContext } from '../context/PoliklinikContext';
+import { useDidMountEffect } from '../utils/helpers';
+
 /**
  *  @description Custom Select for Jadwal Kunjungan
  *  @param items (List of item => must have : label and value)
@@ -20,9 +23,17 @@ import { useFormikContext, getIn } from 'formik';
 const CustomSelect = ({ items, placeholder, name, disabled }) => {
   const [visible, setVisible] = useState(false);
   const { values, setFieldValue, errors, touched } = useFormikContext();
+  const { state } = useContext(PoliklinikContext);
 
   const error = getIn(errors, name);
   const touch = getIn(touched, name);
+
+  const { daftarDokter, daftarJadwal } = state;
+  // Empty dokter when poli change
+  useDidMountEffect(() => {
+    setFieldValue(name, '');
+    setFieldValue(`_label_${name}`, '');
+  }, [daftarDokter, daftarJadwal]);
 
   const onSelect = (value) => {
     setFieldValue(`_label_${name}`, value.label);

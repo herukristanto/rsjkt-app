@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import {
   Input,
@@ -17,7 +17,7 @@ import 'moment/locale/id';
 
 import { PoliklinikContext } from '../context/PoliklinikContext';
 import { GET_DAFTAR_JADWAL } from '../reducer/PoliklinikReducer';
-import { getUnique } from '../utils/helpers';
+import { getUnique, useDidMountEffect } from '../utils/helpers';
 
 const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);
@@ -28,6 +28,13 @@ const InputDokter = ({ name, label, items, ...props }) => {
 
   const error = getIn(errors, name);
   const touch = getIn(touched, name);
+
+  const { daftarDokter } = state;
+  // Empty dokter when poli change
+  useDidMountEffect(() => {
+    setFieldValue(name, '');
+    setFieldValue(`_label_${name}`, '');
+  }, [daftarDokter]);
 
   const getJadwalFromDokter = (dokter) => {
     const rawJadwal = state.daftarDokter.map((item) => {

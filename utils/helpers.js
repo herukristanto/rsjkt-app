@@ -1,3 +1,4 @@
+import React, { useRef, useEffect } from 'react';
 import moment from 'moment';
 
 export const getUnique = (arr, comp) => {
@@ -13,6 +14,15 @@ export const getUnique = (arr, comp) => {
     .map((e) => filteredArr[e]);
 
   return unique;
+};
+
+export const useDidMountEffect = (func, deps) => {
+  const didMount = useRef(false);
+
+  useEffect(() => {
+    if (didMount.current) func();
+    else didMount.current = true;
+  }, deps);
 };
 
 // export const getDateFromDay = (day) => {
