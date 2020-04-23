@@ -5,14 +5,17 @@ import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 
 import { LOGIN } from '../reducer/AppReducer';
+import LoadingOverlay from './LoadingOverlay';
 
 const { width } = Dimensions.get('screen');
 
 const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const handlePassword = async () => {
+    setLoading(true);
     if (dataDokter.Password === password) {
       const userData = {
         idDokter: dataDokter.PERSONILID,
@@ -27,6 +30,7 @@ const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
 
       navigation.popToTop();
     } else {
+      setLoading(false);
       Alert.alert('Peringatan', 'Password Anda Salah', [{ text: 'OK' }]);
     }
   };
@@ -66,6 +70,7 @@ const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
           Submit
         </Button>
       </Layout>
+      {loading && <LoadingOverlay />}
     </Modal>
   );
 };

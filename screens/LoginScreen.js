@@ -20,6 +20,7 @@ import { AppContext } from '../context/AppContext';
 import { LOGIN } from '../reducer/AppReducer';
 import InputDateMask from '../components/InputDateMask';
 import ModalDokter from '../components/ModalDokter';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const { width } = Dimensions.get('screen');
 
@@ -28,6 +29,7 @@ const LoginScreen = () => {
   const { dispatch } = useContext(AppContext);
   const [dataDokter, setDataDokter] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleForm = async (values) => {
     try {
@@ -37,6 +39,8 @@ const LoginScreen = () => {
         Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
         return;
       }
+
+      setLoading(true);
 
       // Check apakah values.noRekamMedis ada di kode dokter
       try {
@@ -58,6 +62,7 @@ const LoginScreen = () => {
           ...dataDokter,
           poli: dokterLogin.Poli_nm.trim(),
         };
+        setLoading(false);
         setDataDokter(dataLoginDokter);
         setShowModal(true);
       } catch (error) {
@@ -168,6 +173,7 @@ const LoginScreen = () => {
             </Layout>
           </Layout>
         </KeyboardAvoidingView>
+        {loading && <LoadingOverlay />}
       </Layout>
     </Formik>
   );
