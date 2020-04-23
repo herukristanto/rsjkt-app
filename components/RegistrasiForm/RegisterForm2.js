@@ -6,6 +6,7 @@ import { ADD_FORM } from '../../reducer/RegisterReducer';
 import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
+import InputSelect from '../InputSelect';
 
 const RegisterForm2 = (props) => {
   const { setStep } = props;
@@ -28,6 +29,9 @@ const RegisterForm2 = (props) => {
   const onValidate = (values) => {
     const errors = {};
 
+    if (!values.kewarganegaraan) {
+      errors.kewarganegaraan = 'Kewarganegaraan Diisi';
+    }
     if (!values.alamat) {
       errors.alamat = 'Alamat Wajib Diisi';
     }
@@ -37,17 +41,8 @@ const RegisterForm2 = (props) => {
     if (!values.rw) {
       errors.rw = 'RW Wajib Diisi';
     }
-    if (!values.kota) {
-      errors.kota = 'Kota Wajib Diisi';
-    }
-    if (!values.kodePos) {
-      errors.kodePos = 'Kode Pos Wajib Diisi';
-    }
     if (!values.telp) {
       errors.telp = 'No Telp Wajib Diisi';
-    }
-    if (!values.telp2) {
-      errors.telp2 = 'No Telp 2 Wajib Diisi';
     }
     if (!values.email) {
       errors.email = 'Email Wajib Diisi';
@@ -66,6 +61,17 @@ const RegisterForm2 = (props) => {
     >
       <React.Fragment>
         <Text category='h4'>Alamat</Text>
+        <Layout style={styles.form}>
+          <Text style={styles.label}>Kewarganegaraan</Text>
+          <InputSelect
+            placeholder='Pilih Kewarganegaraan'
+            items={[
+              { label: 'WNI', value: 'wni' },
+              { label: 'WNA', value: 'wna' },
+            ]}
+            name='kewarganegaraan'
+          />
+        </Layout>
         <Layout style={styles.form}>
           <InputText
             name='alamat'
@@ -96,29 +102,10 @@ const RegisterForm2 = (props) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText name='kota' label='Kota' placeholder='Masukkan Kota' />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='kodePos'
-            label='Kode Pos'
-            placeholder='Masukkan Kode Pos'
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
           <InputText
             name='telp'
             label='Telp'
-            placeholder='Masukkan Telp (+628*******)'
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='telp2'
-            label='Telp 2'
-            placeholder='Masukkan Telp 2 (+628*******)'
+            placeholder='Masukkan Telp (08*******)'
             keyboardType='number-pad'
           />
         </Layout>

@@ -7,6 +7,7 @@ import { ADD_FORM } from '../../reducer/RegisterReducer';
 import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
+import InputSelect from '../InputSelect';
 
 const RegisterForm3 = (props) => {
   const { setStep } = props;
@@ -29,35 +30,8 @@ const RegisterForm3 = (props) => {
   const onValidate = (values) => {
     const errors = {};
 
-    if (!values.namaKeluarga) {
-      errors.namaKeluarga = 'Nama Wajib Diisi';
-    }
-    if (!values.hubunganKeluarga) {
-      errors.hubunganKeluarga = 'Hubungan Wajib Diisi';
-    }
-    if (!values.alamatKeluarga) {
-      errors.alamatKeluarga = 'Alamat Wajib Diisi';
-    }
-    if (!values.rtKeluarga) {
-      errors.rtKeluarga = 'RT Wajib Diisi';
-    }
-    if (!values.rwKeluarga) {
-      errors.rwKeluarga = 'RW Wajib Diisi';
-    }
-    if (!values.kotaKeluarga) {
-      errors.kotaKeluarga = 'Kota Wajib Diisi';
-    }
-    if (!values.kodePosKeluarga) {
-      errors.kodePosKeluarga = 'Kode Pos Wajib Diisi';
-    }
-    if (!values.telpKeluarga) {
-      errors.telpKeluarga = 'No Telp Wajib Diisi';
-    }
-    if (!values.telp2Keluarga) {
-      errors.telp2Keluarga = 'No Telp 2 Wajib Diisi';
-    }
-    if (!values.emailKeluarga) {
-      errors.emailKeluarga = 'Email Wajib Diisi';
+    if (!values.kawin) {
+      errors.kawin = 'Status Perkawinan Wajib Diisi';
     }
     if (!values.namaAyah) {
       errors.namaAyah = 'Nama Ayah Wajib Diisi';
@@ -68,6 +42,12 @@ const RegisterForm3 = (props) => {
     if (!values.namaIbu) {
       errors.namaIbu = 'Nama Ibu Wajib Diisi';
     }
+    // if (!values.namaSutri) {
+    //   errors.namaSutri = 'Nama Suami/Istri Wajib Diisi';
+    // }
+    // if (!values.pekerjaanSutri) {
+    //   errors.pekerjaanSutri = 'Pekerjaan Suami/Istri Wajib Diisi';
+    // }
 
     return errors;
   };
@@ -81,87 +61,18 @@ const RegisterForm3 = (props) => {
       validate={onValidate}
     >
       <React.Fragment>
-        <Text category='h4'>Keluarga Terdekat</Text>
+        <Text category='h4'>Keluarga</Text>
         <Layout style={styles.form}>
-          <InputText
-            name='namaKeluarga'
-            label='Nama'
-            placeholder='Masukkan Nama'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='hubunganKeluarga'
-            label='Hubungan'
-            placeholder='Masukkan Hubungan'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='alamatKeluarga'
-            label='Alamat'
-            placeholder='Masukkan Alamat'
-            multiline={true}
-          />
-        </Layout>
-        <Layout
-          style={[
-            styles.form,
-            { flexDirection: 'row', justifyContent: 'space-between' },
-          ]}
-        >
-          <InputText
-            name='rtKeluarga'
-            label='RT'
-            placeholder='Masukkan RT'
-            keyboardType='number-pad'
-            style={{ width: '48%' }}
-          />
-          <InputText
-            name='rwKeluarga'
-            label='RW'
-            placeholder='Masukkan RW'
-            keyboardType='number-pad'
-            style={{ width: '48%' }}
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='kotaKeluarga'
-            label='Kota'
-            placeholder='Masukkan Kota'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='kodePosKeluarga'
-            label='Kode Pos'
-            placeholder='Masukkan Kode Pos'
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='telpKeluarga'
-            label='Telp'
-            placeholder='Masukkan Telp'
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='telp2Keluarga'
-            label='Telp 2'
-            placeholder='Masukkan Telp 2'
-            keyboardType='number-pad'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='emailKeluarga'
-            label='Email'
-            placeholder='Masukkan Email'
-            keyboardType='email-address'
+          <Text style={styles.label}>Status Perkawinan</Text>
+          <InputSelect
+            placeholder='Pilih Status Perkawinan'
+            items={[
+              { label: 'Kawin', value: 'kawin' },
+              { label: 'Belum Kawin', value: 'belum kawin' },
+              { label: 'Janda/Duda', value: 'janda/duda' },
+              { label: 'Dibawah Umur', value: 'dibawah umur' },
+            ]}
+            name='kawin'
           />
         </Layout>
         <Layout style={styles.form}>
@@ -172,10 +83,11 @@ const RegisterForm3 = (props) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText
+          <Text style={styles.label}>Pekerjaan Ayah</Text>
+          <InputSelect
+            placeholder='Pilih Pekerjaan Ayah'
+            items={state.listPekerjaan}
             name='pekerjaanAyah'
-            label='Pekerjaan Ayah'
-            placeholder='Masukkan Pekerjaan Ayah'
           />
         </Layout>
         <Layout style={styles.form}>
@@ -183,6 +95,21 @@ const RegisterForm3 = (props) => {
             name='namaIbu'
             label='Nama Ibu'
             placeholder='Masukkan Nama Ibu'
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='namaSutri'
+            label='Nama Suami/Istri'
+            placeholder='Masukkan Nama Suami/Istri'
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <Text style={styles.label}>Pekerjaan Suami/Istri</Text>
+          <InputSelect
+            placeholder='Pilih Pekerjaan Suami/Istri'
+            items={state.listPekerjaan}
+            name='pekerjaanSutri'
           />
         </Layout>
         <Layout

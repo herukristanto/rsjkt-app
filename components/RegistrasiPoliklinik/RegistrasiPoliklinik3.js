@@ -140,7 +140,7 @@ const RegistrasiPoliklinik3 = () => {
       </Layout>
       <Layout style={styles.qrCode}>
         <QRCode
-          value='https://github.com/granitebps'
+          value='Adam Ramadhan:19930414:Joko Widodo:20200412'
           size={width * 0.65}
           getRef={qrcode}
         />

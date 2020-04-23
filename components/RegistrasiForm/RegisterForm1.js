@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout, Text } from '@ui-kitten/components';
+import { Layout, Text, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 
 import { RegisterContext } from '../../context/RegisterContext';
@@ -8,7 +8,6 @@ import { ADD_FORM } from '../../reducer/RegisterReducer';
 import InputSelect from '../InputSelect';
 import InputDateMask from '../InputDateMask';
 import InputText from '../InputText';
-import InputRadio from '../InputRadio';
 import InputButton from '../InputButton';
 
 const RegisterForm1 = (props) => {
@@ -43,6 +42,9 @@ const RegisterForm1 = (props) => {
     if (!values.tanggalLahir) {
       errors.tanggalLahir = 'Tanggal Lahir Wajib Diisi';
     }
+    if (!values.kelamin) {
+      errors.kelamin = 'Jenis Kelamin Wajib Diisi';
+    }
     if (!values.darah) {
       errors.darah = 'Golongan Darah Wajib Diisi';
     }
@@ -55,6 +57,10 @@ const RegisterForm1 = (props) => {
 
     return errors;
   };
+
+  if (state.isLoading) {
+    return <Spinner status='success' />;
+  }
 
   return (
     <Formik
@@ -89,6 +95,7 @@ const RegisterForm1 = (props) => {
             items={[
               { label: 'KTP', value: 'ktp' },
               { label: 'SIM', value: 'sim' },
+              { label: 'Paspor', value: 'paspor' },
             ]}
             name='identitas'
           />
@@ -107,7 +114,14 @@ const RegisterForm1 = (props) => {
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jenis Kelamin</Text>
-          <InputRadio name='kelamin' items={['Laki - Laki', 'Perempuan']} />
+          <InputSelect
+            placeholder='Pilih Jenis Kelamin'
+            items={[
+              { label: 'Laki - Laki', value: 'L' },
+              { label: 'Perempuan', value: 'P' },
+            ]}
+            name='kelamin'
+          />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Golongan Darah</Text>
@@ -123,24 +137,18 @@ const RegisterForm1 = (props) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText
-            name='pendidikan'
-            label='Pendidikan'
+          <Text style={styles.label}>Pendidikan</Text>
+          <InputSelect
             placeholder='Masukkan Pendidikan'
+            items={state.listPendidikan}
+            name='pendidikan'
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Agama</Text>
           <InputSelect
             placeholder='Pilih Agama'
-            items={[
-              { label: 'Islam', value: 'islam' },
-              { label: 'Kristen', value: 'kristen' },
-              { label: 'Katolik', value: 'katolik' },
-              { label: 'Hindu', value: 'hindu' },
-              { label: 'Budha', value: 'budha' },
-              { label: 'Khong Hu Cu', value: 'khong_hu_cu' },
-            ]}
+            items={state.listAgama}
             name='agama'
           />
         </Layout>

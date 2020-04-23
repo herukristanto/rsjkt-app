@@ -1,5 +1,6 @@
 export const ADD_FORM = 'ADD_FORM';
 export const RESET_FORM = 'RESET_FORM';
+export const GET_MASTER = 'GET_MASTER';
 
 export const initialState = {
   form: {
@@ -8,42 +9,44 @@ export const initialState = {
     identitas: '',
     noIndentitas: '',
     tanggalLahir: '',
-    kelamin: 0,
+    kelamin: '',
     darah: '',
     pendidikan: '',
     agama: '',
+    kewarganegaraan: '',
     alamat: '',
     rt: '',
     rw: '',
-    kota: '',
-    kodePos: '',
     telp: '',
-    telp2: '',
     email: '',
-    namaKeluarga: '',
-    hubunganKeluarga: '',
-    alamatKeluarga: '',
-    rtKeluarga: '',
-    rwKeluarga: '',
-    kotaKeluarga: '',
-    kodePosKeluarga: '',
-    telpKeluarga: '',
-    telp2Keluarga: '',
-    emailKeluarga: '',
+    kawin: '',
     namaAyah: '',
     pekerjaanAyah: '',
     namaIbu: '',
+    namaSutri: '',
+    pekerjaanSutri: '',
     pekerjaan: '',
-    namaPekerjaan: '',
-    alamatPekerjaan: '',
-    telpPekerjaan: '',
-    departemen: '',
-    jabatan: '',
+    namaPerusahaan: '',
+    nomorAsuransi: '',
+    kodeAsuransi: '',
+    namaAsuransi: '',
   },
+  listAgama: [],
+  listPekerjaan: [],
+  listPendidikan: [],
+  isLoading: true,
 };
 
 export const RegisterReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_MASTER:
+      return {
+        ...state,
+        listAgama: action.listAgama,
+        listPekerjaan: action.listPekerjaan,
+        listPendidikan: action.listPendidikan,
+        isLoading: false,
+      };
     case ADD_FORM:
       return {
         ...state,
