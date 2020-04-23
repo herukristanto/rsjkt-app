@@ -70,7 +70,7 @@ const HomeScreen = (props) => {
           <View style={styl.menu}>
             <TouchableOpacity onPress={() => {}}>
               <Icon
-                style={{ width: 32, height: 32 }}
+                style={{ width: 24, height: 24 }}
                 fill='yellow'
                 name='bell'
               />

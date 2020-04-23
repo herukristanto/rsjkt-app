@@ -57,7 +57,7 @@ const HomeStackNavigator = () => {
             headerRight: () => (
               <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
                 <Icon
-                  style={{ width: 32, height: 32 }}
+                  style={{ width: 24, height: 24 }}
                   fill='yellow'
                   name='bell'
                 />
