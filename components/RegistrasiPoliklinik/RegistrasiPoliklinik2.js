@@ -37,7 +37,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         state.form.tanggalLahir
       ).format('YYYY-MM-DD')}:${state.form._label_dokter}:${
         state.form.tanggal.date
-      }`;
+      }:${state.daftarJadwal[0].poli}`;
       const encode = base64.encode(string);
       // TODO Send to antrian
 
@@ -67,7 +67,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         hand_phone: values.telp,
       };
 
-      // Nama:tanggal lahir:nama dokter:tanggal
+      // Nama:tanggal lahir:nama dokter:tanggal:nama poli
       // TODO Do Something with response data
       // const { data } = await baseAxios.post('/regpoli', request);
 
