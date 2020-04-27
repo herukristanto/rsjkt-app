@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   RegisterReducer,
@@ -13,6 +14,7 @@ export const RegisterContext = createContext();
 
 export const RegisterContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(RegisterReducer, initialState);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getMaster = async () => {
@@ -71,7 +73,11 @@ export const RegisterContextProvider = ({ children }) => {
           listPendidikan: listPendidikan,
         });
       } catch (error) {
-        console.log(error);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please Contact Customer Service!',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
       }
     };
     getMaster();

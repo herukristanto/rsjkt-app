@@ -163,11 +163,18 @@ const LoginScreen = () => {
             <Layout
               style={[
                 styles.form,
-                { alignItems: 'center', marginVertical: 10 },
+                {
+                  alignItems: 'center',
+                  marginVertical: 5,
+                },
               ]}
             >
               <Text
-                style={{ textDecorationLine: 'underline', fontSize: 16 }}
+                style={{
+                  textDecorationLine: 'underline',
+                  fontSize: 16,
+                  padding: 4,
+                }}
                 onPress={() => navigation.navigate('Register')}
               >
                 Belum Terdaftar?
