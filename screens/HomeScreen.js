@@ -93,7 +93,7 @@ const HomeScreen = (props) => {
             avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
-            onPressHandler={() => {}}
+            onPressHandler={() => navigation.navigate('Booking')}
             label='Cek Pendaftaran'
             avatar={require('../assets/icon/cek-pendaftaran.png')}
           />
