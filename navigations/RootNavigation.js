@@ -19,6 +19,7 @@ import BookingScreen from '../screens/BookingScreen';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
 import SingleBookingScreen from '../screens/SingleBookingScreen';
+import PromoScreen from '../screens/PromoScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -92,6 +93,25 @@ const HomeStackNavigator = () => {
             headerTitle: route.params
               ? route.params.title
               : 'Registrasi Poliklinik',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 24, height: 24 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: 'center',
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='Promo'
+        component={PromoScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'Promo',
             headerRight: () => (
               <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
                 <Icon

@@ -13,11 +13,11 @@ const ButtonHome = ({ onPressHandler, label, avatar }) => {
       borderWidth={3}
       onPress={onPressHandler}
       width={width * 0.9}
-      height={70}
+      height={60}
     >
       <View style={styles.card}>
         <View style={styles.iconButton}>
-          <Avatar source={avatar} size='giant' />
+          <Avatar source={avatar} size='medium' />
         </View>
         <View style={styles.buttonTextContainer}>
           <Text style={styles.buttonText} category='h5'>

@@ -16,8 +16,9 @@ import DokterScreen from './DokterScreen';
 import ButtonHome from '../components/ButtonHome';
 import Slider from '../components/Slider';
 import UserName from '../components/UserName';
+import Promo from '../components/Promo';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -116,6 +117,8 @@ const HomeScreen = (props) => {
           )}
         </View>
 
+        <Promo />
+
         <RunningText />
       </Layout>
     </>
@@ -129,7 +132,7 @@ const styl = StyleSheet.create({
     backgroundColor: '#ecf2f2',
   },
   header: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: 'rgb(7,94,85)',
     width: '100%',
@@ -141,12 +144,11 @@ const styl = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // width: '85%',
   },
   buttonContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 10,
   },
   menu: {
     // width: '15%',

@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(7,94,85)',
+    position: 'absolute',
+    bottom: 0,
   },
   scrolling2: {
     backgroundColor: 'rgb(7,94,85)',
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    margin: 10,
+    margin: 5,
     fontFamily: 'calibri',
   },
 });

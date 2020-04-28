@@ -1,15 +1,22 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { FlatList, Image, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  FlatList,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import { Spinner, Text, Layout } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
+
 import { baseAxios } from '../utils/useAxios';
 
 const { width, height } = Dimensions.get('screen');
 
-const Slider = () => {
-  const [slideIndex, setSlideIndex] = useState(0);
+const Promo = () => {
   const [sliders, setSliders] = useState([]);
   const [error, setError] = useState(false);
-  const slides = useRef();
+  const navigation = useNavigation();
 
   useEffect(() => {
     setError(false);
@@ -17,7 +24,7 @@ const Slider = () => {
       try {
         const { data: dataSlider } = await baseAxios.get('/get', {
           params: {
-            p: 'slider',
+            p: 'promo',
           },
         });
         setSliders(dataSlider);
@@ -28,28 +35,25 @@ const Slider = () => {
     loadSliders();
   }, []);
 
-  useEffect(() => {
-    const slideTimer = setInterval(() => {
-      if (sliders.length > 0) {
-        let nextIndex = slideIndex;
-        if (slideIndex < sliders.length - 1) {
-          nextIndex = nextIndex + 1;
-        } else {
-          nextIndex = 0;
-        }
-
-        slides.current.scrollToIndex({
-          index: nextIndex,
-          animated: true,
-        });
-        setSlideIndex(nextIndex);
-      }
-    }, 10000);
-
-    return () => {
-      clearInterval(slideTimer);
-    };
-  }, [slideIndex, sliders]);
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate('Promo')}
+      >
+        <Image
+          source={{ uri: item.url }}
+          resizeMode='stretch'
+          style={{
+            width: width * 0.6,
+            height: '100%',
+          }}
+          width={width * 0.6}
+          height='100%'
+        />
+      </TouchableOpacity>
+    );
+  };
 
   if (error) {
     return (
@@ -72,31 +76,31 @@ const Slider = () => {
   }
 
   return (
-    <Layout style={{ height: height * 0.23 }}>
+    <Layout style={{ height: height * 0.17 }}>
+      <Text style={{ marginLeft: 10, fontWeight: 'bold' }} category='h6'>
+        Promo
+      </Text>
+      <Text style={{ marginLeft: 10, fontSize: 14 }} category='h6'>
+        Promo yang sedang berlangsung
+      </Text>
       <FlatList
         contentContainerStyle={{
           overflow: 'hidden',
         }}
-        ref={slides}
         horizontal
-        pagingEnabled
-        scrollEnabled
         showsHorizontalScrollIndicator={false}
         data={sliders}
         keyExtractor={(item, index) => `${item}-${index}`}
-        renderItem={({ item }) => (
-          <Image
-            source={{ uri: item.url }}
-            resizeMode='stretch'
-            style={{
-              width,
-            }}
-            width={width}
-          />
-        )}
+        renderItem={renderItem}
       />
     </Layout>
   );
 };
 
-export default Slider;
+const styles = StyleSheet.create({
+  item: {
+    margin: 3,
+  },
+});
+
+export default Promo;
