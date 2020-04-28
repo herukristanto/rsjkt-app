@@ -18,6 +18,7 @@ import DokterScreen from '../screens/DokterScreen';
 import BookingScreen from '../screens/BookingScreen';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
+import SingleBookingScreen from '../screens/SingleBookingScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -44,7 +45,44 @@ const HomeStackNavigator = () => {
         options={{ headerTitleAlign: 'center' }}
       />
       <HomeStack.Screen name='Dokter' component={DokterScreen} />
-      <HomeStack.Screen name='Booking' component={BookingScreen} />
+      <HomeStack.Screen
+        name='Booking'
+        component={BookingScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'Cek Pendaftaran',
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 24, height: 24 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='SingleBooking'
+        component={SingleBookingScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'QR CODE',
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 24, height: 24 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+          };
+        }}
+      />
       <HomeStack.Screen name='Register' component={RegisterScreen} />
       <HomeStack.Screen
         name='RegistrasiPoliklinik'

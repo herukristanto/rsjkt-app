@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Layout, Text, Spinner } from '@ui-kitten/components';
-import { StyleSheet, Dimensions, ScrollView, Alert } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
 import { baseAxios } from '../utils/useAxios';
 import { AppContext } from '../context/AppContext';
-
-const { width } = Dimensions.get('screen');
 
 const BookingScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -56,44 +53,33 @@ const BookingScreen = () => {
 
   const List = ({ data }) => {
     return (
-      <Layout style={styles.card}>
-        <Layout style={[styles.container, { flexDirection: 'row' }]}>
-          <Text style={{ width: width * 0.4 }}>Medical Record</Text>
-          <Text style={{ width: width * 0.4 }}>: {data.Nomor_Cm}</Text>
-        </Layout>
-        <Layout style={[styles.container, { flexDirection: 'row' }]}>
-          <Text style={{ width: width * 0.4 }}>Poli Tujuan</Text>
-          <Text style={{ width: width * 0.4 }}>: {data.Poli_nm}</Text>
-        </Layout>
-        <Layout style={[styles.container, { flexDirection: 'row' }]}>
-          <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
-          <Text style={{ width: width * 0.4 }}>
-            : {moment(new Date(data.Tgl_Pesan)).format('DD MMMM YYYY')}
-          </Text>
-        </Layout>
-        <Layout style={[styles.container, { flexDirection: 'row' }]}>
-          <Text style={{ width: width * 0.4 }}>No Antrian</Text>
-          <Text style={{ width: width * 0.4 }}>: {data.NomorPanggil}</Text>
-        </Layout>
-        <Layout style={styles.qrCode}>
-          <QRCode
-            value={`${state.user.namaPasien}:${state.user.Tgl_lahir}:${data.Dokter_nm}:${data.Tgl_Pesan}:${data.Poli_nm}`}
-            size={width * 0.65}
-          />
-        </Layout>
-        <Layout style={styles.container}>
-          <Text style={{ fontWeight: 'bold' }} category='h6'>
-            Kode Booking
-          </Text>
-        </Layout>
-        <Layout style={styles.container}>
-          <Layout style={styles.bookingContainer}>
-            <Text style={{ fontWeight: 'bold' }} category='h6'>
-              {data.KodeBooking}
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => navigation.navigate('SingleBooking', { data: data })}
+      >
+        <Layout style={styles.descContainer}>
+          <Layout style={{ flexDirection: 'row' }}>
+            <Text style={{ width: '30%', fontWeight: 'bold' }}>Poli</Text>
+            <Text style={{ width: '70%', fontWeight: 'bold' }}>
+              : {data.Poli_nm}
             </Text>
           </Layout>
+          <Layout style={{ flexDirection: 'row' }}>
+            <Text style={{ width: '30%', fontWeight: 'bold' }}>Dokter</Text>
+            <Text style={{ width: '70%', fontWeight: 'bold' }}>
+              : {data.Dokter_nm}
+            </Text>
+          </Layout>
+          <Text>
+            {moment(new Date(data.Tgl_Pesan)).format('DD MMMM YYYY')},{' '}
+            {data.Jam}
+          </Text>
         </Layout>
-      </Layout>
+        <Layout style={styles.kodeBookingContainer}>
+          <Text style={{ fontWeight: 'bold' }}>Kode Booking</Text>
+          <Text style={{ fontWeight: 'bold' }}>{data.KodeBooking}</Text>
+        </Layout>
+      </TouchableOpacity>
     );
   };
 
@@ -134,32 +120,21 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   card: {
-    marginVertical: 8,
-    borderColor: '#ccc',
-    borderWidth: 2,
-    alignItems: 'center',
+    marginVertical: 5,
     marginHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
   },
-  container: {
-    width: '70%',
+  descContainer: {
     marginVertical: 2,
-    alignItems: 'center',
-  },
-  qrCode: {
-    marginVertical: 10,
-    padding: 20,
-    backgroundColor: 'white',
-  },
-  bookingContainer: {
-    backgroundColor: 'white',
     width: '70%',
-    height: 40,
-    justifyContent: 'center',
+  },
+  kodeBookingContainer: {
+    width: '30%',
     alignItems: 'center',
-    borderColor: '#778899',
-    borderWidth: 2,
-    borderRadius: 5,
+    justifyContent: 'center',
   },
 });
 
