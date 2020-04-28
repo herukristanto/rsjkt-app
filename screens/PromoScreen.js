@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Text, Spinner } from '@ui-kitten/components';
-import { StyleSheet, Image, Dimensions } from 'react-native';
+import { StyleSheet, Image, Dimensions, Alert } from 'react-native';
 
 import { baseAxios } from '../utils/useAxios';
 
 const { width } = Dimensions.get('screen');
 
 const PromoScreen = () => {
-  const [promo, setPromo] = useState([]);
+  const [promo, setPromo] = useState();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setError(false);
@@ -21,18 +20,27 @@ const PromoScreen = () => {
           },
         });
         setPromo(dataSlider[0]);
-        setLoading(false);
       } catch (error) {
-        setError(true);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please contact customer service!'
+        );
       }
     };
     loadSliders();
   }, []);
 
-  if (loading) {
-    <Layout style={styles.screen}>
-      <Spinner status='success' />
-    </Layout>;
+  if (!promo) {
+    return (
+      <Layout
+        style={[
+          styles.screen,
+          { justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <Spinner status='success' />
+      </Layout>
+    );
   }
 
   return (

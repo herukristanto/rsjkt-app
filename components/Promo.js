@@ -45,10 +45,10 @@ const Promo = () => {
           source={{ uri: item.url }}
           resizeMode='stretch'
           style={{
-            width: width * 0.6,
+            width: width * 0.5,
             height: '100%',
           }}
-          width={width * 0.6}
+          width={width * 0.5}
           height='100%'
         />
       </TouchableOpacity>
@@ -58,7 +58,11 @@ const Promo = () => {
   if (error) {
     return (
       <Layout
-        style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}
+        style={{
+          height: height * 0.17,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
         <Text>Error</Text>
       </Layout>
@@ -68,7 +72,11 @@ const Promo = () => {
   if (sliders.length === 0) {
     return (
       <Layout
-        style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}
+        style={{
+          height: height * 0.17,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
         <Spinner status='success' />
       </Layout>
