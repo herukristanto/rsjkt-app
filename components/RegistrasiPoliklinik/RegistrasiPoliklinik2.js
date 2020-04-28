@@ -8,7 +8,10 @@ import cuid from 'cuid';
 import base64 from 'react-native-base64';
 
 import { PoliklinikContext } from '../../context/PoliklinikContext';
-import { ADD_TO_FORM } from '../../reducer/PoliklinikReducer';
+import {
+  ADD_TO_FORM,
+  RESPONSE_REGIS_POLI,
+} from '../../reducer/PoliklinikReducer';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 import { baseAxios } from '../../utils/useAxios';
@@ -56,11 +59,11 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         tgl_reg: moment().format('DD/MM/YYYY'),
         nomor_cm: state.form.noRekamMedis,
         poli_id: state.form.poliklinik,
-        poli_nm: state.daftarJadwal[0].poli,
+        poli_nm: state.daftarDokter[0].Poli_nm.trim(),
         dokter_id: state.form.dokter,
         dokter_nm: state.form._label_dokter,
-        tgl_pesan: state.form.tanggal.tanggal,
-        jam: `${state.form.tanggal.jamAwal} - ${state.form.tanggal.jamAkhir}`,
+        tgl_pesan: state.form.tanggal.date,
+        jam: state.form.tanggal.jamAwal,
         jenis_penjamin: state.form.status === 0 ? 'Pribadi' : 'Jaminan',
         kd_jaminan: state.form.jaminan,
         kd_anakjaminan: state.form.perusahaan,
@@ -69,9 +72,15 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
 
       // Nama:tanggal lahir:nama dokter:tanggal:nama poli
       // TODO Do Something with response data
-      // const { data } = await baseAxios.post('/regpoli', request);
+      const { data } = await baseAxios.post('/regpoli', request);
 
-      // return;
+      dispatch({
+        type: RESPONSE_REGIS_POLI,
+        response: {
+          noAntrian: data.nomorpanggil,
+          kodeBooking: data.kodebooking,
+        },
+      });
 
       Alert.alert('Berhasil', 'Pendaftaran Berhasil Dilakukan', [
         { text: 'OK', onPress: () => setStep((prevStep) => prevStep + 1) },
@@ -153,7 +162,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         <Layout style={[styles.form, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>Poliklinik</Text>
           <Text style={{ width: width * 0.5 }}>
-            : {state.daftarJadwal[0].poli}
+            : {state.daftarDokter[0].Poli_nm.trim()}
           </Text>
         </Layout>
         {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}

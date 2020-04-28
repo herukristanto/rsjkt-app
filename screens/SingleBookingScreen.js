@@ -143,7 +143,7 @@ const SingleBookingScreen = () => {
       </Text>
       <Layout style={styles.bookingContainer}>
         <Text style={{ fontWeight: 'bold' }} category='h6'>
-          Z5745Z
+          {data.KodeBooking}
         </Text>
       </Layout>
       <Layout style={styles.icons}>

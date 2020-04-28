@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Alert,
   Dimensions,
-  AsyncStorage,
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
@@ -37,14 +36,6 @@ const RegistrasiPoliklinik3 = () => {
     navigation.setParams({ title: 'QR CODE' });
     async function saveQrCode() {
       qrcode.current.toDataURL(async (data) => {
-        const base64Icon = `data:image/png;base64,${data}`;
-        const antrian = {
-          qrCode: base64Icon,
-          urut: 'A301',
-          tanggal: state.form.tanggal,
-          lokasi: state.daftarJadwal[0].poli,
-        };
-        await AsyncStorage.setItem('_USER_QR_CODE_', JSON.stringify(antrian));
         setQrBase64(data);
       });
     }
@@ -131,18 +122,20 @@ const RegistrasiPoliklinik3 = () => {
       <Layout style={[styles.desc, { flexDirection: 'row' }]}>
         <Text style={{ width: width * 0.4 }}>Poli Tujuan</Text>
         <Text style={{ width: width * 0.4 }}>
-          : {state.daftarJadwal[0].poli}
+          : {state.daftarDokter[0].Poli_nm.trim()}
         </Text>
       </Layout>
       <Layout style={[styles.desc, { flexDirection: 'row' }]}>
         <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
         <Text style={{ width: width * 0.5 }}>
-          {`: ${state.form.tanggal.hari}, ${state.form.tanggal.tanggal}`}
+          {`: ${state.form.tanggal.hari}, ${moment(
+            state.form.tanggal.date
+          ).format('DD MMMM YYYY')}`}
         </Text>
       </Layout>
       <Layout style={[styles.desc, { flexDirection: 'row' }]}>
         <Text style={{ width: width * 0.4 }}>No Antrian</Text>
-        <Text style={{ width: width * 0.5 }}>: A301</Text>
+        <Text style={{ width: width * 0.5 }}>: {state.noAntrian}</Text>
       </Layout>
       <Layout style={styles.qrCode}>
         <QRCode
@@ -160,7 +153,7 @@ const RegistrasiPoliklinik3 = () => {
       <Layout style={styles.form}>
         <Layout style={styles.bookingContainer}>
           <Text style={{ fontWeight: 'bold' }} category='h6'>
-            Z5745Z
+            {state.kodeBooking}
           </Text>
         </Layout>
       </Layout>

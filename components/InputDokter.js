@@ -41,12 +41,11 @@ const InputDokter = ({ name, label, items, ...props }) => {
       if (item.Dokter_ID === dokter) {
         const hari = moment(item.Tanggal).format('dddd');
         return {
-          poli: item.Poli_nm.trim(),
           hari: hari,
           jamAwal: item.Jam_AwalFix.trim(),
           jamAkhir: item.Jam_AkhirFix.trim(),
-          date: moment(item.Tanggal).format('YYYY-MM-DD'),
-          tanggal: moment(item.Tanggal).format('DD/MM/YYYY'),
+          dayOfWeek: item.DayofWeek,
+          date: item.Tanggal,
           TidakPraktek: item.TidakPraktek,
           color: item.TidakPraktek ? 'red' : 'black',
           label: `${hari}, ${moment(item.Tanggal).format(
@@ -149,7 +148,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
                   <Text
                     style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
                   >
-                    {jadwal.tanggal}
+                    {moment(jadwal.date).format('DD MMMM YYYY')}
                   </Text>
                 </View>
                 <View style={{ width: '35%', paddingVertical: 5 }}>

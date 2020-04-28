@@ -146,7 +146,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         dokter: state.form.dokter,
         _label_dokter: state.form._label_dokter,
         poliklinik: state.form.poliklinik,
-        _label_poliklinik: state.form._label_poliklinik,
         tanggal: state.form.tanggal,
         _label_tanggal: state.form._label_tanggal,
         status: state.form.status,

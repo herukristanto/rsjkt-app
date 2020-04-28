@@ -4,6 +4,7 @@ export const GET_DAFTAR_JADWAL = 'GET_DAFTAR_JADWAL';
 export const GET_DAFTAR_PERUSAHAAN = 'GET_DAFTAR_PERUSAHAAN';
 export const ADD_TO_FORM = 'ADD_TO_FORM';
 export const RESET_FORM = 'RESET_FORM';
+export const RESPONSE_REGIS_POLI = 'RESPONSE_REGIS_POLI';
 
 export const initialState = {
   form: {
@@ -29,6 +30,8 @@ export const initialState = {
   daftarPenjamin: [],
   daftarJaminan: [],
   daftarPerusahaan: [],
+  noAntrian: '',
+  kodeBooking: '',
   isLoading: true,
 };
 
@@ -76,6 +79,11 @@ export const PoliklinikReducer = (state = initialState, action) => {
         form: {
           ...initialState.form,
         },
+      };
+    case RESPONSE_REGIS_POLI:
+      return {
+        ...state,
+        ...action.response,
       };
     default:
       state;
