@@ -66,11 +66,22 @@ export const RegisterContextProvider = ({ children }) => {
           };
         });
 
+        // Get List Asuransi
+        const { data: dataAsuransi } = await baseAxios.get('/penjamin');
+        const listAsuransi = dataAsuransi.map((asuransi) => {
+          return {
+            ...asuransi,
+            label: asuransi.nm_jaminan.trim(),
+            value: asuransi.kd_jaminan.trim(),
+          };
+        });
+
         dispatch({
           type: GET_MASTER,
           listAgama: listAgama,
           listPekerjaan: listPekerjaan,
           listPendidikan: listPendidikan,
+          listAsuransi: listAsuransi,
         });
       } catch (error) {
         Alert.alert(

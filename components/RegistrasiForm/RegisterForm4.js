@@ -93,13 +93,21 @@ const RegisterForm4 = (props) => {
         ).label;
       }
 
+      let namaAsuransi = '';
+      if (data.kodeAsuransi !== '') {
+        namaAsuransi = state.listAsuransi.find(
+          (asuransi) => data.kodeAsuransi === asuransi.kd_jaminan.trim()
+        );
+      }
+
       const request = {
         key: 'rsjkt4231',
         nomor_cm: `R${moment().valueOf()}`,
         Dtg_Awal: moment().format('YYYY-MM-DD'),
         namapasien: data.namaLengkap,
         nmpanggil: data.namaPanggilan,
-        tgl_lahir: moment(new Date(data.tanggalLahir)).format('DD-MM-YYYY'),
+        tgl_lahir: moment(new Date(data.tanggalLahir)).format('YYYY-MM-DD'),
+        tmp_lahir: data.tempatLahir,
         gol_darah: data.darah,
         kelamin: data.kelamin,
         agama_id: 5,
@@ -134,17 +142,16 @@ const RegisterForm4 = (props) => {
         email: data.email,
         kd_member: data.nomorAsuransi,
         kd_jaminan: data.kodeAsuransi,
-        nm_jaminan: data.namaAsuransi,
+        nm_jaminan: namaAsuransi.nm_jaminan.trim(),
       };
-      console.log(request);
 
-      // const {data: response}  = await baseAxios.get('/regnew', request)
+      const { data: response } = await baseAxios.post('/regnew', request);
 
       setLoading(false);
 
       Alert.alert(
         'Data Berhasil Disimpan',
-        `Nomor Registrasi Sementara Anda adalah ${request.nomor_cm}`,
+        `Nomor Registrasi Sementara Anda adalah ${response.medical_record}. Silahkan Gunakan Untuk Login`,
         [{ text: 'OK', onPress: () => navigation.popToTop() }]
       );
     } catch (error) {
@@ -214,17 +221,10 @@ const RegisterForm4 = (props) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText
+          <InputSelect
+            placeholder='Masukkan Asuransi'
+            items={state.listAsuransi}
             name='kodeAsuransi'
-            label='KodeAsuransi'
-            placeholder='Masukkan KodeAsuransi'
-          />
-        </Layout>
-        <Layout style={styles.form}>
-          <InputText
-            name='namaAsuransi'
-            label='Nama Asuransi'
-            placeholder='Masukkan Nama Asuransi'
           />
         </Layout>
 

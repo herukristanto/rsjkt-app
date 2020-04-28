@@ -9,6 +9,7 @@ export const initialState = {
     identitas: '',
     noIndentitas: '',
     tanggalLahir: '',
+    tempatLahir: '',
     kelamin: '',
     darah: '',
     pendidikan: '',
@@ -29,11 +30,11 @@ export const initialState = {
     namaPerusahaan: '',
     nomorAsuransi: '',
     kodeAsuransi: '',
-    namaAsuransi: '',
   },
   listAgama: [],
   listPekerjaan: [],
   listPendidikan: [],
+  listAsuransi: [],
   isLoading: true,
 };
 
@@ -45,6 +46,7 @@ export const RegisterReducer = (state = initialState, action) => {
         listAgama: action.listAgama,
         listPekerjaan: action.listPekerjaan,
         listPendidikan: action.listPendidikan,
+        listAsuransi: action.listAsuransi,
         isLoading: false,
       };
     case ADD_FORM:

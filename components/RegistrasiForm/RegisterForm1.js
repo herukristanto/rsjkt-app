@@ -42,6 +42,9 @@ const RegisterForm1 = (props) => {
     if (!values.tanggalLahir) {
       errors.tanggalLahir = 'Tanggal Lahir Wajib Diisi';
     }
+    if (!values.tempatLahir) {
+      errors.tempatLahir = 'Tempat Lahir Wajib Diisi';
+    }
     if (!values.kelamin) {
       errors.kelamin = 'Jenis Kelamin Wajib Diisi';
     }
@@ -111,6 +114,13 @@ const RegisterForm1 = (props) => {
         <Layout style={styles.form}>
           <Text style={styles.label}>Tanggal Lahir</Text>
           <InputDateMask name='tanggalLahir' />
+        </Layout>
+        <Layout style={styles.form}>
+          <InputText
+            name='tempatLahir'
+            label='Tempat Lahir'
+            placeholder='Masukkan Tempat Lahir'
+          />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jenis Kelamin</Text>
