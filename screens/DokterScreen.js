@@ -11,7 +11,7 @@ import {
 import { Layout, Text, Avatar, Spinner, Icon } from '@ui-kitten/components';
 import moment from 'moment';
 import Constants from 'expo-constants';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
@@ -23,8 +23,8 @@ const { width } = Dimensions.get('screen');
 const DokterScreen = () => {
   const { state, dispatch } = useContext(AppContext);
   const [listPasien, setListPasien] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  const route = useRoute();
 
   useEffect(() => {
     const getPasien = async () => {
@@ -45,6 +45,7 @@ const DokterScreen = () => {
           };
         });
         setListPasien(pasienDate);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -95,7 +96,7 @@ const DokterScreen = () => {
     );
   };
 
-  if (listPasien.length === 0) {
+  if (loading) {
     return (
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -173,7 +174,7 @@ const DokterScreen = () => {
             <Text style={styles.footerText}>Logout</Text>
           </TouchableOpacity>
           <Layout style={styles.footerDivider}></Layout>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('ListPraktek')}>
             <Text style={styles.footerText}>Update</Text>
           </TouchableOpacity>
         </Layout>

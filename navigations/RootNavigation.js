@@ -25,6 +25,7 @@ import { LOGOUT } from '../reducer/AppReducer';
 import SingleBookingScreen from '../screens/SingleBookingScreen';
 import PromoScreen from '../screens/PromoScreen';
 import ResetPasswordDokterScreen from '../screens/ResetPasswordDokterScreen';
+import ListPraktekScreen from '../screens/ListPraktekScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -187,6 +188,11 @@ const DokterStackNavigator = () => {
       <DokterStack.Screen
         name='Dokter'
         component={DokterScreen}
+        options={{ headerShown: false }}
+      />
+      <DokterStack.Screen
+        name='ListPraktek'
+        component={ListPraktekScreen}
         options={{ headerShown: false }}
       />
     </DokterStack.Navigator>

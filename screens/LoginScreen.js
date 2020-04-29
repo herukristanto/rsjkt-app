@@ -100,11 +100,16 @@ const LoginScreen = () => {
 
           navigation.popToTop();
         } catch (err) {
-          Alert.alert('Maaf', 'No Rekam Medis Tidak Ditemukan');
+          Alert.alert(
+            'Maaf',
+            'Something Wrong! Please Contact Customer Service!'
+          );
+          setLoading(false);
         }
       }
     } catch (e) {
       Alert.alert('Maaf', 'Something Wrong! Please Contact Customer Service!');
+      setLoading(false);
     }
   };
 
