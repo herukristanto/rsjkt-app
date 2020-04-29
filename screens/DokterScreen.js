@@ -1,65 +1,55 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, AsyncStorage } from 'react-native';
-import { Layout, Button, Text, Avatar } from '@ui-kitten/components';
+import {
+  StyleSheet,
+  Dimensions,
+  AsyncStorage,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
+import { Layout, Text, Avatar, Spinner, Icon } from '@ui-kitten/components';
 import moment from 'moment';
+import Constants from 'expo-constants';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
-import Divider from '../components/Divider';
 import { getUnique } from '../utils/helpers';
+import { baseAxios } from '../utils/useAxios';
 
 const { width } = Dimensions.get('screen');
-
-const dummyPasien = [
-  {
-    date: moment().format('DD/MM/YYYY'),
-    name: 'Chandra Aridia',
-    status: 1,
-    jaminan: 'Telkom',
-  },
-  {
-    date: moment().format('DD/MM/YYYY'),
-    name: 'Ryo Martdiko',
-    status: 1,
-    jaminan: 'AIA',
-  },
-  {
-    date: moment().add(1, 'days').format('DD/MM/YYYY'),
-    name: 'Sapto Prabowo',
-    status: 0,
-  },
-  {
-    date: moment().add(1, 'days').format('DD/MM/YYYY'),
-    name: 'Suryo Arief',
-    status: 1,
-    jaminan: 'Prudential',
-  },
-  {
-    date: moment().add(1, 'days').format('DD/MM/YYYY'),
-    name: 'Yuli',
-    status: 0,
-  },
-  {
-    date: moment().add(1, 'days').format('DD/MM/YYYY'),
-    name: 'Rini',
-    status: 1,
-    jaminan: 'Inhealth',
-  },
-];
 
 const DokterScreen = () => {
   const { state, dispatch } = useContext(AppContext);
   const [listPasien, setListPasien] = useState([]);
+  const navigation = useNavigation();
+  const route = useRoute();
 
   useEffect(() => {
-    const pasienUnique = getUnique(dummyPasien, 'date');
-    const pasienDate = pasienUnique.map((date) => {
-      return {
-        date: date.date,
-        pasien: dummyPasien.filter((dummy) => dummy.date == date.date),
-      };
-    });
-    setListPasien(pasienDate);
+    const getPasien = async () => {
+      try {
+        const { data } = await baseAxios('RegOL', {
+          params: {
+            dokter_id: state.user.idDokter,
+          },
+        });
+
+        const pasienUnique = getUnique(data.data, 'Tgl_Pesan');
+        const pasienDate = pasienUnique.map((date) => {
+          return {
+            date: date.Tgl_Pesan,
+            pasien: data.data.filter(
+              (pasien) => pasien.Tgl_Pesan == date.Tgl_Pesan
+            ),
+          };
+        });
+        setListPasien(pasienDate);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPasien();
   }, []);
 
   const handleLogout = async () => {
@@ -76,10 +66,10 @@ const DokterScreen = () => {
         }}
       >
         <Layout style={{ width: '60%' }}>
-          <Text>{data.name}</Text>
+          <Text>{data.Nomor_Cm}</Text>
         </Layout>
         <Layout>
-          <Text>- {data.status ? data.jaminan : 'Umum'}</Text>
+          <Text>- {data.Jenis_Penjamin}</Text>
         </Layout>
       </Layout>
     );
@@ -88,52 +78,105 @@ const DokterScreen = () => {
   const PasienDate = ({ pasien }) => {
     return (
       <Layout style={{ marginVertical: 5 }}>
-        <Text style={{ fontWeight: 'bold' }}>{pasien.date}</Text>
-        {pasien.pasien.map((data, index) => (
-          <Pasien key={index} data={data} />
-        ))}
+        <Layout style={{ flexDirection: 'row' }}>
+          <Text style={{ fontWeight: 'bold', width: '60%' }}>
+            {moment(new Date(pasien.date)).format('DD/MM/YYYY')}
+          </Text>
+          <Text style={{ fontWeight: 'bold' }}>
+            Total: {pasien.pasien.length}
+          </Text>
+        </Layout>
+        <Layout>
+          {pasien.pasien.map((data, index) => (
+            <Pasien key={index} data={data} />
+          ))}
+        </Layout>
       </Layout>
     );
   };
 
+  if (listPasien.length === 0) {
+    return (
+      <Layout
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Spinner status='success' />
+      </Layout>
+    );
+  }
+
   return (
     <Layout style={styles.screen}>
-      <Layout style={styles.card}>
-        <Avatar
-          source={{ uri: state.user.avatar }}
-          width={width * 0.5}
-          height={width * 0.5}
-          style={styles.avatar}
-        />
+      <View style={styles.header}>
+        <View style={styles.menu}>
+          {state.isLogin && (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Icon
+                style={{ width: 32, height: 32 }}
+                fill='white'
+                name='menu'
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={styles.title}>
+          <Image
+            source={require('../assets/images/login-image.png')}
+            style={{ width: width * 0.09, height: width * 0.09 }}
+          />
+          <Text
+            category='h6'
+            numberOfLines={2}
+            style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
+          >
+            RS Jakarta Mobile
+          </Text>
+        </View>
+        <View style={styles.menu}>
+          <TouchableOpacity onPress={() => {}}>
+            <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <Layout style={{ width: '100%', height: '90%' }}>
+        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+          <Layout style={styles.avatarContainer}>
+            <Avatar
+              source={{ uri: state.user.avatar }}
+              width={width * 0.3}
+              height={width * 0.3}
+              style={styles.avatar}
+            />
+          </Layout>
+
+          <Layout style={styles.identity}>
+            <Text category='h6' style={{ textAlign: 'center' }}>
+              {state.user.namaDokter}
+            </Text>
+            <Text category='h6' style={{ textAlign: 'center' }}>
+              Poli : {state.user.poli}
+            </Text>
+          </Layout>
+
+          <Layout style={[styles.card]}>
+            {listPasien.map((pasien) => (
+              <PasienDate key={pasien.date} pasien={pasien} />
+            ))}
+          </Layout>
+        </ScrollView>
       </Layout>
-      <Layout style={styles.card}>
-        <Text category='h6' style={{ textAlign: 'center' }}>
-          {state.user.namaDokter}
-        </Text>
-        <Text category='h6' style={{ textAlign: 'center' }}>
-          Poli : {state.user.poli}
-        </Text>
-      </Layout>
-      <Divider />
-      <Layout style={styles.card}>
-        <Text style={{ textAlign: 'center' }} category='p1'>
-          Jumlah Pasien Hari ini : 2 Pasien
-        </Text>
-        <Text style={{ textAlign: 'center' }} category='p1'>
-          Jumlah Pasien Besok : 4 Pasien
-        </Text>
-      </Layout>
-      <Divider />
-      <Layout style={[styles.card]}>
-        {listPasien.map((pasien) => (
-          <PasienDate key={pasien.date} pasien={pasien} />
-        ))}
-      </Layout>
-      <Divider />
-      <Layout style={styles.form}>
-        <Button onPress={handleLogout} status='success'>
-          Logout
-        </Button>
+
+      <Layout style={styles.footer}>
+        <Layout style={styles.container}>
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.footerText}>Logout</Text>
+          </TouchableOpacity>
+          <Layout style={styles.footerDivider}></Layout>
+          <TouchableOpacity>
+            <Text style={styles.footerText}>Update</Text>
+          </TouchableOpacity>
+        </Layout>
       </Layout>
     </Layout>
   );
@@ -142,21 +185,63 @@ const DokterScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
   },
-  form: {
-    width: width * 0.8,
-    marginVertical: 4,
+  header: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: 'rgb(7,94,85)',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  identity: {
+    width: '90%',
+    marginVertical: 5,
+    paddingVertical: 5,
+    backgroundColor: 'white',
   },
   card: {
     width: '90%',
     marginVertical: 5,
   },
+  avatarContainer: {
+    width: '90%',
+    marginVertical: 5,
+    marginTop: 15,
+  },
   avatar: {
-    width: width * 0.5,
-    height: width * 0.5,
+    width: width * 0.3,
+    height: width * 0.3,
     alignSelf: 'center',
+  },
+  footer: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#075e55',
+  },
+  footerText: {
+    color: 'white',
+    fontSize: 16,
+    padding: 8,
+  },
+  footerDivider: {
+    backgroundColor: 'white',
+    width: 1,
+    height: '100%',
   },
 });
 

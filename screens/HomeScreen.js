@@ -12,13 +12,12 @@ import Constants from 'expo-constants';
 import RunningText from '../components/RunningText';
 
 import { AppContext } from '../context/AppContext';
-import DokterScreen from './DokterScreen';
 import ButtonHome from '../components/ButtonHome';
 import Slider from '../components/Slider';
 import UserName from '../components/UserName';
 import Promo from '../components/Promo';
 
-const { width, height } = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -35,10 +34,6 @@ const HomeScreen = (props) => {
       );
     }
   };
-
-  if (state.isLogin && state.user.role === 'dokter') {
-    return <DokterScreen />;
-  }
 
   return (
     <>
