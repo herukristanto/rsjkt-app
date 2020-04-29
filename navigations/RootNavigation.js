@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 import {
   Platform,
   SafeAreaView,
@@ -20,6 +24,7 @@ import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
 import SingleBookingScreen from '../screens/SingleBookingScreen';
 import PromoScreen from '../screens/PromoScreen';
+import ResetPasswordDokterScreen from '../screens/ResetPasswordDokterScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -199,10 +204,6 @@ const DokterDrawerNavigator = () => {
     navigation.closeDrawer();
   };
 
-  const handleReset = (props) => {
-    const { navigation } = props;
-  };
-
   return (
     <DokterDrawer.Navigator
       drawerContent={(props) => {
@@ -213,6 +214,7 @@ const DokterDrawerNavigator = () => {
                 label='RS Jakarta Mobile'
                 labelStyle={{ fontFamily: 'calibri', fontSize: 16 }}
               />
+              <DrawerItemList {...props} />
               <TouchableOpacity
                 style={{
                   width: '100%',
@@ -222,17 +224,6 @@ const DokterDrawerNavigator = () => {
                 }}
               >
                 <Text style={{ color: 'rgb(7,94,85)' }}>Lihat Feedback</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 15,
-                }}
-                onPress={() => handleReset(props)}
-              >
-                <Text style={{ color: 'rgb(7,94,85)' }}>Reset Password</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -253,6 +244,16 @@ const DokterDrawerNavigator = () => {
       <DokterDrawer.Screen
         name='DashboardDokter'
         component={DokterStackNavigator}
+        options={{
+          title: 'Dashboard',
+        }}
+      />
+      <DokterDrawer.Screen
+        name='ResetPasswordDokter'
+        component={ResetPasswordDokterScreen}
+        options={{
+          title: 'Reset Password',
+        }}
       />
     </DokterDrawer.Navigator>
   );
