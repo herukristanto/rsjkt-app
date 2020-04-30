@@ -47,7 +47,6 @@ const ModalStatus = ({ showModal, dataModal, handleClose }) => {
       };
 
       const { data } = await baseAxios.post('status', request);
-      console.log(data);
 
       Alert.alert('Berhasil', 'Status Berhasil Disimpan', [
         { text: 'Okay', onPress: () => navigation.goBack() },

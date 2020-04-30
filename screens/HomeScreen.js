@@ -35,6 +35,30 @@ const HomeScreen = (props) => {
     }
   };
 
+  const handleBooking = () => {
+    if (state.isLogin) {
+      navigation.navigate('Booking');
+    } else {
+      Alert.alert(
+        'Peringatan',
+        'Anda Harus Login Terlebih Dahulu Untuk Mengecek Pendaftaran',
+        [{ text: 'Oke' }]
+      );
+    }
+  };
+
+  const handleFeedback = () => {
+    if (state.isLogin) {
+      navigation.navigate('Feedback');
+    } else {
+      Alert.alert(
+        'Peringatan',
+        'Anda Harus Login Terlebih Dahulu Untuk Memberikan Feedback',
+        [{ text: 'Oke' }]
+      );
+    }
+  };
+
   return (
     <>
       <Layout style={styl.screen}>
@@ -89,12 +113,12 @@ const HomeScreen = (props) => {
             avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
-            onPressHandler={() => navigation.navigate('Booking')}
+            onPressHandler={handleBooking}
             label='Cek Pendaftaran'
             avatar={require('../assets/icon/cek-pendaftaran.png')}
           />
           <ButtonHome
-            onPressHandler={() => {}}
+            onPressHandler={handleFeedback}
             label='Feedback'
             avatar={require('../assets/icon/feedback.png')}
           />
