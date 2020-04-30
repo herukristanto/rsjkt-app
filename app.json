@@ -35,6 +35,11 @@
         "VIBRATE",
         "CAMERA"
       ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBwOizX-ymKDTGfU7dZHIE470SdPFt--F8"
+        }
+      },
       "googleServicesFile": "./google-services.json"
     }
   }

@@ -27,6 +27,7 @@ import PromoScreen from '../screens/PromoScreen';
 import ResetPasswordDokterScreen from '../screens/ResetPasswordDokterScreen';
 import ListPraktekScreen from '../screens/ListPraktekScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
+import LokasiScreen from '../screens/LokasiScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -138,6 +139,25 @@ const HomeStackNavigator = () => {
         options={({ navigation }) => {
           return {
             headerTitle: 'Feedback',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 24, height: 24 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: 'center',
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='Lokasi'
+        component={LokasiScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'Lokasi',
             headerRight: () => (
               <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
                 <Icon
