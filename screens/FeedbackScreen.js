@@ -80,8 +80,7 @@ const FeedbackScreen = () => {
             </Text>
           </Layout>
           <Text>
-            {moment(new Date(data.Tgl_Pesan)).format('DD MMMM YYYY')},{' '}
-            {data.Jam}
+            {moment(data.Tgl_Pesan).format('DD MMMM YYYY')}, {data.Jam}
           </Text>
         </Layout>
       </TouchableOpacity>

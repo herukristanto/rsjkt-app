@@ -158,7 +158,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         _label_tanggal: state.form._label_tanggal,
         status: state.form.status,
         jaminan: state.form.jaminan,
-        _label_jaminan: state.form._label_jaminan,
         perusahaan: state.form.perusahaan,
         _label_perusahaan: state.form._label_perusahaan,
       }}
