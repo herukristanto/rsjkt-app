@@ -34,6 +34,9 @@ const LokasiScreen = () => {
           ></Marker>
         </MapView>
       </TouchableOpacity>
+      <Text style={{ fontSize: 12 }}>
+        Klik Maps untuk diarahkan ke RS Jakarta
+      </Text>
 
       <Layout style={styles.descContainer}>
         <Layout style={styles.desc}>

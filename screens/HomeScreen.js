@@ -123,8 +123,8 @@ const HomeScreen = (props) => {
             avatar={require('../assets/icon/feedback.png')}
           />
           <ButtonHome
-            // onPressHandler={() => navigation.navigate('Lokasi')}
-            onPressHandler={() => {}}
+            onPressHandler={() => navigation.navigate('Lokasi')}
+            // onPressHandler={() => {}}
             label='Lokasi'
             avatar={require('../assets/icon/lokasi.png')}
           />

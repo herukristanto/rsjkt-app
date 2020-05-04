@@ -28,7 +28,7 @@ const FeedbackScreen = () => {
           ]);
         }
 
-        const { data } = await baseAxios.get('RegOL', {
+        const { data } = await baseAxios.get('Feedback', {
           params: {
             rm: state.user.nomor_cm,
           },
