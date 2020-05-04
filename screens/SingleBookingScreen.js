@@ -123,7 +123,7 @@ const SingleBookingScreen = () => {
         <Layout style={styles.desc}>
           <Text style={{ width: width * 0.35 }}>Waktu Booking</Text>
           <Text style={{ width: width * 0.65 }}>
-            : {moment(new Date(data.Tgl_Pesan)).format('dddd, DD MMMM YYYY')}
+            : {moment(data.Tgl_Pesan).format('dddd, DD MMMM YYYY')}
           </Text>
         </Layout>
         <Layout style={styles.desc}>

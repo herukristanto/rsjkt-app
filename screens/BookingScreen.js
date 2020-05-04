@@ -33,8 +33,8 @@ const BookingScreen = () => {
 
         data.data.sort(
           (a, b) =>
-            new moment(new Date(a.Tgl_Pesan)).format('YYYYMMDD') -
-            new moment(new Date(b.Tgl_Pesan)).format('YYYYMMDD')
+            new moment(a.Tgl_Pesan).format('YYYYMMDD') -
+            new moment(b.Tgl_Pesan).format('YYYYMMDD')
         );
 
         setDataBooking(data.data);
@@ -71,8 +71,7 @@ const BookingScreen = () => {
             </Text>
           </Layout>
           <Text>
-            {moment(new Date(data.Tgl_Pesan)).format('DD MMMM YYYY')},{' '}
-            {data.Jam}
+            {moment(data.Tgl_Pesan).format('DD MMMM YYYY')}, {data.Jam}
           </Text>
         </Layout>
         <Layout style={styles.kodeBookingContainer}>
