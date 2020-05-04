@@ -6,9 +6,9 @@ import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
+import { Formik } from 'formik';
 
 import { RegisterContext } from '../../context/RegisterContext';
-import { Formik } from 'formik';
 import Divider from '../Divider';
 import InputText from '../InputText';
 import InputButton from '../InputButton';

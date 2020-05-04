@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import AutoScrolling from 'react-native-auto-scrolling';
 
-import { baseAxios } from '../utils/useAxios';
+import { baseAxios } from '../../utils/useAxios';
 
 const RunningText = () => {
   const [text, setText] = useState('');

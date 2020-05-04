@@ -15,9 +15,9 @@ import Modal from 'react-native-modal';
 import moment from 'moment';
 import 'moment/locale/id';
 
-import { PoliklinikContext } from '../context/PoliklinikContext';
-import { GET_DAFTAR_JADWAL } from '../reducer/PoliklinikReducer';
-import { getUnique, useDidMountEffect } from '../utils/helpers';
+import { PoliklinikContext } from '../../context/PoliklinikContext';
+import { GET_DAFTAR_JADWAL } from '../../reducer/PoliklinikReducer';
+import { getUnique, useDidMountEffect } from '../../utils/helpers';
 
 const InputDokter = ({ name, label, items, ...props }) => {
   const [visible, setVisible] = useState(false);

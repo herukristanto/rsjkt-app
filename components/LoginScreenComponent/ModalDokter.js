@@ -4,8 +4,8 @@ import { Layout, Input, Button } from '@ui-kitten/components';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 
-import { LOGIN } from '../reducer/AppReducer';
-import LoadingOverlay from './LoadingOverlay';
+import { LOGIN } from '../../reducer/AppReducer';
+import LoadingOverlay from '../LoadingOverlay';
 
 const { width } = Dimensions.get('screen');
 

@@ -9,7 +9,7 @@ import {
 import { Spinner, Text, Layout } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 
-import { baseAxios } from '../utils/useAxios';
+import { baseAxios } from '../../utils/useAxios';
 
 const { width, height } = Dimensions.get('screen');
 

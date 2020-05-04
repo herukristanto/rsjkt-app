@@ -10,8 +10,8 @@ import {
 } from '@ui-kitten/components';
 import { useFormikContext, getIn } from 'formik';
 
-import { PoliklinikContext } from '../context/PoliklinikContext';
-import { useDidMountEffect } from '../utils/helpers';
+import { PoliklinikContext } from '../../context/PoliklinikContext';
+import { useDidMountEffect } from '../../utils/helpers';
 
 /**
  *  @description Custom Select for Jadwal Kunjungan

@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import { Text, Layout, Icon } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import RunningText from '../components/RunningText';
 
 import { AppContext } from '../context/AppContext';
-import ButtonHome from '../components/ButtonHome';
-import Slider from '../components/Slider';
+import ButtonHome from '../components/HomeScreenComponent/ButtonHome';
+import Slider from '../components/HomeScreenComponent/Slider';
 import UserName from '../components/UserName';
-import Promo from '../components/Promo';
+import Promo from '../components/HomeScreenComponent/Promo';
+import RunningText from '../components/HomeScreenComponent/RunningText';
 
 const { width } = Dimensions.get('screen');
 

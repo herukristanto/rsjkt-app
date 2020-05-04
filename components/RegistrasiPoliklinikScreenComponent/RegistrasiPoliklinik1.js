@@ -4,19 +4,19 @@ import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import moment from 'moment';
 
-import InputText from '../InputText';
-import InputSelect from '../InputSelect';
-import InputRadio from '../InputRadio';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
   GET_DAFTAR_DOKTER,
   ADD_TO_FORM,
   GET_DAFTAR_PERUSAHAAN,
 } from '../../reducer/PoliklinikReducer';
+import InputText from '../InputText';
+import InputSelect from '../InputSelect';
+import InputRadio from '../InputRadio';
 import InputButton from '../InputButton';
-import InputDokter from '../InputDokter';
-import SelectJadwal from '../SelectJadwal';
 import { baseAxios } from '../../utils/useAxios';
+import InputDokter from './InputDokter';
+import SelectJadwal from './SelectJadwal';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);

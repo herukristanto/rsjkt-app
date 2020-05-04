@@ -7,13 +7,13 @@ import {
 } from 'react-native';
 import { Layout } from '@ui-kitten/components';
 
-import RegistrasiPoliklinik1 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik1';
-import RegistrasiPoliklinik2 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik2';
-import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinik/RegistrasiPoliklinik3';
+import RegistrasiPoliklinik1 from '../components/RegistrasiPoliklinikScreenComponent/RegistrasiPoliklinik1';
+import RegistrasiPoliklinik2 from '../components/RegistrasiPoliklinikScreenComponent/RegistrasiPoliklinik2';
+import RegistrasiPoliklinik3 from '../components/RegistrasiPoliklinikScreenComponent/RegistrasiPoliklinik3';
 import { PoliklinikContextProvider } from '../context/PoliklinikContext';
 import UserName from '../components/UserName';
 import { AppContext } from '../context/AppContext';
-import FooterPoli from '../components/FooterPoli';
+import FooterPoli from '../components/RegistrasiPoliklinikScreenComponent/FooterPoli';
 
 const { width } = Dimensions.get('screen');
 

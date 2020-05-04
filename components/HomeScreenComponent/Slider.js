@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FlatList, Image, Dimensions } from 'react-native';
 import { Spinner, Text, Layout } from '@ui-kitten/components';
-import { baseAxios } from '../utils/useAxios';
+
+import { baseAxios } from '../../utils/useAxios';
 
 const { width, height } = Dimensions.get('screen');
 

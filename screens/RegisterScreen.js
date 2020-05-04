@@ -9,10 +9,10 @@ import {
 import { Layout } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 
-import RegisterForm1 from '../components/RegistrasiForm/RegisterForm1';
-import RegisterForm2 from '../components/RegistrasiForm/RegisterForm2';
-import RegisterForm3 from '../components/RegistrasiForm/RegisterForm3';
-import RegisterForm4 from '../components/RegistrasiForm/RegisterForm4';
+import RegisterForm1 from '../components/RegisterScreenComponent/RegisterForm1';
+import RegisterForm2 from '../components/RegisterScreenComponent/RegisterForm2';
+import RegisterForm3 from '../components/RegisterScreenComponent/RegisterForm3';
+import RegisterForm4 from '../components/RegisterScreenComponent/RegisterForm4';
 import { RegisterContextProvider } from '../context/RegisterContext';
 
 const RegisterScreen = (props) => {

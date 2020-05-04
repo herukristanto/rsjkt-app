@@ -19,7 +19,7 @@ import moment from 'moment';
 import { AppContext } from '../context/AppContext';
 import { LOGIN } from '../reducer/AppReducer';
 import InputDateMask from '../components/InputDateMask';
-import ModalDokter from '../components/ModalDokter';
+import ModalDokter from '../components/LoginScreenComponent/ModalDokter';
 import LoadingOverlay from '../components/LoadingOverlay';
 
 const { width } = Dimensions.get('screen');

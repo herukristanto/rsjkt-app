@@ -8,7 +8,7 @@ const FooterPoli = () => {
   return (
     <Layout style={styles.container}>
       <Image
-        source={require('../assets/images/login-image.png')}
+        source={require('../../assets/images/login-image.png')}
         style={{ width: width * 0.07, height: width * 0.07 }}
       />
       <Text style={styles.text}>RS Jakarta Mobile</Text>
