@@ -81,7 +81,7 @@ const DokterScreen = () => {
       <Layout style={{ marginVertical: 5 }}>
         <Layout style={{ flexDirection: 'row' }}>
           <Text style={{ fontWeight: 'bold', width: '60%' }}>
-            {moment(new Date(pasien.date)).format('DD/MM/YYYY')}
+            {moment(pasien.date).format('DD/MM/YYYY')}
           </Text>
           <Text style={{ fontWeight: 'bold' }}>
             Total: {pasien.pasien.length}

@@ -16,6 +16,7 @@ import {
 import InputButton from '../InputButton';
 import InputDokter from '../InputDokter';
 import SelectJadwal from '../SelectJadwal';
+import { baseAxios } from '../../utils/useAxios';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
@@ -38,21 +39,28 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     });
   };
 
-  const handlePenjamin = (value) => {
-    const rawPerusahaan = state.daftarPenjamin.map((item) => {
-      if (item.Kd_Jaminan.trim() == value) {
-        return {
-          ...item,
-          value: item.kd_anakjmn.trim(),
-          label: item.NM_AnakJMN.trim(),
-        };
-      }
-      return;
+  const handlePenjamin = async (value) => {
+    const { data } = await baseAxios.get('/anakpenjamin', {
+      params: {
+        kd_jaminan: value,
+      },
     });
-    const filteredPerusahaan = rawPerusahaan.filter(Boolean);
+
+    const jaminan = state.daftarPenjamin.find(
+      (jaminan) => jaminan.value === value
+    );
+
+    const dataPerusahaan = data.map((perusahaan) => {
+      return {
+        value: perusahaan.kd_anakjmn.trim(),
+        label: perusahaan.NM_AnakJMN.trim(),
+      };
+    });
+
     dispatch({
       type: GET_DAFTAR_PERUSAHAAN,
-      daftarPerusahaan: filteredPerusahaan,
+      daftarPerusahaan: dataPerusahaan,
+      namaJaminan: jaminan.label,
     });
   };
 
@@ -62,7 +70,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
       const perusahaan = state.daftarPerusahaan.find(
         (perusahaan) => values.perusahaan == perusahaan.value
       );
-      namaPerusahaan = perusahaan.NM_AnakJMN.trim();
+      namaPerusahaan = perusahaan.label;
     }
 
     dispatch({
@@ -109,7 +117,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           <Text style={styles.label}>Jaminan</Text>
           <InputSelect
             placeholder='Pilih Jaminan'
-            items={state.daftarJaminan}
+            items={state.daftarPenjamin}
             name='jaminan'
             additionalHandler={handlePenjamin}
           />

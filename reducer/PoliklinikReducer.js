@@ -17,6 +17,7 @@ export const initialState = {
     _label_tanggal: '',
     status: 0,
     jaminan: '',
+    _label_jaminan: '',
     perusahaan: '',
     _label_perusahaan: '',
     noKartu: '',
@@ -28,7 +29,6 @@ export const initialState = {
   daftarDokter: [],
   daftarJadwal: [],
   daftarPenjamin: [],
-  daftarJaminan: [],
   daftarPerusahaan: [],
   noAntrian: '',
   kodeBooking: '',
@@ -43,7 +43,6 @@ export const PoliklinikReducer = (state = initialState, action) => {
         daftarPraktek: action.daftarPraktek,
         daftarPoli: action.daftarPoli,
         daftarPenjamin: action.daftarPenjamin,
-        daftarJaminan: action.daftarJaminan,
         form: {
           ...state.form,
           ...action.user,
@@ -64,6 +63,10 @@ export const PoliklinikReducer = (state = initialState, action) => {
       return {
         ...state,
         daftarPerusahaan: action.daftarPerusahaan,
+        form: {
+          ...state.form,
+          _label_jaminan: action.namaJaminan,
+        },
       };
     case ADD_TO_FORM:
       return {

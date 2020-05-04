@@ -30,16 +30,11 @@ export const PoliklinikContextProvider = ({ children }) => {
         ]);
       }
 
-      const { data: dataPenjamin } = await baseAxios.get('/penjaminAll', {
-        params: {
-          key: 'rsjkt4231',
-        },
-      });
-      const penjaminUnique = getUnique(dataPenjamin, 'Kd_Jaminan');
-      const penjaminData = penjaminUnique.map((penjamin) => {
+      const { data: dataPenjamin } = await baseAxios.get('/penjamin');
+      const penjaminData = dataPenjamin.map((penjamin) => {
         return {
-          value: penjamin.Kd_Jaminan.trim(),
-          label: penjamin.Nm_jaminan.trim(),
+          value: penjamin.kd_jaminan.trim(),
+          label: penjamin.nm_jaminan.trim(),
         };
       });
 
@@ -61,8 +56,7 @@ export const PoliklinikContextProvider = ({ children }) => {
         type: GET_DAFTAR_PRAKTER,
         daftarPraktek: data,
         daftarPoli: poliData,
-        daftarPenjamin: dataPenjamin,
-        daftarJaminan: penjaminData,
+        daftarPenjamin: penjaminData,
         user: {
           namaPasien: stateApp.user.namaPasien,
           noRekamMedis: `${stateApp.user.nomor_cm}`,

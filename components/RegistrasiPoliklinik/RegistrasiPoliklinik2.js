@@ -115,7 +115,7 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         <Layout style={[styles.form, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>Jaminan</Text>
           <Text style={{ width: width * 0.5 }}>
-            : {state.daftarPerusahaan[0].Nm_jaminan.trim()}
+            : {state.form._label_jaminan}
           </Text>
         </Layout>
         <Layout style={[styles.form, { flexDirection: 'row' }]}>
