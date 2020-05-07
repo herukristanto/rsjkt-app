@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { Spinner, Text, Layout } from '@ui-kitten/components';
+import { Spinner, Text, Layout, Icon } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 
 import { baseAxios } from '../../utils/useAxios';
@@ -85,12 +85,23 @@ const Promo = () => {
 
   return (
     <Layout style={{ height: height * 0.17 }}>
-      <Text style={{ marginLeft: 10, fontWeight: 'bold' }} category='h6'>
-        Promo
-      </Text>
-      <Text style={{ marginLeft: 10, fontSize: 14 }} category='h6'>
-        Promo yang sedang berlangsung
-      </Text>
+      <Layout style={styles.textContainer}>
+        <Layout>
+          <Text style={{ fontWeight: 'bold' }} category='h6'>
+            Promo
+          </Text>
+          <Text style={{ fontSize: 14 }} category='h6'>
+            Promo yang sedang berlangsung
+          </Text>
+        </Layout>
+        <Layout style={styles.iconContainer}>
+          <Icon
+            style={{ width: 24, height: 24 }}
+            name='arrow-ios-forward'
+            fill='rgb(7,94,85)'
+          />
+        </Layout>
+      </Layout>
       <FlatList
         contentContainerStyle={{
           overflow: 'hidden',
@@ -108,6 +119,14 @@ const Promo = () => {
 const styles = StyleSheet.create({
   item: {
     margin: 3,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+  },
+  iconContainer: {
+    justifyContent: 'center',
   },
 });
 

@@ -139,6 +139,27 @@ const HomeScreen = (props) => {
 
         <Promo />
 
+        <TouchableOpacity
+          style={styl.jadwalDokter}
+          onPress={() => navigation.navigate('ListPoliklinik')}
+        >
+          <Layout>
+            <Text style={{ fontWeight: 'bold' }} category='h6'>
+              Jadwal Dokter
+            </Text>
+            <Text style={{ fontSize: 14 }} category='h6'>
+              Jadwal Dokter Rumah Sakit Jakarta
+            </Text>
+          </Layout>
+          <Layout>
+            <Icon
+              style={{ width: 24, height: 24 }}
+              name='arrow-ios-forward'
+              fill='rgb(7,94,85)'
+            />
+          </Layout>
+        </TouchableOpacity>
+
         <RunningText />
       </Layout>
     </>
@@ -169,6 +190,12 @@ const styl = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 10,
+  },
+  jadwalDokter: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
   },
   menu: {
     // width: '15%',

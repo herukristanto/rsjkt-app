@@ -28,6 +28,8 @@ import ResetPasswordDokterScreen from '../screens/ResetPasswordDokterScreen';
 import ListPraktekScreen from '../screens/ListPraktekScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import LokasiScreen from '../screens/LokasiScreen';
+import ListPoliklinikScreen from '../screens/ListPoliklinikScreen';
+import JadwalDokterScreen from '../screens/JadwalDokterScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -168,6 +170,24 @@ const HomeStackNavigator = () => {
               </TouchableOpacity>
             ),
             headerTitleAlign: 'center',
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='ListPoliklinik'
+        component={ListPoliklinikScreen}
+        options={({ navigation }) => {
+          return {
+            headerShown: false,
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='JadwalDokter'
+        component={JadwalDokterScreen}
+        options={({ navigation, route }) => {
+          return {
+            headerShown: false,
           };
         }}
       />
