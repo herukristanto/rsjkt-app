@@ -1,9 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Alert, Platform } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
-import { Notifications } from 'expo';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
@@ -21,53 +18,6 @@ const RegisterForm4 = (props) => {
   const { state } = useContext(RegisterContext);
   const [loading, setLoading] = useState(false);
 
-  // Register Push Notification (Only when user registering)
-  const registerForPushNotificationsAsync = async () => {
-    try {
-      setLoading(true);
-      if (Constants.isDevice) {
-        const { status: existingStatus } = await Permissions.getAsync(
-          Permissions.NOTIFICATIONS
-        );
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-          const { status } = await Permissions.askAsync(
-            Permissions.NOTIFICATIONS
-          );
-          finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-          Alert.alert(
-            'Error',
-            'Failed to get push token for push notification!',
-            [{ text: 'OK' }]
-          );
-          return;
-        }
-        const token = await Notifications.getExpoPushTokenAsync();
-        console.log(token);
-        // TODO Send Expo Push Token to server
-      } else {
-        Alert.alert(
-          'Error',
-          'Must use physical device for Push Notifications',
-          [{ text: 'OK' }]
-        );
-      }
-
-      if (Platform.OS === 'android') {
-        Notifications.createChannelAndroidAsync('default', {
-          name: 'default',
-          sound: true,
-          priority: 'max',
-          vibrate: true,
-        });
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
-    }
-  };
-
   const handleForm = async (values) => {
     try {
       // Check internet connection
@@ -76,9 +26,6 @@ const RegisterForm4 = (props) => {
         Alert.alert('Error', 'No Internet Connection', [{ text: 'Retry' }]);
         return;
       }
-
-      // Send Notification Token To Server
-      await registerForPushNotificationsAsync();
 
       // TODO Send Data User to Server
       const data = {

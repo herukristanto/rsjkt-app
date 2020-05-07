@@ -11,6 +11,8 @@ import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import NetInfo from '@react-native-community/netinfo';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
 
 import { baseAxios } from '../utils/useAxios';
 import InputText from '../components/InputText';
@@ -85,6 +87,41 @@ const LoginScreen = () => {
             Alert.alert('Maaf', 'Tanggal Lahir Anda Salah');
             return;
           }
+
+          // * Send Expo Push Token
+          const { status: existingStatus } = await Permissions.getAsync(
+            Permissions.NOTIFICATIONS
+          );
+          let finalStatus = existingStatus;
+          if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(
+              Permissions.NOTIFICATIONS
+            );
+            finalStatus = status;
+          }
+          if (finalStatus !== 'granted') {
+            Alert.alert(
+              'Error',
+              'Failed to get push token for push notification!',
+              [{ text: 'OK' }]
+            );
+            return;
+          }
+          const token = await Notifications.getExpoPushTokenAsync();
+
+          if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('default', {
+              name: 'default',
+              sound: true,
+              priority: 'max',
+              vibrate: true,
+            });
+          }
+
+          const { data: dataToken } = await baseAxios.put('/pasien', {
+            rm: values.noRekamMedis,
+            token_phone: token,
+          });
 
           const userData = {
             nomor_cm: data.nomor_cm,

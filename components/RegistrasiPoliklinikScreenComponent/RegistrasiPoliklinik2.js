@@ -30,11 +30,6 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         return;
       }
 
-      // Check if telp change
-      if (values.telp != state.form.telp) {
-        // TODO Send to server that telp is change
-      }
-
       // QR Code String Encoding (Use base64 Hash)
       const string = `${state.form.namaPasien}:${moment(
         state.form.tanggalLahir
