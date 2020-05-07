@@ -72,11 +72,7 @@ const ListPraktekScreen = () => {
 
   const JadwalItem = ({ data }) => {
     return (
-      <TouchableOpacity
-        style={styles.jadwal}
-        onPress={() => handleModal(data)}
-        disabled={data.Status ? true : false}
-      >
+      <TouchableOpacity style={styles.jadwal} onPress={() => handleModal(data)}>
         <Text>{moment(data.Tanggal).format('DD/MM/YYYY')}</Text>
         {data.Status && (
           <Avatar source={require('../assets/icon/status.png')} size='medium' />
@@ -99,11 +95,13 @@ const ListPraktekScreen = () => {
     <Layout style={styles.screen}>
       <Header />
 
-      <ModalStatus
-        showModal={showModal}
-        dataModal={dataModal}
-        handleClose={handleClose}
-      />
+      {showModal && (
+        <ModalStatus
+          showModal={showModal}
+          dataModal={dataModal}
+          handleClose={handleClose}
+        />
+      )}
 
       <Layout style={{ flex: 1, width: '100%', marginVertical: 10 }}>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>

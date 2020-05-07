@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-native-modal';
 import { Layout, Text, Input, Button } from '@ui-kitten/components';
 import { StyleSheet, Alert } from 'react-native';
@@ -13,6 +13,10 @@ const ModalStatus = ({ showModal, dataModal, handleClose }) => {
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    setStatus(dataModal.Status);
+  }, []);
 
   const handleSubmit = async () => {
     try {
