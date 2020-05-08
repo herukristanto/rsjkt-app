@@ -1,9 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Spinner } from '@ui-kitten/components';
-import { StyleSheet, ScrollView, Image, Dimensions, Alert } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
+
+const dummyImage = [
+  {
+    id: 6,
+    name: 'Promo',
+    url:
+      'https://lh3.googleusercontent.com/proxy/lBD5bQoT4GQqykUKcu8Xo8ZR5zTwWGHLbzPtHDI_41FOtDUsiHvWmPWQ57rTA0N_WsAl3yEnanaxQhvIsN4edCn87bW4J60dYQqCn-_wXK3-wc1b9M4abpl5',
+    active: 1,
+  },
+  {
+    id: 7,
+    name: 'Promo',
+    url: 'https://kirim.email/wp-content/uploads/2018/02/mm.png',
+    active: 1,
+  },
+  {
+    id: 8,
+    name: 'Promo',
+    url:
+      'https://res.cloudinary.com/demo/image/upload/w_250,h_250,c_mfit/w_700/sample.jpg',
+    active: 1,
+  },
+];
 
 const ListPromoScreen = () => {
   const [promo, setPromo] = useState([]);
@@ -14,6 +44,7 @@ const ListPromoScreen = () => {
   const getSize = async () => {
     try {
       const images = route.params.data;
+      // const images = dummyImage;
       for (let index = 0; index < images.length; index++) {
         const promise = new Promise(
           (resolve, reject) => {
@@ -75,7 +106,10 @@ const ListPromoScreen = () => {
         {promo.map((data) => {
           const ratio = width / data.width;
           return (
-            <Layout key={data.id}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Promo')}
+              key={data.id}
+            >
               <Image
                 source={{ uri: data.url }}
                 style={styles.promo}
@@ -83,7 +117,7 @@ const ListPromoScreen = () => {
                 width={width}
                 height={data.height * ratio}
               />
-            </Layout>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
