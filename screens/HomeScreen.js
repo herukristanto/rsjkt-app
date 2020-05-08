@@ -6,6 +6,7 @@ import {
   View,
   Alert,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import { Text, Layout, Icon } from '@ui-kitten/components';
 import Constants from 'expo-constants';
@@ -17,7 +18,7 @@ import UserName from '../components/UserName';
 import Promo from '../components/HomeScreenComponent/Promo';
 import RunningText from '../components/HomeScreenComponent/RunningText';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -60,45 +61,46 @@ const HomeScreen = (props) => {
   };
 
   return (
-    <>
-      <Layout style={styl.screen}>
-        <View style={styl.header}>
-          <View style={styl.menu}>
-            {state.isLogin && (
-              <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                <Icon
-                  style={{ width: 32, height: 32 }}
-                  fill='white'
-                  name='menu'
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-          <View style={styl.title}>
-            <Image
-              source={require('../assets/images/login-image.png')}
-              style={{ width: width * 0.09, height: width * 0.09 }}
-            />
-            <Text
-              category='h6'
-              numberOfLines={2}
-              style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
-            >
-              RS Jakarta Mobile
-            </Text>
-          </View>
-          <View style={styl.menu}>
-            <TouchableOpacity onPress={() => {}}>
+    <Layout style={styl.screen}>
+      <View style={styl.header}>
+        <View style={styl.menu}>
+          {state.isLogin && (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
               <Icon
-                style={{ width: 24, height: 24 }}
-                fill='yellow'
-                name='bell'
+                style={{ width: 32, height: 32 }}
+                fill='white'
+                name='menu'
               />
             </TouchableOpacity>
-          </View>
+          )}
         </View>
+        <View style={styl.title}>
+          <Image
+            source={require('../assets/images/login-image.png')}
+            style={{ width: width * 0.09, height: width * 0.09 }}
+          />
+          <Text
+            category='h6'
+            numberOfLines={2}
+            style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
+          >
+            RS Jakarta Mobile
+          </Text>
+        </View>
+        <View style={styl.menu}>
+          <TouchableOpacity onPress={() => {}}>
+            <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        <Slider />
+      <ScrollView
+        style={{ height: height, marginBottom: 30 }}
+        // contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <Layout>
+          <Slider />
+        </Layout>
 
         {state.isLogin && (
           <Layout style={{ marginLeft: 15 }}>
@@ -144,10 +146,8 @@ const HomeScreen = (props) => {
           onPress={() => navigation.navigate('ListPoliklinik')}
         >
           <Layout>
-            <Text style={{ fontWeight: 'bold' }} category='h6'>
-              Jadwal Dokter
-            </Text>
-            <Text style={{ fontSize: 14 }} category='h6'>
+            <Text style={{ fontWeight: 'bold' }}>Jadwal Dokter</Text>
+            <Text style={{ fontSize: 12 }}>
               Jadwal Dokter Rumah Sakit Jakarta
             </Text>
           </Layout>
@@ -159,10 +159,9 @@ const HomeScreen = (props) => {
             />
           </Layout>
         </TouchableOpacity>
-
-        <RunningText />
-      </Layout>
-    </>
+      </ScrollView>
+      <RunningText />
+    </Layout>
   );
 };
 

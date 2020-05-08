@@ -87,12 +87,8 @@ const Promo = () => {
     <Layout style={{ height: height * 0.17 }}>
       <Layout style={styles.textContainer}>
         <Layout>
-          <Text style={{ fontWeight: 'bold' }} category='h6'>
-            Promo
-          </Text>
-          <Text style={{ fontSize: 14 }} category='h6'>
-            Promo yang sedang berlangsung
-          </Text>
+          <Text style={{ fontWeight: 'bold' }}>Promo</Text>
+          <Text style={{ fontSize: 12 }}>Promo yang sedang berlangsung</Text>
         </Layout>
         <TouchableOpacity
           style={styles.iconContainer}

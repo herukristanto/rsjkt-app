@@ -13,6 +13,7 @@ import { Formik } from 'formik';
 import NetInfo from '@react-native-community/netinfo';
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
+import Constants from 'expo-constants';
 
 import { baseAxios } from '../utils/useAxios';
 import InputText from '../components/InputText';
@@ -89,54 +90,64 @@ const LoginScreen = () => {
           }
 
           // * Send Expo Push Token
-          const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-          );
-          let finalStatus = existingStatus;
-          if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(
+          if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(
               Permissions.NOTIFICATIONS
             );
-            finalStatus = status;
-          }
-          if (finalStatus !== 'granted') {
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+              const { status } = await Permissions.askAsync(
+                Permissions.NOTIFICATIONS
+              );
+              finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+              setLoading(false);
+              Alert.alert(
+                'Error',
+                'Failed to get push token for push notification!',
+                [{ text: 'OK' }]
+              );
+              return;
+            }
+            const token = await Notifications.getExpoPushTokenAsync();
+
+            if (Platform.OS === 'android') {
+              Notifications.createChannelAndroidAsync('default', {
+                name: 'default',
+                sound: true,
+                priority: 'max',
+                vibrate: true,
+              });
+            }
+
+            const { data: dataToken } = await baseAxios.put('/pasien', {
+              rm: values.noRekamMedis,
+              token_phone: token,
+            });
+
+            const userData = {
+              nomor_cm: data.nomor_cm,
+              namaPasien: data.namaPasien,
+              Tgl_lahir: data.Tgl_lahir,
+              nm_jaminan: data.nm_jaminan,
+              Hand_phone: data.Hand_phone,
+              role: 'pasien',
+            };
+
+            await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
+            dispatch({ type: LOGIN, user: userData });
+
+            navigation.popToTop();
+          } else {
             setLoading(false);
             Alert.alert(
               'Error',
-              'Failed to get push token for push notification!',
+              'Must use physical device for Push Notifications',
               [{ text: 'OK' }]
             );
             return;
           }
-          const token = await Notifications.getExpoPushTokenAsync();
-
-          if (Platform.OS === 'android') {
-            Notifications.createChannelAndroidAsync('default', {
-              name: 'default',
-              sound: true,
-              priority: 'max',
-              vibrate: true,
-            });
-          }
-
-          const { data: dataToken } = await baseAxios.put('/pasien', {
-            rm: values.noRekamMedis,
-            token_phone: token,
-          });
-
-          const userData = {
-            nomor_cm: data.nomor_cm,
-            namaPasien: data.namaPasien,
-            Tgl_lahir: data.Tgl_lahir,
-            nm_jaminan: data.nm_jaminan,
-            Hand_phone: data.Hand_phone,
-            role: 'pasien',
-          };
-
-          await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
-          dispatch({ type: LOGIN, user: userData });
-
-          navigation.popToTop();
         } catch (err) {
           Alert.alert(
             'Maaf',
