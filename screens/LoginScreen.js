@@ -91,25 +91,25 @@ const LoginScreen = () => {
 
           // * Send Expo Push Token
           if (Constants.isDevice) {
-            const { status: existingStatus } = await Permissions.getAsync(
-              Permissions.NOTIFICATIONS
-            );
-            let finalStatus = existingStatus;
-            if (existingStatus !== 'granted') {
-              const { status } = await Permissions.askAsync(
-                Permissions.NOTIFICATIONS
-              );
-              finalStatus = status;
-            }
-            if (finalStatus !== 'granted') {
-              setLoading(false);
-              Alert.alert(
-                'Error',
-                'Failed to get push token for push notification!',
-                [{ text: 'OK' }]
-              );
-              return;
-            }
+            // const { status: existingStatus } = await Permissions.getAsync(
+            //   Permissions.NOTIFICATIONS
+            // );
+            // let finalStatus = existingStatus;
+            // if (existingStatus !== 'granted') {
+            //   const { status } = await Permissions.askAsync(
+            //     Permissions.NOTIFICATIONS
+            //   );
+            //   finalStatus = status;
+            // }
+            // if (finalStatus !== 'granted') {
+            //   setLoading(false);
+            //   Alert.alert(
+            //     'Error',
+            //     'Failed to get push token for push notification!',
+            //     [{ text: 'OK' }]
+            //   );
+            //   return;
+            // }
             const token = await Notifications.getExpoPushTokenAsync();
 
             if (Platform.OS === 'android') {

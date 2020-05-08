@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {
   StyleSheet,
   Dimensions,
-  Image,
   View,
   Alert,
   TouchableOpacity,
@@ -17,8 +16,9 @@ import Slider from '../components/HomeScreenComponent/Slider';
 import UserName from '../components/UserName';
 import Promo from '../components/HomeScreenComponent/Promo';
 import RunningText from '../components/HomeScreenComponent/RunningText';
+import Header from '../components/HomeScreenComponent/Header';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -62,45 +62,10 @@ const HomeScreen = (props) => {
 
   return (
     <Layout style={styl.screen}>
-      <View style={styl.header}>
-        <View style={styl.menu}>
-          {state.isLogin && (
-            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Icon
-                style={{ width: 32, height: 32 }}
-                fill='white'
-                name='menu'
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styl.title}>
-          <Image
-            source={require('../assets/images/login-image.png')}
-            style={{ width: width * 0.09, height: width * 0.09 }}
-          />
-          <Text
-            category='h6'
-            numberOfLines={2}
-            style={{ textAlign: 'center', marginLeft: 8, color: 'white' }}
-          >
-            RS Jakarta Mobile
-          </Text>
-        </View>
-        <View style={styl.menu}>
-          <TouchableOpacity onPress={() => {}}>
-            <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Header isLogin={state.isLogin} />
 
-      <ScrollView
-        style={{ height: height, marginBottom: 30 }}
-        // contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <Layout>
-          <Slider />
-        </Layout>
+      <ScrollView style={{ height: height, marginBottom: 30 }}>
+        <Slider />
 
         {state.isLogin && (
           <Layout style={{ marginLeft: 15 }}>
@@ -160,6 +125,7 @@ const HomeScreen = (props) => {
           </Layout>
         </TouchableOpacity>
       </ScrollView>
+
       <RunningText />
     </Layout>
   );
@@ -171,20 +137,6 @@ const styl = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf2f2',
   },
-  header: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    backgroundColor: 'rgb(7,94,85)',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  title: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -195,9 +147,6 @@ const styl = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 10,
-  },
-  menu: {
-    // width: '15%',
   },
 });
 
