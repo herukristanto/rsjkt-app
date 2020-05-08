@@ -100,6 +100,7 @@ const LoginScreen = () => {
             finalStatus = status;
           }
           if (finalStatus !== 'granted') {
+            setLoading(false);
             Alert.alert(
               'Error',
               'Failed to get push token for push notification!',

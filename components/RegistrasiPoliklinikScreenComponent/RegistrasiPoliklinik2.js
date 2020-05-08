@@ -33,9 +33,9 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
       // QR Code String Encoding (Use base64 Hash)
       const string = `${state.form.namaPasien}:${moment(
         state.form.tanggalLahir
-      ).format('YYYY-MM-DD')}:${state.form._label_dokter}:${
+      ).format('YYYY-MM-DD')}:${state.form._label_dokter}:${moment(
         state.form.tanggal.date
-      }:${state.daftarJadwal[0].poli}`;
+      ).format('YYYY-MM-DD')}:${state.daftarDokter[0].Poli_nm.trim()}`;
       const encode = base64.encode(string);
       // TODO Send to antrian
 

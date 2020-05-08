@@ -30,6 +30,7 @@ import FeedbackScreen from '../screens/FeedbackScreen';
 import LokasiScreen from '../screens/LokasiScreen';
 import ListPoliklinikScreen from '../screens/ListPoliklinikScreen';
 import JadwalDokterScreen from '../screens/JadwalDokterScreen';
+import ListPromoScreen from '../screens/ListPromoScreen';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -122,6 +123,25 @@ const HomeStackNavigator = () => {
         options={({ navigation }) => {
           return {
             headerTitle: 'Promo',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+                <Icon
+                  style={{ width: 24, height: 24 }}
+                  fill='yellow'
+                  name='bell'
+                />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: 'center',
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='ListPromo'
+        component={ListPromoScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'List Promo',
             headerRight: () => (
               <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
                 <Icon

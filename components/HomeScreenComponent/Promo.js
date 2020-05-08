@@ -94,13 +94,16 @@ const Promo = () => {
             Promo yang sedang berlangsung
           </Text>
         </Layout>
-        <Layout style={styles.iconContainer}>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => navigation.navigate('ListPromo', { data: sliders })}
+        >
           <Icon
             style={{ width: 24, height: 24 }}
             name='arrow-ios-forward'
             fill='rgb(7,94,85)'
           />
-        </Layout>
+        </TouchableOpacity>
       </Layout>
       <FlatList
         contentContainerStyle={{
@@ -127,6 +130,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     justifyContent: 'center',
+    paddingHorizontal: 10,
   },
 });
 
