@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { mapping, light as LightTheme } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import * as Updates from 'expo-updates';
-import NetInfo from '@react-native-community/netinfo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import { View, Text } from 'react-native';
+import { Image } from 'react-native';
+import { AppLoading } from 'expo';
 
 import { default as appTheme } from './assets/theme.json';
 const theme = { ...LightTheme, ...appTheme };
@@ -29,68 +28,41 @@ const images = [
 const strictTheme = { ['text-font-family']: 'calibri' };
 const customMapping = { strict: strictTheme };
 
+function cacheImages(images) {
+  return images.map((image) => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
+
+function cacheFonts(fonts) {
+  return fonts.map((font) => Font.loadAsync(font));
+}
+
 export default function App() {
-  const [checkUpdate, setCheckUpdate] = useState(true);
-  const [isNew, setIsNew] = useState(false);
-  const [error, setError] = useState();
+  const [isReady, setIsReady] = useState(false);
 
-  const handleResourceAsync = async () => {
-    const cacheImages = images.map((img) => {
-      return Asset.fromModule(img).downloadAsync();
-    });
+  const loadAssetsAsync = async () => {
+    const imageAssets = cacheImages(images);
+    const fontAssets = cacheFonts([
+      {
+        calibri: require('./assets/fonts/Calibri-Regular.ttf'),
+      },
+    ]);
 
-    return Promise.all(cacheImages);
+    await Promise.all([...imageAssets, ...fontAssets]);
   };
 
-  useEffect(() => {
-    const checkAndUpdate = async () => {
-      try {
-        await handleResourceAsync();
-        await Font.loadAsync({
-          calibri: require('./assets/fonts/Calibri-Regular.ttf'),
-        });
-
-        if (!__DEV__) {
-          // Run only on Prod
-          const update = await Updates.checkForUpdateAsync();
-          if (update.isAvailable) {
-            setIsNew(true);
-            await Updates.fetchUpdateAsync();
-            await Updates.reloadAsync();
-          } else {
-            setCheckUpdate(false);
-          }
-        } else {
-          setCheckUpdate(false);
-        }
-      } catch (error) {
-        setError(JSON.stringify(error, null, 2));
-        return;
-      }
-    };
-    NetInfo.fetch().then((state) => {
-      if (state.isConnected && state.isInternetReachable) {
-        checkAndUpdate();
-      } else {
-        setError('No Internet Connection');
-        return;
-      }
-    });
-  }, []);
-
-  if (checkUpdate) {
-    let status;
-    if (error) {
-      status = error;
-    } else if (isNew) {
-      status = 'Updating...';
-    } else {
-      status = 'Loading...';
-    }
+  if (!isReady) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{status}</Text>
-      </View>
+      <AppLoading
+        startAsync={loadAssetsAsync}
+        onFinish={() => setIsReady(true)}
+        onError={console.warn}
+      />
     );
   }
 

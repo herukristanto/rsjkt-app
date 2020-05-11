@@ -13,10 +13,10 @@ import moment from 'moment';
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 
-import { AppContext } from '../context/AppContext';
-import { LOGOUT } from '../reducer/AppReducer';
-import { getUnique } from '../utils/helpers';
-import { baseAxios } from '../utils/useAxios';
+import { AppContext } from '../../context/AppContext';
+import { LOGOUT } from '../../reducer/AppReducer';
+import { getUnique } from '../../utils/helpers';
+import { baseAxios } from '../../utils/useAxios';
 
 const { width } = Dimensions.get('screen');
 
@@ -122,7 +122,7 @@ const DokterScreen = () => {
         </View>
         <View style={styles.title}>
           <Image
-            source={require('../assets/images/login-image.png')}
+            source={require('../../assets/images/login-image.png')}
             style={{ width: width * 0.09, height: width * 0.09 }}
           />
           <Text

@@ -12,10 +12,10 @@ import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 import NetInfo from '@react-native-community/netinfo';
 
-import Header from '../components/Header';
-import { AppContext } from '../context/AppContext';
-import { baseAxios } from '../utils/useAxios';
-import ModalStatus from '../components/ListPraktekScreenComponent/ModalStatus';
+import Header from '../../components/Header';
+import { AppContext } from '../../context/AppContext';
+import { baseAxios } from '../../utils/useAxios';
+import ModalStatus from '../../components/ListPraktekScreenComponent/ModalStatus';
 
 const { width } = Dimensions.get('screen');
 
@@ -75,7 +75,7 @@ const ListPraktekScreen = () => {
       <TouchableOpacity style={styles.jadwal} onPress={() => handleModal(data)}>
         <Text>{moment(data.Tanggal).format('DD/MM/YYYY')}</Text>
         {data.Status && (
-          <Avatar source={require('../assets/icon/status.png')} size='medium' />
+          <Avatar source={require('../../assets/icon/status.png')} size='medium' />
         )}
       </TouchableOpacity>
     );

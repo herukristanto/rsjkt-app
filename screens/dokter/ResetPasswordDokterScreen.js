@@ -12,11 +12,11 @@ import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Formik } from 'formik';
 
-import InputText from '../components/InputText';
-import InputButton from '../components/InputButton';
-import { AppContext } from '../context/AppContext';
-import { baseAxios } from '../utils/useAxios';
-import LoadingOverlay from '../components/LoadingOverlay';
+import InputText from '../../components/InputText';
+import InputButton from '../../components/InputButton';
+import { AppContext } from '../../context/AppContext';
+import { baseAxios } from '../../utils/useAxios';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 const { width } = Dimensions.get('screen');
 
@@ -85,7 +85,7 @@ const ResetPasswordDokterScreen = () => {
         </View>
         <View style={styles.title}>
           <Image
-            source={require('../assets/images/login-image.png')}
+            source={require('../../assets/images/login-image.png')}
             style={{ width: width * 0.09, height: width * 0.09 }}
           />
           <Text
