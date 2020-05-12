@@ -22,6 +22,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
 import { AppContext } from '../context/AppContext';
+import { LOGOUT } from '../reducer/AppReducer';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
