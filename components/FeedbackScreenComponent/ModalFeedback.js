@@ -27,10 +27,9 @@ const ModalFeedback = ({ showModal, dataModal, handleClose }) => {
         return;
       }
 
-      // ! Fix General Key
       const request = {
         rm: dataModal.Nomor_Cm,
-        generalkey: dataModal.Generalkey || 1234, // Dummy General Key
+        generalkey: dataModal.No_reg,
         poli_id: dataModal.Poli_id,
         dokter_id: dataModal.Dokter_id,
         tgl_pesan: dataModal.Tgl_Pesan,
@@ -57,14 +56,18 @@ const ModalFeedback = ({ showModal, dataModal, handleClose }) => {
     handleClose();
   };
 
-  const StarFeedback = () => {
+  const StarFeedback = ({ starFeedback }) => {
     const stars = [1, 2, 3, 4, 5];
     return (
       <Layout style={styles.starsContainer}>
         {stars.map((star) => {
           return (
-            <TouchableOpacity key={star} onPress={() => handleSubmit(star)}>
-              {star <= feedback ? (
+            <TouchableOpacity
+              key={star}
+              disabled={starFeedback ? true : false}
+              onPress={() => handleSubmit(star)}
+            >
+              {star <= feedback || star <= starFeedback ? (
                 <Icon name='star' width={32} height={32} fill='#ffcc00' />
               ) : (
                 <Icon name='star-outline' width={32} height={32} />
@@ -97,15 +100,15 @@ const ModalFeedback = ({ showModal, dataModal, handleClose }) => {
         </Layout>
         <Layout style={styles.textContainer}>
           <Text style={{ width: '20%' }}>Dokter</Text>
-          <Text>: {dataModal.Dokter_nm}</Text>
+          <Text>: {dataModal.dokter_nm}</Text>
         </Layout>
         <Layout style={styles.textContainer}>
           <Text style={{ width: '20%' }}>No. Reg</Text>
-          <Text>: No. Reg Dummy</Text>
+          <Text>: {dataModal.Generalkey}</Text>
         </Layout>
         <Divider />
 
-        <StarFeedback />
+        <StarFeedback starFeedback={dataModal.Feedback} />
       </Layout>
       {loading && <LoadingOverlay />}
     </Modal>

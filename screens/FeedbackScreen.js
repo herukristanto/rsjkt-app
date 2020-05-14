@@ -76,7 +76,7 @@ const FeedbackScreen = () => {
           <Layout style={{ flexDirection: 'row' }}>
             <Text style={{ width: '30%', fontWeight: 'bold' }}>Dokter</Text>
             <Text style={{ width: '70%', fontWeight: 'bold' }}>
-              : {data.Dokter_nm}
+              : {data.dokter_nm.trim()}
             </Text>
           </Layout>
           <Text>
@@ -117,7 +117,7 @@ const FeedbackScreen = () => {
 
       <ScrollView>
         {dataFeedback.map((data) => (
-          <List data={data} key={data.RegOL_ID} />
+          <List data={data} key={data.ID} />
         ))}
       </ScrollView>
     </Layout>

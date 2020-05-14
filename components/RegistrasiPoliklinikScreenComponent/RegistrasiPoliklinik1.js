@@ -80,7 +80,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         _label_perusahaan: namaPerusahaan,
         noRekamMedis: state.form.noRekamMedis,
         tanggalLahir: state.form.tanggalLahir,
-        noKartu: state.form.noKartu,
       },
     });
     setStep((prevStep) => prevStep + 1);
@@ -131,14 +130,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText
-            name='noKartu'
-            label='No Kartu'
-            disabled
-            placeholder={state.form.noKartu}
-            placeholderTextColor='black'
-            style={{ backgroundColor: '#FEFDCB' }}
-          />
+          <InputText name='noKartu' label='No Kartu' />
         </Layout>
       </>
     );
@@ -160,6 +152,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         jaminan: state.form.jaminan,
         perusahaan: state.form.perusahaan,
         _label_perusahaan: state.form._label_perusahaan,
+        noKartu: state.form.noKartu,
       }}
       onSubmit={handleForm}
       enableReinitialize
