@@ -8,7 +8,8 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { baseAxios } from '../utils/useAxios';
 
 const { width } = Dimensions.get('window');
 
@@ -38,12 +39,17 @@ const dummyImage = [
 const ListPromoScreen = () => {
   const [promo, setPromo] = useState([]);
   const [loading, setLoading] = useState(true);
-  const route = useRoute();
   const navigation = useNavigation();
 
   const getSize = async () => {
     try {
-      const images = route.params.data;
+      const { data } = await baseAxios.get('/get', {
+        params: {
+          p: 'promo',
+        },
+      });
+
+      const images = data;
       // const images = dummyImage;
       for (let index = 0; index < images.length; index++) {
         const promise = new Promise(

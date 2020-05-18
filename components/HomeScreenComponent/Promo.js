@@ -92,7 +92,7 @@ const Promo = () => {
         </Layout>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => navigation.navigate('ListPromo', { data: sliders })}
+          onPress={() => navigation.navigate('ListPromo')}
         >
           <Icon
             style={{ width: 24, height: 24 }}
