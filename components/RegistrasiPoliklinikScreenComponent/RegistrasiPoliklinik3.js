@@ -14,6 +14,7 @@ import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
 import * as Sharing from 'expo-sharing';
 import base64 from 'react-native-base64';
+import ViewShot from 'react-native-view-shot';
 
 import { AppContext } from '../../context/AppContext';
 import { PoliklinikContext } from '../../context/PoliklinikContext';
@@ -25,7 +26,8 @@ const RegistrasiPoliklinik3 = () => {
   const { state: stateApp } = useContext(AppContext);
   const { state } = useContext(PoliklinikContext);
   const qrcode = useRef();
-  const [qrBase64, setQrBase64] = useState();
+  const ssRef = useRef();
+  const [ssBase64, setSsBase64] = useState();
 
   // Testing Only
   // const encode = base64.encode(
@@ -34,12 +36,11 @@ const RegistrasiPoliklinik3 = () => {
 
   useEffect(() => {
     navigation.setParams({ title: 'QR CODE' });
-    async function saveQrCode() {
-      qrcode.current.toDataURL(async (data) => {
-        setQrBase64(data);
-      });
+    async function setSs() {
+      const result = await ssRef.current.capture();
+      setSsBase64(result);
     }
-    saveQrCode();
+    setSs();
   }, []);
 
   const handleHome = () => {
@@ -61,7 +62,7 @@ const RegistrasiPoliklinik3 = () => {
           FileSystem.cacheDirectory
         }qrcode/qrcode-${moment().format('YYYY-MM-DD')}.png`;
 
-        await FileSystem.writeAsStringAsync(file, qrBase64, {
+        await FileSystem.writeAsStringAsync(file, ssBase64, {
           encoding: FileSystem.EncodingType.Base64,
         });
 
@@ -102,12 +103,12 @@ const RegistrasiPoliklinik3 = () => {
         'YYYY-MM-DD'
       )}.png`;
 
-      await FileSystem.writeAsStringAsync(file, qrBase64, {
+      await FileSystem.writeAsStringAsync(file, ssBase64, {
         encoding: FileSystem.EncodingType.Base64,
       });
       await MediaLibrary.saveToLibraryAsync(file);
 
-      ToastAndroid.show('QR Code Berhasil Disimpan', ToastAndroid.SHORT);
+      ToastAndroid.show('Tersimpan di Galeri', ToastAndroid.SHORT);
     } catch (error) {
       Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
     }
@@ -115,48 +116,54 @@ const RegistrasiPoliklinik3 = () => {
 
   return (
     <React.Fragment>
-      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
-        <Text style={{ width: width * 0.4 }}>Medical Record</Text>
-        <Text style={{ width: width * 0.5 }}>: {stateApp.user.nomor_cm}</Text>
-      </Layout>
-      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
-        <Text style={{ width: width * 0.4 }}>Poli Tujuan</Text>
-        <Text style={{ width: width * 0.4 }}>
-          : {state.daftarDokter[0].Poli_nm.trim()}
-        </Text>
-      </Layout>
-      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
-        <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
-        <Text style={{ width: width * 0.5 }}>
-          {`: ${state.form.tanggal.hari}, ${moment(
-            state.form.tanggal.date
-          ).format('DD MMMM YYYY')}`}
-        </Text>
-      </Layout>
-      <Layout style={[styles.desc, { flexDirection: 'row' }]}>
-        <Text style={{ width: width * 0.4 }}>No Antrian</Text>
-        <Text style={{ width: width * 0.5 }}>: {state.noAntrian}</Text>
-      </Layout>
-      <Layout style={styles.qrCode}>
-        <QRCode
-          // value={encode}
-          value={state.form.qrCode}
-          size={width * 0.65}
-          getRef={qrcode}
-        />
-      </Layout>
-      <Layout style={styles.form}>
-        <Text style={{ fontWeight: 'bold' }} category='h6'>
-          Kode Booking
-        </Text>
-      </Layout>
-      <Layout style={styles.form}>
-        <Layout style={styles.bookingContainer}>
-          <Text style={{ fontWeight: 'bold' }} category='h6'>
-            {state.kodeBooking}
+      <ViewShot
+        ref={ssRef}
+        options={{ result: 'base64' }}
+        style={styles.container}
+      >
+        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Medical Record</Text>
+          <Text style={{ width: width * 0.5 }}>: {stateApp.user.nomor_cm}</Text>
+        </Layout>
+        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Poli Tujuan</Text>
+          <Text style={{ width: width * 0.4 }}>
+            : {state.daftarDokter[0].Poli_nm.trim()}
           </Text>
         </Layout>
-      </Layout>
+        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
+          <Text style={{ width: width * 0.5 }}>
+            {`: ${state.form.tanggal.hari}, ${moment(
+              state.form.tanggal.date
+            ).format('DD MMMM YYYY')}`}
+          </Text>
+        </Layout>
+        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>No Antrian</Text>
+          <Text style={{ width: width * 0.5 }}>: {state.noAntrian}</Text>
+        </Layout>
+        <Layout style={styles.qrCode}>
+          <QRCode
+            // value={encode}
+            value={state.form.qrCode}
+            size={width * 0.65}
+            getRef={qrcode}
+          />
+        </Layout>
+        <Layout style={styles.form}>
+          <Text style={{ fontWeight: 'bold' }} category='h6'>
+            Kode Booking
+          </Text>
+        </Layout>
+        <Layout style={styles.form}>
+          <Layout style={styles.bookingContainer}>
+            <Text style={{ fontWeight: 'bold' }} category='h6'>
+              {state.kodeBooking}
+            </Text>
+          </Layout>
+        </Layout>
+      </ViewShot>
       <Layout style={styles.icons}>
         <TouchableOpacity onPress={handleHome}>
           <Icon style={styles.icon} name='home-outline' />
@@ -173,6 +180,12 @@ const RegistrasiPoliklinik3 = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#ecf0f1',
+  },
   form: {
     width: '70%',
     marginVertical: 2,
