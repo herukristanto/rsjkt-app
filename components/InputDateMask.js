@@ -23,7 +23,7 @@ const InputDateMask = ({ name, ...props }) => {
           styles.form,
           { borderColor: error && touch ? 'red' : '#E4E9F2' },
         ]}
-        placeholder='22/01/1997'
+        placeholder='dd/mm/yyyy'
         placeholderTextColor='#C5CEE0'
       />
       {error && touch ? <Text style={styles.textHelp}>{error}</Text> : null}
