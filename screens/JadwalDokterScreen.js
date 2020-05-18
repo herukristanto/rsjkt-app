@@ -1,14 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Text, Spinner, Icon, Avatar } from '@ui-kitten/components';
-import { StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import React, { useEffect, useState, useContext } from 'react';
+import {
+  Layout,
+  Text,
+  Spinner,
+  Icon,
+  Avatar,
+  Button,
+} from '@ui-kitten/components';
+import {
+  StyleSheet,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Share,
+} from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 
 import { baseAxios } from '../utils/useAxios';
 import { getUnique } from '../utils/helpers';
 import Header from '../components/ListPoliklinikScreenComponent/Header';
+import { AppContext } from '../context/AppContext';
 
 const JadwalDokterScreen = () => {
+  const { state: stateApp } = useContext(AppContext);
   const [daftarDokter, setDaftarDokter] = useState();
   const [dokterId, setDokterId] = useState();
   const [jadwalDokter, setJadwalDokter] = useState();
@@ -17,6 +32,7 @@ const JadwalDokterScreen = () => {
   const [error, setError] = useState(false);
   const [title, setTitle] = useState('');
   const route = useRoute();
+  const navigation = useNavigation();
 
   useEffect(() => {
     setTitle(route.params.data.poli_nm);
@@ -76,6 +92,35 @@ const JadwalDokterScreen = () => {
     }
   };
 
+  const handleRegistrasi = (data) => {
+    if (!stateApp.isLogin) {
+      Alert.alert(
+        'Peringatan',
+        'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
+        [{ text: 'Oke' }]
+      );
+      return;
+    }
+    navigation.navigate('RegistrasiPoliklinik', {
+      dataDokter: data,
+    });
+  };
+
+  const handleShare = async (data) => {
+    try {
+      const result = await Share.share({
+        message: `Hi! Buat janji dengan ${data.Dokter_nm.trim()} - Tanpa antri, langsung konsultasi. Klik https://google.com`,
+      });
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Something Wrong! Please Contact Customer Service!',
+        [{ text: 'Oke' }]
+      );
+      return;
+    }
+  };
+
   if (!daftarDokter) {
     return (
       <Layout
@@ -105,8 +150,13 @@ const JadwalDokterScreen = () => {
             <Text category='h6' style={styles.dokterName}>
               {data.Dokter_nm.trim()}
             </Text>
+            <Text style={styles.dokterDesc}>{data.Poli_nm.trim()}</Text>
+            <Text style={styles.dokterDesc}>FK. Univ Airlangga 1995</Text>
+            <Text style={styles.dokterDesc}>
+              FK Spesialis Penyakit Dalam UI 2000
+            </Text>
           </Layout>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.iconContainer}
             onPress={() => getJadwal(data.Dokter_ID)}
           >
@@ -115,9 +165,31 @@ const JadwalDokterScreen = () => {
               name='arrow-ios-downward'
               fill='rgb(7,94,85)'
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </Layout>
-        {dokterId == data.Dokter_ID && (
+        <Layout style={styles.footer}>
+          <Layout style={styles.yearContainer}>
+            <Icon name='briefcase' width={24} height={24} fill='#A0A0A0' />
+            <Text>10 tahun</Text>
+          </Layout>
+          <Layout style={styles.buttonContainer}>
+            <Button
+              status='success'
+              size='small'
+              onPress={() => handleShare(data)}
+            >
+              SHARE
+            </Button>
+            <Button
+              status='success'
+              size='small'
+              onPress={() => handleRegistrasi(data)}
+            >
+              REGISTRASI
+            </Button>
+          </Layout>
+        </Layout>
+        {/* {dokterId == data.Dokter_ID && (
           <Layout>
             <Layout
               key={data.Dokter_ID}
@@ -162,7 +234,7 @@ const JadwalDokterScreen = () => {
               </Layout>
             ))}
           </Layout>
-        )}
+        )} */}
       </Layout>
     );
   };
@@ -184,16 +256,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+    borderColor: '#A0A0A0',
+    borderWidth: 1,
+    borderRadius: 5,
     marginHorizontal: 10,
+    marginVertical: 5,
+    elevation: 5,
+    backgroundColor: 'white',
   },
   dokterContainer: {
     flexDirection: 'row',
+    marginVertical: 10,
+    backgroundColor: 'white',
   },
   avatarContainer: {
     alignSelf: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '25%',
   },
   avatar: {
     margin: 8,
@@ -201,10 +281,33 @@ const styles = StyleSheet.create({
   namaContainer: {
     justifyContent: 'center',
     width: '75%',
+    backgroundColor: 'white',
   },
   dokterName: {
-    marginVertical: 10,
     marginLeft: 15,
+  },
+  dokterDesc: {
+    marginLeft: 15,
+    color: 'grey',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    marginHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  yearContainer: {
+    width: '40%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '60%',
+    backgroundColor: 'white',
   },
   iconContainer: {
     justifyContent: 'center',

@@ -139,7 +139,6 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
   if (state.isLoading) {
     return <Spinner status='success' />;
   }
-  console.log(state.form);
 
   return (
     <Formik

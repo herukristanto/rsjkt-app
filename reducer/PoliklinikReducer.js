@@ -44,6 +44,8 @@ export const PoliklinikReducer = (state = initialState, action) => {
         daftarPoli: action.daftarPoli,
         daftarPenjamin: action.daftarPenjamin,
         daftarPerusahaan: action.daftarPerusahaan,
+        daftarDokter: action.daftarDokter,
+        daftarJadwal: action.daftarJadwal,
         form: {
           ...state.form,
           ...action.user,

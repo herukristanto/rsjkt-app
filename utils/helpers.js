@@ -36,3 +36,35 @@ export const useDidMountEffect = (func, deps) => {
 //   }
 //   return date;
 // };
+
+export const getJadwalFromDokter = (daftarDokter, dokter) => {
+  const rawJadwal = daftarDokter.map((item) => {
+    if (item.Dokter_ID === dokter) {
+      const hari = moment(item.Tanggal).format('dddd');
+      return {
+        hari: hari,
+        jamAwal: item.Jam_AwalFix.trim(),
+        jamAkhir: item.Jam_AkhirFix.trim(),
+        dayOfWeek: item.DayofWeek,
+        date: item.Tanggal,
+        TidakPraktek: item.TidakPraktek,
+        color: item.TidakPraktek ? 'red' : 'black',
+        label: `${hari}, ${moment(item.Tanggal).format(
+          'DD/MM/YYYY'
+        )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+        value: `${hari}, ${moment(item.Tanggal).format(
+          'DD/MM/YYYY'
+        )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,
+      };
+    }
+    return;
+  });
+  const filteredJadwal = rawJadwal.filter(Boolean);
+  filteredJadwal.sort(
+    (a, b) =>
+      new moment(a.date).format('YYYYMMDD') -
+      new moment(b.date).format('YYYYMMDD')
+  );
+
+  return filteredJadwal;
+};

@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect, useContext } from 'react';
 import moment from 'moment';
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import {
   PoliklinikReducer,
@@ -10,7 +10,7 @@ import {
 } from '../reducer/PoliklinikReducer';
 import { initialState } from '../reducer/PoliklinikReducer';
 import { baseAxios } from '../utils/useAxios';
-import { getUnique } from '../utils/helpers';
+import { getUnique, getJadwalFromDokter } from '../utils/helpers';
 import { AppContext } from './AppContext';
 
 export const PoliklinikContext = createContext();
@@ -19,6 +19,7 @@ export const PoliklinikContextProvider = ({ children }) => {
   const { state: stateApp } = useContext(AppContext);
   const [state, dispatch] = useReducer(PoliklinikReducer, initialState);
   const navigation = useNavigation();
+  const route = useRoute();
 
   const getPoli = async () => {
     try {
@@ -81,12 +82,43 @@ export const PoliklinikContextProvider = ({ children }) => {
         };
       });
 
+      // Data Dokter from JadwalDokter Screen
+      let daftarJadwal = [];
+      let daftarDokter = [];
+      let poliklinik = '';
+      let dokter = '';
+      let _label_dokter = '';
+      if (route.params) {
+        const dataDokter = route.params.dataDokter;
+        const rawDokter = data.map((item) => {
+          if (item.Poli_ID === dataDokter.Poli_ID) {
+            return {
+              ...item,
+              value: item.Dokter_ID,
+              label: item.Dokter_nm.trim(),
+            };
+          }
+        });
+
+        const filteredDokter = rawDokter.filter(Boolean);
+        daftarDokter = filteredDokter;
+        daftarJadwal = getJadwalFromDokter(
+          filteredDokter,
+          dataDokter.Dokter_ID
+        );
+        poliklinik = dataDokter.Poli_ID;
+        dokter = dataDokter.Dokter_ID;
+        _label_dokter = dataDokter.Dokter_nm.trim();
+      }
+
       dispatch({
         type: GET_DAFTAR_PRAKTER,
         daftarPraktek: data,
         daftarPoli: poliData,
         daftarPenjamin: penjaminData,
         daftarPerusahaan: anakPenjaminData,
+        daftarDokter: daftarDokter,
+        daftarJadwal: daftarJadwal,
         user: {
           namaPasien: stateApp.user.namaPasien,
           noRekamMedis: `${stateApp.user.nomor_cm}`,
@@ -97,6 +129,9 @@ export const PoliklinikContextProvider = ({ children }) => {
           _label_jaminan: namaPenjamin.label,
           _label_perusahaan: namaAnakPenjamin.NM_AnakJMN,
           telp: stateApp.user.Hand_phone.trim(),
+          poliklinik: poliklinik,
+          dokter: dokter,
+          _label_dokter: _label_dokter,
         },
       });
       return;
