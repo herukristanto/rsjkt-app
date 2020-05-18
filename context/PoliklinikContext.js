@@ -38,6 +38,35 @@ export const PoliklinikContextProvider = ({ children }) => {
         };
       });
 
+      let anakPenjaminData = [];
+      let namaAnakPenjamin = '';
+      let namaPenjamin = '';
+      if (stateApp.user.kd_jaminan.trim() !== '') {
+        const { data: dataAnakPenjamin } = await baseAxios.get(
+          '/anakpenjamin',
+          {
+            params: {
+              kd_jaminan: stateApp.user.kd_jaminan.trim(),
+            },
+          }
+        );
+        anakPenjaminData = dataAnakPenjamin.map((anakPenjamin) => {
+          return {
+            value: anakPenjamin.kd_anakjmn.trim(),
+            label: anakPenjamin.NM_AnakJMN.trim(),
+          };
+        });
+        namaAnakPenjamin = dataAnakPenjamin.find(
+          (anakPenjamin) =>
+            anakPenjamin.kd_anakjmn === stateApp.user.kd_anakjmn.trim()
+        );
+      }
+      if (stateApp.user.kd_jaminan.trim() !== '') {
+        namaPenjamin = penjaminData.find(
+          (jaminan) => jaminan.value === stateApp.user.kd_jaminan.trim()
+        );
+      }
+
       const { data } = await baseAxios.get('/daftar_praktek', {
         params: {
           key: 'rsjkt4231',
@@ -57,11 +86,16 @@ export const PoliklinikContextProvider = ({ children }) => {
         daftarPraktek: data,
         daftarPoli: poliData,
         daftarPenjamin: penjaminData,
+        daftarPerusahaan: anakPenjaminData,
         user: {
           namaPasien: stateApp.user.namaPasien,
           noRekamMedis: `${stateApp.user.nomor_cm}`,
           tanggalLahir: moment(stateApp.user.Tgl_lahir),
-          noKartu: stateApp.user.nm_jaminan.trim(),
+          noKartu: stateApp.user.no_kartu.trim(),
+          jaminan: stateApp.user.kd_jaminan.trim(),
+          perusahaan: stateApp.user.kd_anakjmn.trim(),
+          _label_jaminan: namaPenjamin.label,
+          _label_perusahaan: namaAnakPenjamin.NM_AnakJMN,
           telp: stateApp.user.Hand_phone.trim(),
         },
       });

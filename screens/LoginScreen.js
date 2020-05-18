@@ -130,7 +130,9 @@ const LoginScreen = () => {
               nomor_cm: data.nomor_cm,
               namaPasien: data.namaPasien,
               Tgl_lahir: data.Tgl_lahir,
-              nm_jaminan: data.nm_jaminan,
+              kd_jaminan: data.kd_jaminan,
+              kd_anakjmn: data.kd_anakjmn,
+              no_kartu: data.no_kartu,
               Hand_phone: data.Hand_phone,
               role: 'pasien',
             };
