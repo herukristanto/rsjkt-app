@@ -5,7 +5,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
 } from 'react-native';
-import { Layout, Button, Icon } from '@ui-kitten/components';
+import { Layout, Button, Icon, Text } from '@ui-kitten/components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 
@@ -217,6 +217,16 @@ const HomeDrawerNavigator = () => {
     navigation.closeDrawer();
   };
 
+  const handlePromo = (props) => {
+    const { navigation } = props;
+    navigation.navigate('ListPromo');
+  };
+
+  const handleJadwalDokter = (props) => {
+    const { navigation } = props;
+    navigation.navigate('ListPoliklinik');
+  };
+
   return (
     <HomeDrawer.Navigator
       drawerContent={(props) => {
@@ -228,9 +238,41 @@ const HomeDrawerNavigator = () => {
                 labelStyle={{ fontFamily: 'calibri', fontSize: 16 }}
               />
               {state.isLogin && (
-                <Button status='success' onPress={() => handleLogout(props)}>
-                  Logout
-                </Button>
+                <>
+                  <TouchableOpacity
+                    style={{
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingVertical: 15,
+                    }}
+                    onPress={() => handleLogout(props)}
+                  >
+                    <Text style={{ color: 'rgb(7,94,85)' }}>Logout</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingVertical: 15,
+                    }}
+                    onPress={() => handlePromo(props)}
+                  >
+                    <Text style={{ color: 'rgb(7,94,85)' }}>Promo</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingVertical: 15,
+                    }}
+                    onPress={() => handleJadwalDokter(props)}
+                  >
+                    <Text style={{ color: 'rgb(7,94,85)' }}>Jadwal Dokter</Text>
+                  </TouchableOpacity>
+                </>
               )}
             </SafeAreaView>
           </Layout>
