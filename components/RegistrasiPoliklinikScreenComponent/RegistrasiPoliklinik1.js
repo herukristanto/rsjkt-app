@@ -17,6 +17,7 @@ import InputButton from '../InputButton';
 import { baseAxios } from '../../utils/useAxios';
 import InputDokter from './InputDokter';
 import SelectJadwal from './SelectJadwal';
+import SelectJaminan from './SelectJaminan';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
@@ -114,11 +115,11 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
       <>
         <Layout style={styles.form}>
           <Text style={styles.label}>Jaminan</Text>
-          <InputSelect
-            placeholder='Pilih Jaminan'
+          <SelectJaminan
             items={state.daftarPenjamin}
+            placeholder='Pilih/Cari Jaminan'
             name='jaminan'
-            additionalHandler={handlePenjamin}
+            handlePenjamin={handlePenjamin}
           />
         </Layout>
         <Layout style={styles.form}>
@@ -150,12 +151,12 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         _label_tanggal: state.form._label_tanggal,
         status: state.form.status,
         jaminan: state.form.jaminan,
+        _label_jaminan: state.form._label_jaminan,
         perusahaan: state.form.perusahaan,
         _label_perusahaan: state.form._label_perusahaan,
         noKartu: state.form.noKartu,
       }}
       onSubmit={handleForm}
-      enableReinitialize
       validate={onValidate}
     >
       {(props) => (
