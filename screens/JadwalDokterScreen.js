@@ -39,19 +39,15 @@ const JadwalDokterScreen = () => {
     setError(false);
     const loadPoli = async () => {
       try {
-        const { data: dataPraktek } = await baseAxios.get('/daftar_praktek', {
+        const poliId = route.params.data.poli_id;
+        const { data: dataPraktek } = await baseAxios.get('/DrProfile', {
           params: {
-            key: 'rsjkt4231',
+            poli: poliId,
           },
         });
-        const poliId = route.params.data.poli_id;
-        const rawDokter = dataPraktek.filter(
-          (dokter) => dokter.Poli_ID === poliId
-        );
-        const dokterUnique = getUnique(rawDokter, 'Dokter_nm');
-        setRawJadwalDokter(rawDokter);
-        setDaftarDokter(dokterUnique);
-        setAllDokter(dokterUnique);
+        setRawJadwalDokter(dataPraktek.Data);
+        setDaftarDokter(dataPraktek.Data);
+        setAllDokter(dataPraktek.Data);
       } catch (error) {
         Alert.alert(
           'Error',
@@ -140,9 +136,10 @@ const JadwalDokterScreen = () => {
         <Layout style={styles.dokterContainer}>
           <Layout style={styles.avatarContainer}>
             <Avatar
-              source={{ uri: data.img }}
-              width={30}
-              height={30}
+              source={{ uri: data.Img }}
+              // width={30}
+              // height={30}
+              size='giant'
               style={styles.avatar}
             />
           </Layout>
@@ -151,10 +148,8 @@ const JadwalDokterScreen = () => {
               {data.Dokter_nm.trim()}
             </Text>
             <Text style={styles.dokterDesc}>{data.Poli_nm.trim()}</Text>
-            <Text style={styles.dokterDesc}>FK. Univ Airlangga 1995</Text>
-            <Text style={styles.dokterDesc}>
-              FK Spesialis Penyakit Dalam UI 2000
-            </Text>
+            <Text style={styles.dokterDesc}>{data.S1}</Text>
+            <Text style={styles.dokterDesc}>{data.S2}</Text>
           </Layout>
           {/* <TouchableOpacity
             style={styles.iconContainer}
@@ -170,7 +165,7 @@ const JadwalDokterScreen = () => {
         <Layout style={styles.footer}>
           <Layout style={styles.yearContainer}>
             <Icon name='briefcase' width={24} height={24} fill='#A0A0A0' />
-            <Text>10 tahun</Text>
+            <Text>{data.LamaBekerjaTahun} tahun</Text>
           </Layout>
           <Layout style={styles.buttonContainer}>
             <Button
@@ -270,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   avatarContainer: {
-    alignSelf: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     width: '25%',
