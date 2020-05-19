@@ -113,7 +113,7 @@ const ListPromoScreen = () => {
           const ratio = width / data.width;
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Promo')}
+              onPress={() => navigation.navigate('Promo', { promo: data })}
               key={data.id}
             >
               <Image

@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Text, Spinner } from '@ui-kitten/components';
-import { StyleSheet, Image, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Image, Dimensions, Alert, ScrollView } from 'react-native';
 
 import { baseAxios } from '../utils/useAxios';
+import { useRoute } from '@react-navigation/native';
 
 const { width } = Dimensions.get('screen');
 
 const PromoScreen = () => {
   const [promo, setPromo] = useState();
   const [error, setError] = useState(false);
+  const route = useRoute();
 
   useEffect(() => {
     setError(false);
     const loadSliders = async () => {
       try {
-        const { data: dataSlider } = await baseAxios.get('/get', {
-          params: {
-            p: 'promo',
-          },
-        });
-        setPromo(dataSlider[0]);
+        const singlePromo = route.params.promo;
+        setPromo(singlePromo);
       } catch (error) {
         Alert.alert(
           'Error',
@@ -45,17 +43,14 @@ const PromoScreen = () => {
 
   return (
     <Layout style={styles.screen}>
-      <Image
-        source={{ uri: promo.url }}
-        style={{ width: width, height: 300 }}
-        resizeMode='contain'
-      />
-      <Text>
-        Vivamus suscipit tortor eget felis porttitor volutpat. Proin eget tortor
-        risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-        posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel,
-        ullamcorper sit amet ligula.
-      </Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Image
+          source={{ uri: promo.url }}
+          style={{ width: width, height: 300 }}
+          resizeMode='contain'
+        />
+        <Text>{promo.text}</Text>
+      </ScrollView>
     </Layout>
   );
 };
@@ -63,6 +58,10 @@ const PromoScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  container: {
+    padding: 10,
+    alignItems: 'center',
   },
 });
 

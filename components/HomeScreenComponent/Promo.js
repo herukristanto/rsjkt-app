@@ -39,7 +39,7 @@ const Promo = () => {
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate('Promo')}
+        onPress={() => navigation.navigate('Promo', { promo: item })}
       >
         <Image
           source={{ uri: item.url }}
