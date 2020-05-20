@@ -14,6 +14,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment';
+import ViewShot from 'react-native-view-shot';
 
 import UserName from '../components/UserName';
 import { AppContext } from '../context/AppContext';
@@ -25,16 +26,16 @@ const SingleBookingScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const data = route.params.data;
-  const [qrBase64, setQrBase64] = useState();
   const qrcode = useRef();
+  const ssRef = useRef();
+  const [ssBase64, setSsBase64] = useState();
 
   useEffect(() => {
-    async function saveQrCode() {
-      qrcode.current.toDataURL(async (data) => {
-        setQrBase64(data);
-      });
+    async function setSs() {
+      const result = await ssRef.current.capture();
+      setSsBase64(result);
     }
-    saveQrCode();
+    setSs();
   }, []);
 
   const handleHome = () => {
@@ -56,7 +57,7 @@ const SingleBookingScreen = () => {
           FileSystem.cacheDirectory
         }qrcode/qrcode-${moment().format('YYYY-MM-DD')}.png`;
 
-        await FileSystem.writeAsStringAsync(file, qrBase64, {
+        await FileSystem.writeAsStringAsync(file, ssBase64, {
           encoding: FileSystem.EncodingType.Base64,
         });
 
@@ -97,7 +98,7 @@ const SingleBookingScreen = () => {
         'YYYY-MM-DD'
       )}.png`;
 
-      await FileSystem.writeAsStringAsync(file, qrBase64, {
+      await FileSystem.writeAsStringAsync(file, ssBase64, {
         encoding: FileSystem.EncodingType.Base64,
       });
       await MediaLibrary.saveToLibraryAsync(file);
@@ -111,41 +112,47 @@ const SingleBookingScreen = () => {
   return (
     <Layout style={styles.screen}>
       <UserName name={state.user.namaPasien} style={styles.username} />
-      <Layout style={styles.descContainer}>
-        <Layout style={styles.desc}>
-          <Text style={{ width: width * 0.35 }}>Medical Record</Text>
-          <Text style={{ width: width * 0.65 }}>: {data.Nomor_Cm}</Text>
+      <ViewShot
+        ref={ssRef}
+        options={{ result: 'base64' }}
+        style={styles.container}
+      >
+        <Layout style={styles.descContainer}>
+          <Layout style={styles.desc}>
+            <Text style={{ width: width * 0.35 }}>Medical Record</Text>
+            <Text style={{ width: width * 0.65 }}>: {data.Nomor_Cm}</Text>
+          </Layout>
+          <Layout style={styles.desc}>
+            <Text style={{ width: width * 0.35 }}>Poli Tujuan</Text>
+            <Text style={{ width: width * 0.65 }}>: {data.Poli_nm}</Text>
+          </Layout>
+          <Layout style={styles.desc}>
+            <Text style={{ width: width * 0.35 }}>Waktu Booking</Text>
+            <Text style={{ width: width * 0.65 }}>
+              : {moment(data.Tgl_Pesan).format('dddd, DD MMMM YYYY')}
+            </Text>
+          </Layout>
+          <Layout style={styles.desc}>
+            <Text style={{ width: width * 0.35 }}>No Antrian</Text>
+            <Text style={{ width: width * 0.65 }}>: {data.NomorPanggil}</Text>
+          </Layout>
         </Layout>
-        <Layout style={styles.desc}>
-          <Text style={{ width: width * 0.35 }}>Poli Tujuan</Text>
-          <Text style={{ width: width * 0.65 }}>: {data.Poli_nm}</Text>
+        <Layout style={styles.qrCode}>
+          <QRCode
+            value={`${state.user.namaPasien}:${state.user.Tgl_lahir}:${data.Dokter_nm}:${data.Tgl_Pesan}:${data.Poli_nm}`}
+            size={width * 0.7}
+            getRef={qrcode}
+          />
         </Layout>
-        <Layout style={styles.desc}>
-          <Text style={{ width: width * 0.35 }}>Waktu Booking</Text>
-          <Text style={{ width: width * 0.65 }}>
-            : {moment(data.Tgl_Pesan).format('dddd, DD MMMM YYYY')}
+        <Text category='h5' style={{ fontWeight: 'bold' }}>
+          Kode Booking
+        </Text>
+        <Layout style={styles.bookingContainer}>
+          <Text style={{ fontWeight: 'bold' }} category='h6'>
+            {data.KodeBooking}
           </Text>
         </Layout>
-        <Layout style={styles.desc}>
-          <Text style={{ width: width * 0.35 }}>No Antrian</Text>
-          <Text style={{ width: width * 0.65 }}>: {data.NomorPanggil}</Text>
-        </Layout>
-      </Layout>
-      <Layout style={styles.qrCode}>
-        <QRCode
-          value={`${state.user.namaPasien}:${state.user.Tgl_lahir}:${data.Dokter_nm}:${data.Tgl_Pesan}:${data.Poli_nm}`}
-          size={width * 0.7}
-          getRef={qrcode}
-        />
-      </Layout>
-      <Text category='h5' style={{ fontWeight: 'bold' }}>
-        Kode Booking
-      </Text>
-      <Layout style={styles.bookingContainer}>
-        <Text style={{ fontWeight: 'bold' }} category='h6'>
-          {data.KodeBooking}
-        </Text>
-      </Layout>
+      </ViewShot>
       <Layout style={styles.icons}>
         <TouchableOpacity onPress={handleHome}>
           <Icon style={styles.icon} name='home-outline' />
@@ -172,6 +179,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
+  },
+  container: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#ecf0f1',
   },
   username: {
     backgroundColor: 'white',

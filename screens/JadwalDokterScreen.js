@@ -7,13 +7,7 @@ import {
   Avatar,
   Button,
 } from '@ui-kitten/components';
-import {
-  StyleSheet,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-  Share,
-} from 'react-native';
+import { StyleSheet, Alert, ScrollView, Share } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 
@@ -24,10 +18,8 @@ import { AppContext } from '../context/AppContext';
 
 const JadwalDokterScreen = () => {
   const { state: stateApp } = useContext(AppContext);
+  const [rawDokter, setRawDokter] = useState();
   const [daftarDokter, setDaftarDokter] = useState();
-  const [dokterId, setDokterId] = useState();
-  const [jadwalDokter, setJadwalDokter] = useState();
-  const [rawJadwalDokter, setRawJadwalDokter] = useState();
   const [allDokter, setAllDokter] = useState();
   const [error, setError] = useState(false);
   const [title, setTitle] = useState('');
@@ -45,7 +37,13 @@ const JadwalDokterScreen = () => {
             poli: poliId,
           },
         });
-        setRawJadwalDokter(dataPraktek.Data);
+
+        const { data: dataRawDokter } = await baseAxios.get('/daftar_praktek', {
+          params: {
+            key: 'rsjkt4231',
+          },
+        });
+        setRawDokter(dataRawDokter);
         setDaftarDokter(dataPraktek.Data);
         setAllDokter(dataPraktek.Data);
       } catch (error) {
@@ -57,19 +55,6 @@ const JadwalDokterScreen = () => {
     };
     loadPoli();
   }, []);
-
-  const getJadwal = (data) => {
-    setDokterId(data);
-    const rawJadwal = rawJadwalDokter.filter(
-      (jadwal) => jadwal.Dokter_ID === data
-    );
-    rawJadwal.sort(
-      (a, b) =>
-        new moment(a.Tanggal).format('YYYYMMDD') -
-        new moment(b.Tanggal).format('YYYYMMDD')
-    );
-    setJadwalDokter(rawJadwal);
-  };
 
   const onSearch = (value) => {
     if (value === '') {
@@ -93,6 +78,17 @@ const JadwalDokterScreen = () => {
       Alert.alert(
         'Peringatan',
         'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
+        [{ text: 'Oke' }]
+      );
+      return;
+    }
+    const dokterFilterId = rawDokter.filter(
+      (a) => a.Dokter_ID === data.Dokter_ID
+    );
+    if(dokterFilterId.length === 0){
+      Alert.alert(
+        'Peringatan',
+        'Dokter Yang Anda Pilih Belum Ada Jadwal Praktek',
         [{ text: 'Oke' }]
       );
       return;
@@ -151,16 +147,6 @@ const JadwalDokterScreen = () => {
             <Text style={styles.dokterDesc}>{data.S1}</Text>
             <Text style={styles.dokterDesc}>{data.S2}</Text>
           </Layout>
-          {/* <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => getJadwal(data.Dokter_ID)}
-          >
-            <Icon
-              style={{ width: 24, height: 24 }}
-              name='arrow-ios-downward'
-              fill='rgb(7,94,85)'
-            />
-          </TouchableOpacity> */}
         </Layout>
         <Layout style={styles.footer}>
           <Layout style={styles.yearContainer}>
@@ -184,52 +170,6 @@ const JadwalDokterScreen = () => {
             </Button>
           </Layout>
         </Layout>
-        {/* {dokterId == data.Dokter_ID && (
-          <Layout>
-            <Layout
-              key={data.Dokter_ID}
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-              }}
-            >
-              <Layout style={[styles.th, { width: '25%' }]}>
-                <Text>Hari</Text>
-              </Layout>
-              <Layout style={[styles.th, { width: '40%' }]}>
-                <Text>Tanggal</Text>
-              </Layout>
-              <Layout style={[styles.th, { width: '35%' }]}>
-                <Text>Jam</Text>
-              </Layout>
-            </Layout>
-            {jadwalDokter.map((jadwal, index) => (
-              <Layout key={index} style={{ flex: 1, flexDirection: 'row' }}>
-                <Layout style={[styles.td, { width: '25%' }]}>
-                  <Text
-                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
-                  >
-                    {moment(jadwal.Tanggal).format('dddd')}
-                  </Text>
-                </Layout>
-                <Layout style={[styles.td, { width: '40%' }]}>
-                  <Text
-                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
-                  >
-                    {moment(jadwal.Tanggal).format('DD MMMM YYYY')}
-                  </Text>
-                </Layout>
-                <Layout style={[styles.td, { width: '35%' }]}>
-                  <Text
-                    style={{ color: jadwal.TidakPraktek ? 'red' : 'black' }}
-                  >
-                    {jadwal.Jam_AwalFix.trim()} - {jadwal.Jam_AkhirFix.trim()}
-                  </Text>
-                </Layout>
-              </Layout>
-            ))}
-          </Layout>
-        )} */}
       </Layout>
     );
   };

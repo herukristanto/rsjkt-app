@@ -34,13 +34,15 @@ const FeedbackScreen = () => {
           },
         });
 
-        data.data.sort(
+        const dataFeedback = data.data.filter((feed) => feed.Feedback === 0);
+
+        dataFeedback.sort(
           (a, b) =>
             new moment(new Date(a.Tgl_Pesan)).format('YYYYMMDD') -
             new moment(new Date(b.Tgl_Pesan)).format('YYYYMMDD')
         );
 
-        setDataFeedback(data.data);
+        setDataFeedback(dataFeedback);
         setLoading(false);
       } catch (error) {
         Alert.alert(

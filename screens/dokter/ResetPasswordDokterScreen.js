@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
@@ -17,13 +18,20 @@ import InputButton from '../../components/InputButton';
 import { AppContext } from '../../context/AppContext';
 import { baseAxios } from '../../utils/useAxios';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import { LOGOUT } from '../../reducer/AppReducer';
 
 const { width } = Dimensions.get('screen');
 
 const ResetPasswordDokterScreen = () => {
   const navigation = useNavigation();
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('_USERDATA_');
+    dispatch({ type: LOGOUT });
+    // navigation.navigate('Login');
+  };
 
   const onSubmit = async (value, bag) => {
     try {
@@ -55,7 +63,12 @@ const ResetPasswordDokterScreen = () => {
       const { data: dataPassword } = await baseAxios.put('/Dpassword', request);
       setLoading(false);
       bag.resetForm();
-      Alert.alert('Berhasil', 'Password Berhasil Diganti');
+      Alert.alert('Berhasil', 'Password Berhasil Diganti', [
+        {
+          text: 'OKE',
+          onPress: () => handleLogout(),
+        },
+      ]);
     } catch (error) {
       console.log(error);
     }

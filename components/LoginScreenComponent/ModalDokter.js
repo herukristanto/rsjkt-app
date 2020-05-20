@@ -21,6 +21,7 @@ const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
         idDokter: dataDokter.PERSONILID,
         namaDokter: dataDokter.NMPERSONIL.trim(),
         poli: dataDokter.poli,
+        idPoli: dataDokter.idPoli,
         avatar: dataDokter.img,
         role: 'dokter',
       };

@@ -64,6 +64,7 @@ const LoginScreen = () => {
         const dataLoginDokter = {
           ...dataDokter,
           poli: dokterLogin.Poli_nm.trim(),
+          idPoli: dokterLogin.Poli_ID
         };
         setLoading(false);
         setDataDokter(dataLoginDokter);

@@ -45,11 +45,11 @@ const Promo = () => {
           source={{ uri: item.url }}
           resizeMode='stretch'
           style={{
-            width: width * 0.5,
-            height: '100%',
+            width: 160,
+            height: 85,
           }}
-          width={width * 0.5}
-          height='100%'
+          width={160}
+          height={85}
         />
       </TouchableOpacity>
     );

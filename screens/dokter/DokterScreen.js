@@ -34,13 +34,25 @@ const DokterScreen = () => {
             dokter_id: state.user.idDokter,
           },
         });
+        const { data: dataJadwal } = await baseAxios.get('/daftar_praktek', {
+          params: {
+            key: 'rsjkt4231',
+          },
+        });
+        const dokterFilterId = dataJadwal.filter(
+          (a) => a.Dokter_ID === state.user.idDokter && a.Poli_ID === state.user.idPoli
+        );
+        dokterFilterId.sort(
+          (a, b) =>
+            new moment(a.Tanggal).format('YYYYMMDD') -
+            new moment(b.Tanggal).format('YYYYMMDD')
+        );
 
-        const pasienUnique = getUnique(data.data, 'Tgl_Pesan');
-        const pasienDate = pasienUnique.map((date) => {
+        const pasienDate = dokterFilterId.map((date) => {
           return {
-            date: date.Tgl_Pesan,
+            date: date.Tanggal,
             pasien: data.data.filter(
-              (pasien) => pasien.Tgl_Pesan == date.Tgl_Pesan
+              (pasien) => moment(pasien.Tgl_Pesan).isSame(date.Tanggal, 'day')
             ),
           };
         });
@@ -67,7 +79,7 @@ const DokterScreen = () => {
         }}
       >
         <Layout style={{ width: '60%' }}>
-          <Text>{data.Nomor_Cm}</Text>
+          <Text>{data.NamaPasien}</Text>
         </Layout>
         <Layout>
           <Text>- {data.Jenis_Penjamin}</Text>

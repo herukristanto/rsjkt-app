@@ -93,13 +93,11 @@ const HomeScreen = (props) => {
               />
             </>
           )}
-          {state.isLogin && (
-            <ButtonHome
-              onPressHandler={() => navigation.navigate('ListPoliklinik')}
-              label='Profile Dokter'
-              avatar={require('../assets/icon/registrasi.png')}
-            />
-          )}
+          <ButtonHome
+            onPressHandler={() => navigation.navigate('ListPoliklinik')}
+            label='Profile Dokter'
+            avatar={require('../assets/icon/registrasi.png')}
+          />
           <ButtonHome
             onPressHandler={() => navigation.navigate('Lokasi')}
             // onPressHandler={() => {}}
@@ -116,27 +114,6 @@ const HomeScreen = (props) => {
         </View>
 
         <Promo />
-
-        {!state.isLogin && (
-          <TouchableOpacity
-            style={styl.jadwalDokter}
-            onPress={() => navigation.navigate('ListPoliklinik')}
-          >
-            <Layout>
-              <Text style={{ fontWeight: 'bold' }}>Jadwal Dokter</Text>
-              <Text style={{ fontSize: 12 }}>
-                Jadwal Dokter Rumah Sakit Jakarta
-              </Text>
-            </Layout>
-            <Layout>
-              <Icon
-                style={{ width: 24, height: 24 }}
-                name='arrow-ios-forward'
-                fill='rgb(7,94,85)'
-              />
-            </Layout>
-          </TouchableOpacity>
-        )}
       </ScrollView>
 
       <RunningText />
