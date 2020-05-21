@@ -68,17 +68,22 @@ export const PoliklinikContextProvider = ({ children }) => {
         );
       }
 
-      const { data } = await baseAxios.get('/daftar_praktek', {
+      const { data: dataPraktek } = await baseAxios.get('/daftar_praktek', {
         params: {
           key: 'rsjkt4231',
         },
       });
+      const { data } = await baseAxios.get('/get', {
+        params: {
+          p: 'poli',
+        },
+      });
 
-      const poliUnique = getUnique(data, 'Poli_ID');
-      const poliData = poliUnique.map((poli) => {
+      // const poliUnique = getUnique(data, 'Poli_ID');
+      const poliData = data.map((poli) => {
         return {
-          value: poli.Poli_ID,
-          label: poli.Poli_nm.trim(),
+          value: poli.poli_id,
+          label: poli.poli_nm.trim(),
         };
       });
 
@@ -113,7 +118,7 @@ export const PoliklinikContextProvider = ({ children }) => {
 
       dispatch({
         type: GET_DAFTAR_PRAKTER,
-        daftarPraktek: data,
+        daftarPraktek: dataPraktek,
         daftarPoli: poliData,
         daftarPenjamin: penjaminData,
         daftarPerusahaan: anakPenjaminData,
