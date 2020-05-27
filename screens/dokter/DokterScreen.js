@@ -40,7 +40,9 @@ const DokterScreen = () => {
           },
         });
         const dokterFilterId = dataJadwal.filter(
-          (a) => a.Dokter_ID === state.user.idDokter && a.Poli_ID === state.user.idPoli
+          (a) =>
+            a.Dokter_ID === state.user.idDokter &&
+            a.Poli_ID === state.user.idPoli
         );
         dokterFilterId.sort(
           (a, b) =>
@@ -51,8 +53,8 @@ const DokterScreen = () => {
         const pasienDate = dokterFilterId.map((date) => {
           return {
             date: date.Tanggal,
-            pasien: data.data.filter(
-              (pasien) => moment(pasien.Tgl_Pesan).isSame(date.Tanggal, 'day')
+            pasien: data.data.filter((pasien) =>
+              moment(pasien.Tgl_Pesan).isSame(date.Tanggal, 'day')
             ),
           };
         });
@@ -68,6 +70,11 @@ const DokterScreen = () => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('_USERDATA_');
     dispatch({ type: LOGOUT });
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeNavigation' }],
+    });
   };
 
   const Pasien = ({ data }) => {

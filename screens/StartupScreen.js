@@ -3,14 +3,24 @@ import { Layout, Text } from '@ui-kitten/components';
 import { StyleSheet, AsyncStorage } from 'react-native';
 import * as Updates from 'expo-updates';
 import NetInfo from '@react-native-community/netinfo';
+import { useNavigation } from '@react-navigation/native';
 
 import { AppContext } from '../context/AppContext';
 import { FINISHED, INITIAL_LOGIN } from '../reducer/AppReducer';
 
 const StartupScreen = () => {
-  const { dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [isNew, setIsNew] = useState(false);
   const [error, setError] = useState();
+  const navigation = useNavigation();
+
+  if (!state.loading) {
+    if (state.isLogin && state.user.role === 'dokter') {
+      navigation.replace('DokterNavigation');
+    } else {
+      navigation.replace('HomeNavigation');
+    }
+  }
 
   useEffect(() => {
     const checkAndUpdate = async () => {

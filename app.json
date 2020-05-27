@@ -41,7 +41,20 @@
           "apiKey": "AIzaSyBwOizX-ymKDTGfU7dZHIE470SdPFt--F8"
         }
       },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.rsjakarta.io",
+              "pathPrefix": "/regis-poli"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     }
   }
 }

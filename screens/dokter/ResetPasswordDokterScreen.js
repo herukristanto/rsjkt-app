@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   AsyncStorage,
+  Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
@@ -28,9 +29,19 @@ const ResetPasswordDokterScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
+    Keyboard.dismiss();
     await AsyncStorage.removeItem('_USERDATA_');
     dispatch({ type: LOGOUT });
-    // navigation.navigate('Login');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeNavigation' }],
+    });
+    // navigation.navigate('HomeNavigation', {
+    //   screen: 'Dashboard',
+    //   params: {
+    //     screen: 'Login',
+    //   },
+    // });
   };
 
   const onSubmit = async (value, bag) => {

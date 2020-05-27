@@ -29,7 +29,10 @@ const ModalDokter = ({ showModal, dataDokter, setShowModal, dispatch }) => {
       await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
       dispatch({ type: LOGIN, user: userData });
 
-      navigation.popToTop();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DokterNavigation' }],
+      });
     } else {
       setLoading(false);
       Alert.alert('Peringatan', 'Password Anda Salah', [{ text: 'OK' }]);

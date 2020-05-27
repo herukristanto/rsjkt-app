@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Image,
@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   AsyncStorage,
+  BackHandler,
 } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
@@ -33,6 +34,27 @@ const LoginScreen = () => {
   const [dataDokter, setDataDokter] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const states = navigation.dangerouslyGetState().routes;
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      const routes = states.find((route) => route.name === 'Home');
+      if (!routes) {
+        BackHandler.exitApp();
+        return true;
+      }
+      return false;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   const handleForm = async (values) => {
     try {
@@ -64,7 +86,7 @@ const LoginScreen = () => {
         const dataLoginDokter = {
           ...dataDokter,
           poli: dokterLogin.Poli_nm.trim(),
-          idPoli: dokterLogin.Poli_ID
+          idPoli: dokterLogin.Poli_ID,
         };
         setLoading(false);
         setDataDokter(dataLoginDokter);
