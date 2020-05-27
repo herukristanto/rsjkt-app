@@ -9,10 +9,10 @@ import {
 } from '@ui-kitten/components';
 import { StyleSheet, Alert, ScrollView, Share } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+import * as Linking from 'expo-linking';
+import base64 from 'react-native-base64';
 
 import { baseAxios } from '../utils/useAxios';
-import { getUnique } from '../utils/helpers';
 import Header from '../components/ListPoliklinikScreenComponent/Header';
 import { AppContext } from '../context/AppContext';
 
@@ -85,7 +85,7 @@ const JadwalDokterScreen = () => {
     const dokterFilterId = rawDokter.filter(
       (a) => a.Dokter_ID === data.Dokter_ID
     );
-    if(dokterFilterId.length === 0){
+    if (dokterFilterId.length === 0) {
       Alert.alert(
         'Peringatan',
         'Dokter Yang Anda Pilih Belum Ada Jadwal Praktek',
@@ -100,8 +100,30 @@ const JadwalDokterScreen = () => {
 
   const handleShare = async (data) => {
     try {
+      const dokterFilterId = rawDokter.filter(
+        (a) => a.Dokter_ID === data.Dokter_ID
+      );
+      if (dokterFilterId.length === 0) {
+        Alert.alert(
+          'Peringatan',
+          'Dokter Yang Anda Pilih Belum Ada Jadwal Praktek',
+          [{ text: 'Oke' }]
+        );
+        return;
+      }
+
+      const deepLink = Linking.makeUrl('regis-poli', {
+        ...data,
+      });
+
+      const base64linking = base64.encode(deepLink);
+
+      // const url = `http://103.245.17.2:2080/rsjakartamobile?link=${base64linking}`;
+      const url = `https://granitebps.com/rsjakartamobile?link=${base64linking}`;
+      // const url = `https://granitebps.com/rsjakartamobile?env=${linking[0]}&dokter_id=${data.Dokter_ID}&poli_id=${data.Poli_ID}`;
+
       const result = await Share.share({
-        message: `Hi! Buat janji dengan ${data.Dokter_nm.trim()} - Tanpa antri, langsung konsultasi. Klik https://google.com`,
+        message: `Hi! Buat janji dengan ${data.Dokter_nm.trim()} - Tanpa antri, langsung konsultasi. Klik ${url}`,
       });
     } catch (error) {
       Alert.alert(

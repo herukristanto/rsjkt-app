@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Layout, Text } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 import * as Updates from 'expo-updates';
 import NetInfo from '@react-native-community/netinfo';
 
 import { AppContext } from '../context/AppContext';
-import { FINISHED } from '../reducer/AppReducer';
+import { FINISHED, INITIAL_LOGIN } from '../reducer/AppReducer';
 
 const StartupScreen = () => {
   const { dispatch } = useContext(AppContext);
@@ -22,11 +22,15 @@ const StartupScreen = () => {
             setIsNew(true);
             await Updates.fetchUpdateAsync();
             await Updates.reloadAsync();
-          } else {
-            dispatch({
-              type: FINISHED,
-            });
           }
+        }
+
+        const userData = await AsyncStorage.getItem('_USERDATA_');
+        if (userData !== null) {
+          dispatch({
+            type: INITIAL_LOGIN,
+            user: JSON.parse(userData),
+          });
         } else {
           dispatch({
             type: FINISHED,

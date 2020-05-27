@@ -95,8 +95,8 @@ export const PoliklinikContextProvider = ({ children }) => {
       let _label_dokter = '';
       if (route.params) {
         const dataDokter = route.params.dataDokter;
-        const rawDokter = data.map((item) => {
-          if (item.Poli_ID === dataDokter.Poli_ID) {
+        const rawDokter = dataPraktek.map((item) => {
+          if (item.Poli_ID === parseInt(dataDokter.Poli_ID)) {
             return {
               ...item,
               value: item.Dokter_ID,
@@ -109,10 +109,10 @@ export const PoliklinikContextProvider = ({ children }) => {
         daftarDokter = filteredDokter;
         daftarJadwal = getJadwalFromDokter(
           filteredDokter,
-          dataDokter.Dokter_ID
+          parseInt(dataDokter.Dokter_ID)
         );
-        poliklinik = dataDokter.Poli_ID;
-        dokter = dataDokter.Dokter_ID;
+        poliklinik = parseInt(dataDokter.Poli_ID);
+        dokter = parseInt(dataDokter.Dokter_ID);
         _label_dokter = dataDokter.Dokter_nm.trim();
       }
 

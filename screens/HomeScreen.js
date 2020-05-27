@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Dimensions,
   View,
   Alert,
-  TouchableOpacity,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
-import { Text, Layout, Icon } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import Constants from 'expo-constants';
+import * as Linking from 'expo-linking';
 
 import { AppContext } from '../context/AppContext';
 import ButtonHome from '../components/HomeScreenComponent/ButtonHome';
@@ -23,6 +24,55 @@ const { height } = Dimensions.get('window');
 const HomeScreen = (props) => {
   const { navigation } = props;
   const { state } = useContext(AppContext);
+
+  const initialLink = async () => {
+    const url = await Linking.getInitialURL();
+    if (!url) return;
+
+    let { path, queryParams } = Linking.parse(url);
+    if (path === 'regis-poli') {
+      if (state.isLogin) {
+        navigation.navigate('RegistrasiPoliklinik', {
+          dataDokter: queryParams,
+        });
+      } else {
+        Alert.alert(
+          'Peringatan',
+          'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
+          [{ text: 'Oke' }]
+        );
+      }
+    }
+  };
+
+  const urlRedirect = (event) => {
+    const url = event.url;
+
+    if (!url) return;
+
+    let { path, queryParams } = Linking.parse(url);
+    if (path === 'regis-poli') {
+      if (state.isLogin) {
+        navigation.navigate('RegistrasiPoliklinik', {
+          dataDokter: queryParams,
+        });
+      } else {
+        ToastAndroid.show('Silahkan Login Terlebih Dahulu', ToastAndroid.SHORT);
+        return;
+      }
+    }
+  };
+
+  useEffect(() => {
+    // initialLink();
+
+    // listen for new url events coming from Expo
+    Linking.addEventListener('url', urlRedirect);
+
+    return () => {
+      Linking.removeEventListener('url', urlRedirect);
+    };
+  });
 
   const handlePoli = () => {
     if (state.isLogin) {
