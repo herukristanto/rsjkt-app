@@ -18,6 +18,7 @@ import { AppContext } from '../context/AppContext';
 import DokterScreen from '../screens/dokter/DokterScreen';
 import ResetPasswordDokterScreen from '../screens/dokter/ResetPasswordDokterScreen';
 import ListPraktekScreen from '../screens/dokter/ListPraktekScreen';
+import FeedbackDokterScreen from '../screens/dokter/FeedbackDokterScreen';
 
 const DokterStack = createStackNavigator();
 const DokterStackNavigator = () => {
@@ -75,19 +76,9 @@ const DokterDrawerNavigator = () => {
               <TouchableOpacity
                 style={{
                   width: '100%',
-                  alignItems: 'center',
                   justifyContent: 'center',
                   paddingVertical: 15,
-                }}
-              >
-                <Text style={{ color: 'rgb(7,94,85)' }}>Lihat Feedback</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 15,
+                  paddingLeft: 20,
                 }}
                 onPress={() => handleLogout(props)}
               >
@@ -110,6 +101,13 @@ const DokterDrawerNavigator = () => {
         component={ResetPasswordDokterScreen}
         options={{
           title: 'Reset Password',
+        }}
+      />
+      <DokterDrawer.Screen
+        name='FeedbackDokter'
+        component={FeedbackDokterScreen}
+        options={{
+          title: 'Feedback Dokter',
         }}
       />
     </DokterDrawer.Navigator>
