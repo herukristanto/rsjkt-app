@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
+import NotificationBell from '../NotificationBell';
 
 const { width } = Dimensions.get('window');
 
@@ -37,9 +38,7 @@ const Header = ({ isLogin }) => {
         </Text>
       </View>
       <View style={styl.menu}>
-        <TouchableOpacity onPress={() => {}}>
-          <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
-        </TouchableOpacity>
+        <NotificationBell />
       </View>
     </View>
   );

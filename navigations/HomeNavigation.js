@@ -4,8 +4,9 @@ import {
   SafeAreaView,
   AsyncStorage,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import { Layout, Button, Icon, Text } from '@ui-kitten/components';
+import { Layout, Icon, Text } from '@ui-kitten/components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 
@@ -23,6 +24,8 @@ import RegisterScreen from '../screens/RegisterScreen';
 import RegistrasiPoliklinik from '../screens/RegistrasiPoliklinikScreen';
 import { AppContext } from '../context/AppContext';
 import { LOGOUT } from '../reducer/AppReducer';
+import NotificationScreen from '../screens/NotificationScreen';
+import NotificationBell from '../components/NotificationBell';
 
 const HomeStack = createStackNavigator();
 const HomeStackNavigator = () => {
@@ -56,13 +59,9 @@ const HomeStackNavigator = () => {
             headerTitle: 'Cek Pendaftaran',
             headerTitleAlign: 'center',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
           };
         }}
@@ -75,13 +74,9 @@ const HomeStackNavigator = () => {
             headerTitle: 'QR CODE',
             headerTitleAlign: 'center',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
           };
         }}
@@ -96,13 +91,9 @@ const HomeStackNavigator = () => {
               ? route.params.title
               : 'Registrasi Poliklinik',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
             headerTitleAlign: 'center',
           };
@@ -115,13 +106,9 @@ const HomeStackNavigator = () => {
           return {
             headerTitle: 'Promo',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
             headerTitleAlign: 'center',
           };
@@ -134,13 +121,9 @@ const HomeStackNavigator = () => {
           return {
             headerTitle: 'List Promo',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
             headerTitleAlign: 'center',
           };
@@ -153,13 +136,9 @@ const HomeStackNavigator = () => {
           return {
             headerTitle: 'Feedback',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
             headerTitleAlign: 'center',
           };
@@ -172,13 +151,9 @@ const HomeStackNavigator = () => {
           return {
             headerTitle: 'Lokasi',
             headerRight: () => (
-              <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-                <Icon
-                  style={{ width: 24, height: 24 }}
-                  fill='yellow'
-                  name='bell'
-                />
-              </TouchableOpacity>
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
             ),
             headerTitleAlign: 'center',
           };
@@ -199,6 +174,21 @@ const HomeStackNavigator = () => {
         options={({ navigation, route }) => {
           return {
             headerShown: false,
+          };
+        }}
+      />
+      <HomeStack.Screen
+        name='Notification'
+        component={NotificationScreen}
+        options={({ navigation }) => {
+          return {
+            headerTitle: 'Notifikasi',
+            headerRight: () => (
+              <View style={{ marginRight: 10 }}>
+                <NotificationBell />
+              </View>
+            ),
+            headerTitleAlign: 'center',
           };
         }}
       />
