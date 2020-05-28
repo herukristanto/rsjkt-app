@@ -15,6 +15,7 @@ import base64 from 'react-native-base64';
 import { baseAxios } from '../utils/useAxios';
 import Header from '../components/ListPoliklinikScreenComponent/Header';
 import { AppContext } from '../context/AppContext';
+import { objectToUrlEncoded } from '../utils/helpers';
 
 const JadwalDokterScreen = () => {
   const { state: stateApp } = useContext(AppContext);
@@ -112,10 +113,13 @@ const JadwalDokterScreen = () => {
         return;
       }
 
-      const deepLink = Linking.makeUrl('regis-poli', {
-        ...data,
-      });
+      // const deepLink = Linking.makeUrl('regis-poli', {
+      //   ...data,
+      // });
+      const queryString = objectToUrlEncoded(data);
+      const deepLink = `intent:#Intent;scheme=rsjakarta:///regis-poli?${queryString};package=com.wamplo.rs_jakarta_mobile;end`;
 
+      // const base64linking = base64.encode(deepLink);
       const base64linking = base64.encode(deepLink);
 
       // const url = `http://103.245.17.2:2080/rsjakartamobile?link=${base64linking}`;

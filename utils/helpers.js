@@ -68,3 +68,12 @@ export const getJadwalFromDokter = (daftarDokter, dokter) => {
 
   return filteredJadwal;
 };
+
+export const objectToUrlEncoded = (obj) => {
+  var str = [];
+  for (var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  return str.join('&');
+};

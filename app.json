@@ -48,7 +48,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "*.rsjakarta.io",
+              "host": "rsjakarta.io",
               "pathPrefix": "/regis-poli"
             }
           ],
