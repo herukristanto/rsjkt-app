@@ -48,6 +48,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
           date: item.Tanggal,
           TidakPraktek: item.TidakPraktek,
           color: item.TidakPraktek ? 'red' : 'black',
+          kuota: item.sisaQuota,
           label: `${hari}, ${moment(item.Tanggal).format(
             'DD/MM/YYYY'
           )}, ${item.Jam_AwalFix.trim()} - ${item.Jam_AkhirFix.trim()}`,

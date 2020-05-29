@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import moment from 'moment';
@@ -72,6 +72,12 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         (perusahaan) => values.perusahaan == perusahaan.value
       );
       namaPerusahaan = perusahaan.label;
+    }
+
+    const sisaKuota = values.tanggal.kuota;
+    if (sisaKuota === 0) {
+      Alert.alert('Peringatan', 'Untuk Jadwal Tersebut Kuota Sudah Penuh');
+      return;
     }
 
     dispatch({
