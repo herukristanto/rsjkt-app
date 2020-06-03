@@ -5,7 +5,6 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
 import cuid from 'cuid';
-import base64 from 'react-native-base64';
 
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
@@ -50,15 +49,11 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
 
       const { data } = await baseAxios.post('/regpoli', request);
 
-      // QR Code String Encoding (Use base64 Hash)
-      const string = data.kodebooking;
-      const encode = base64.encode(string);
-
       dispatch({
         type: ADD_TO_FORM,
         data: {
           ...values,
-          qrCode: encode,
+          qrCode: data.kodebooking,
         },
       });
 
