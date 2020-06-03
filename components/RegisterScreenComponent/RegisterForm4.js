@@ -40,11 +40,19 @@ const RegisterForm4 = (props) => {
         ).label;
       }
 
+      let namaPekerjaanAyah = '';
+      if (data.pekerjaanAyah !== '') {
+        namaPekerjaanAyah = state.listPekerjaan.find(
+          (pekerjaan) => pekerjaan.value === data.pekerjaanAyah
+        ).label;
+      }
+
       let namaAsuransi = '';
       if (data.kodeAsuransi !== '') {
-        namaAsuransi = state.listAsuransi.find(
+        objectAsuransi = state.listAsuransi.find(
           (asuransi) => data.kodeAsuransi === asuransi.kd_jaminan.trim()
         );
+        namaAsuransi = objectAsuransi.nm_jaminan.trim();
       }
 
       const request = {
@@ -75,9 +83,7 @@ const RegisterForm4 = (props) => {
         bangsa: data.kewarganegaraan,
         ayah: data.namaAyah,
         kerjaayah: data.pekerjaanAyah,
-        kerja_ayah: state.listPekerjaan.find(
-          (pekerjaan) => pekerjaan.value === data.pekerjaanAyah
-        ).label,
+        kerja_ayah: namaPekerjaanAyah,
         ibu: data.namaIbu,
         nm_sutri: data.namaSutri,
         kerjasutri: data.pekerjaanSutri,
@@ -89,7 +95,7 @@ const RegisterForm4 = (props) => {
         email: data.email,
         kd_member: data.nomorAsuransi,
         kd_jaminan: data.kodeAsuransi,
-        nm_jaminan: namaAsuransi.nm_jaminan.trim(),
+        nm_jaminan: namaAsuransi,
       };
 
       const { data: response } = await baseAxios.post('/regnew', request);

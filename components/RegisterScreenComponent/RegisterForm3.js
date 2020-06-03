@@ -33,15 +33,15 @@ const RegisterForm3 = (props) => {
     if (!values.kawin) {
       errors.kawin = 'Status Perkawinan Wajib Diisi';
     }
-    if (!values.namaAyah) {
-      errors.namaAyah = 'Nama Ayah Wajib Diisi';
-    }
-    if (!values.pekerjaanAyah) {
-      errors.pekerjaanAyah = 'Pekerjaan Ayah Wajib Diisi';
-    }
-    if (!values.namaIbu) {
-      errors.namaIbu = 'Nama Ibu Wajib Diisi';
-    }
+    // if (!values.namaAyah) {
+    //   errors.namaAyah = 'Nama Ayah Wajib Diisi';
+    // }
+    // if (!values.pekerjaanAyah) {
+    //   errors.pekerjaanAyah = 'Pekerjaan Ayah Wajib Diisi';
+    // }
+    // if (!values.namaIbu) {
+    //   errors.namaIbu = 'Nama Ibu Wajib Diisi';
+    // }
     // if (!values.namaSutri) {
     //   errors.namaSutri = 'Nama Suami/Istri Wajib Diisi';
     // }

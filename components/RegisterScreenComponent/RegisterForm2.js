@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 import InputSelect from '../InputSelect';
+import { validateEmail } from '../../utils/helpers';
 
 const RegisterForm2 = (props) => {
   const { setStep } = props;
@@ -46,6 +47,10 @@ const RegisterForm2 = (props) => {
     }
     if (!values.email) {
       errors.email = 'Email Wajib Diisi';
+    } else {
+      if (!validateEmail(values.email)) {
+        errors.email = 'Email Tidak Valid';
+      }
     }
 
     return errors;

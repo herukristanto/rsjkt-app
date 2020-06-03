@@ -37,7 +37,9 @@ const NotificationBell = () => {
         }
 
         // Check if any notification unreaded
-        const notif = data.find((n) => n.IsRead === 0);
+        const notif = data.find(
+          (n) => n.IsRead === 0 && n.TypeNotif !== 'Promo'
+        );
         if (notif) {
           setShow(true);
         } else {
