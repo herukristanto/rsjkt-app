@@ -32,7 +32,8 @@ const NotificationScreen = () => {
           (t) =>
             t.TypeNotif === 'Registrasi' ||
             t.TypeNotif === 'Antrian' ||
-            t.TypeNotif === 'Feedback'
+            t.TypeNotif === 'Feedback' ||
+            t.TypeNotif === 'PasienBaru'
         );
         const updateList = data.filter((t) => t.TypeNotif === 'Promo');
 
@@ -64,10 +65,7 @@ const NotificationScreen = () => {
           key: 'rsjkt4231',
           id_notif: data.ID_Notif,
         };
-        const { data: dataFlagRegis } = await baseAxios.put(
-          'IsReadNotif',
-          request
-        );
+        await baseAxios.put('IsReadNotif', request);
 
         const { data: dataPasien } = await baseAxios.get('/KdbookCek', {
           params: {
@@ -75,6 +73,18 @@ const NotificationScreen = () => {
           },
         });
         navigation.navigate('SingleBooking', { data: dataPasien.data });
+      } else if (data.TypeNotif === 'PasienBaru') {
+        // Flag Notif
+        const request = {
+          key: 'rsjkt4231',
+          id_notif: data.ID_Notif,
+        };
+        await baseAxios.put('IsReadNotif', request);
+
+        Alert.alert(
+          'Congratulations',
+          'Selamat Datang Di Rumah Sakit Jakarta Mobile'
+        );
       }
     } catch (error) {
       Alert.alert('Error', 'Something Wrong! Please contact customer service!');
