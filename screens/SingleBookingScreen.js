@@ -15,6 +15,7 @@ import * as MediaLibrary from 'expo-media-library';
 import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment';
 import ViewShot from 'react-native-view-shot';
+import base64 from 'react-native-base64';
 
 import UserName from '../components/UserName';
 import { AppContext } from '../context/AppContext';
@@ -139,7 +140,7 @@ const SingleBookingScreen = () => {
         </Layout>
         <Layout style={styles.qrCode}>
           <QRCode
-            value={`${state.user.namaPasien}:${state.user.Tgl_lahir}:${data.Dokter_nm}:${data.Tgl_Pesan}:${data.Poli_nm}`}
+            value={base64.encode(data.KodeBooking)}
             size={width * 0.7}
             getRef={qrcode}
           />

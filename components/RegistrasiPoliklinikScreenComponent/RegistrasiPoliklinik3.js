@@ -13,7 +13,6 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import moment from 'moment';
 import * as Sharing from 'expo-sharing';
-import base64 from 'react-native-base64';
 import ViewShot from 'react-native-view-shot';
 
 import { AppContext } from '../../context/AppContext';
@@ -28,11 +27,6 @@ const RegistrasiPoliklinik3 = () => {
   const qrcode = useRef();
   const ssRef = useRef();
   const [ssBase64, setSsBase64] = useState();
-
-  // Testing Only
-  // const encode = base64.encode(
-  //   'ATET AKHMADSARI:1979-05-06:Vika Novia Zamri, Drg, Sp Ort.:2020-04-24'
-  // );
 
   useEffect(() => {
     navigation.setParams({ title: 'QR CODE' });
@@ -145,7 +139,6 @@ const RegistrasiPoliklinik3 = () => {
         </Layout>
         <Layout style={styles.qrCode}>
           <QRCode
-            // value={encode}
             value={state.form.qrCode}
             size={width * 0.65}
             getRef={qrcode}

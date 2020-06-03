@@ -30,23 +30,6 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         return;
       }
 
-      // QR Code String Encoding (Use base64 Hash)
-      const string = `${state.form.namaPasien}:${moment(
-        state.form.tanggalLahir
-      ).format('YYYY-MM-DD')}:${state.form._label_dokter}:${moment(
-        state.form.tanggal.date
-      ).format('YYYY-MM-DD')}:${state.daftarDokter[0].Poli_nm.trim()}`;
-      const encode = base64.encode(string);
-      // TODO Send to antrian
-
-      dispatch({
-        type: ADD_TO_FORM,
-        data: {
-          ...values,
-          qrCode: encode,
-        },
-      });
-
       const uid = cuid();
       const request = {
         key: 'rsjkt4231',
@@ -65,9 +48,19 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         hand_phone: values.telp,
       };
 
-      // Nama:tanggal lahir:nama dokter:tanggal:nama poli
-      // TODO Do Something with response data
       const { data } = await baseAxios.post('/regpoli', request);
+
+      // QR Code String Encoding (Use base64 Hash)
+      const string = data.kodebooking;
+      const encode = base64.encode(string);
+
+      dispatch({
+        type: ADD_TO_FORM,
+        data: {
+          ...values,
+          qrCode: encode,
+        },
+      });
 
       dispatch({
         type: RESPONSE_REGIS_POLI,
