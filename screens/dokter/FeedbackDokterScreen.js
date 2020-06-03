@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Text, Icon, Spinner } from '@ui-kitten/components';
 import { StyleSheet, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import Stars from 'react-native-stars';
 import NetInfo from '@react-native-community/netinfo';
+import { Rating } from 'react-native-elements';
+const StarImage = require('../../assets/images/starFilled.png');
 
 import Header from '../../components/Header';
 import { baseAxios } from '../../utils/useAxios';
@@ -55,26 +56,25 @@ const FeedbackDokterScreen = () => {
       <Header />
 
       <Layout style={styles.container}>
-        <Text style={styles.text} category='h1'>
-          Jumlah Feedback
-        </Text>
-        <Text style={styles.text} status='success' category='h1'>
-          {feedback.count}
-        </Text>
-        <Text style={styles.text} category='h1'>
-          Nilai Feedback
-        </Text>
-        <Text style={styles.text} status='success' category='h1'>
-          {feedback.mean.toFixed(2)}
-        </Text>
-        {/* <Stars
-          display={parseInt(feedback.mean.toFixed(1))}
-          spacing={8}
-          count={5}
-          starSize={40}
-          fullStar={require('../../assets/images/starFilled.png')}
-          emptyStar={require('../../assets/images/starEmpty.png')}
-        /> */}
+        <Layout style={styles.feedbackContainer}>
+          <Text style={styles.text} category='h1'>
+            Jumlah Feedback
+          </Text>
+          <Text style={styles.text} status='success' category='h1'>
+            {feedback.count}
+          </Text>
+          <Text style={styles.text} category='h1'>
+            Nilai Feedback
+          </Text>
+          <Text style={styles.text} status='success' category='h1'>
+            {feedback.mean.toFixed(2)}
+          </Text>
+          <Rating
+            fractions={1}
+            startingValue={parseFloat(feedback.mean.toFixed(1))}
+            readonly
+          />
+        </Layout>
       </Layout>
     </Layout>
   );
@@ -87,8 +87,12 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
+    flex: 1,
+  },
+  feedbackContainer: {
+    backgroundColor: 'white',
+    padding: 15,
   },
   text: {
     textAlign: 'center',
