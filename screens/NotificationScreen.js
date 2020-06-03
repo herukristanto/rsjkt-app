@@ -5,10 +5,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 import { AppContext } from '../context/AppContext';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { baseAxios } from '../utils/useAxios';
 
 const { height } = Dimensions.get('window');
 
@@ -19,19 +21,20 @@ const NotificationScreen = () => {
   const [update, setUpdate] = useState();
   const [loading, setLoading] = useState(true);
   const route = useRoute();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getNotification = async () => {
       try {
-        const dummyData = route.params.data;
+        const data = route.params.data;
 
-        const transaksiList = dummyData.filter(
+        const transaksiList = data.filter(
           (t) =>
-            t.tipe === 'Registrasi' ||
-            t.tipe === 'Antrian' ||
-            t.tipe === 'Feedback'
+            t.TypeNotif === 'Registrasi' ||
+            t.TypeNotif === 'Antrian' ||
+            t.TypeNotif === 'Feedback'
         );
-        const updateList = dummyData.filter((t) => t.tipe === 'Promo');
+        const updateList = data.filter((t) => t.TypeNotif === 'Promo');
 
         setTransaksi(transaksiList);
         setUpdate(updateList);
@@ -45,6 +48,40 @@ const NotificationScreen = () => {
     getNotification();
   }, []);
 
+  const handleNotif = async (data) => {
+    try {
+      if (data.TypeNotif === 'Promo') {
+        const { data: dataPromo } = await baseAxios.get('/get', {
+          params: {
+            p: 'promo',
+          },
+        });
+        const promo = dataPromo.find((p) => p.id == data.IDPromo);
+        navigation.navigate('Promo', { promo: promo });
+      } else if (data.TypeNotif === 'Registrasi') {
+        // Flag Notif
+        const request = {
+          key: 'rsjkt4231',
+          id_notif: data.ID_Notif,
+        };
+        const { data: dataFlagRegis } = await baseAxios.put(
+          'IsReadNotif',
+          request
+        );
+
+        const { data: dataPasien } = await baseAxios.get('/KdbookCek', {
+          params: {
+            kd_booking: data.KodeBooking,
+          },
+        });
+        navigation.navigate('SingleBooking', { data: dataPasien.data });
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please contact customer service!');
+      return;
+    }
+  };
+
   const handleSelect = (index) => {
     setSelectedIndex(index);
   };
@@ -54,16 +91,17 @@ const NotificationScreen = () => {
       <TouchableOpacity
         style={[
           styles.item,
-          { backgroundColor: data.readed ? 'white' : '#d9d9d9' },
+          { backgroundColor: data.IsRead === 1 ? 'white' : '#d9d9d9' },
         ]}
+        onPress={() => handleNotif(data)}
       >
         <Text>
-          {data.tipe} - {moment(data.tanggal).format('DD MMMM Y')}
+          {data.TypeNotif} - {moment(data.Tanggal).format('DD MMMM Y')}
         </Text>
         <Text status='success' style={{ fontWeight: 'bold' }}>
-          {data.judul}
+          {data.JudulNotif}
         </Text>
-        <Text>"{data.isi}"</Text>
+        <Text>"{data.IsiNotif}"</Text>
       </TouchableOpacity>
     );
   };

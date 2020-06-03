@@ -1,69 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { Icon, Text } from '@ui-kitten/components';
+import React, { useState, useEffect, useContext } from 'react';
+import { Icon } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-
-const dummyData = [
-  {
-    judul: 'Poli: KMJA',
-    isi:
-      'Registrasi anda berhasil, silahkan scan qr-code berikut pada mesin antrian kami',
-    tanggal: '2020-05-28',
-    readed: 1,
-    rm: 10,
-    tipe: 'Registrasi',
-  },
-  {
-    judul: 'Poli: Jantung',
-    isi: 'Update jumlah antrian, anda memasukin antrian ke 3',
-    tanggal: '2020-05-28',
-    readed: 1,
-    rm: 10,
-    tipe: 'Antrian',
-  },
-  {
-    judul: 'Poli: Jantung',
-    isi: 'Terima kasih untuk kunjungan anda. Semoga sehat selalu',
-    tanggal: '2020-05-28',
-    readed: 1,
-    rm: 10,
-    tipe: 'Feedback',
-  },
-  {
-    judul: 'Paket Screening covid19',
-    isi:
-      'Kini hadir di rs jakarta paket screening covid19. Diskon untuk 100 pasien pertama',
-    tanggal: '2020-05-11',
-    readed: 1,
-    tipe: 'Promo',
-  },
-  {
-    judul: 'Paket Check-up Lebaran',
-    isi:
-      'Pastikan kesehatan anda pada saat iedul fitri tiba, kami hadirkan paket khusus untuk anda',
-    tanggal: '2020-05-21',
-    readed: 0,
-    tipe: 'Promo',
-  },
-];
+import { baseAxios } from '../utils/useAxios';
+import { AppContext } from '../context/AppContext';
 
 const NotificationBell = () => {
   const navigation = useNavigation();
   const [show, setShow] = useState(false);
+  const [notif, setNotif] = useState();
+  const { state } = useContext(AppContext);
 
   useEffect(() => {
-    // Check if any notification unreaded
-    const notif = dummyData.find((n) => n.readed === 0);
-    if (notif) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
+    const getNotif = async () => {
+      try {
+        // Notif Promo
+        const { data: dataNotifPromo } = await baseAxios.get('/NotifPromo', {
+          params: {
+            key: 'rsjkt4231',
+          },
+        });
+        let data = dataNotifPromo;
+
+        if (state.isLogin && state.user.role === 'pasien') {
+          // Notif Pasien
+          const { data: dataNotifPasien } = await baseAxios.get(
+            '/NotifPasien',
+            {
+              params: {
+                key: 'rsjkt4231',
+                rm: state.user.nomor_cm,
+              },
+            }
+          );
+          data = dataNotifPromo.concat(dataNotifPasien);
+        }
+
+        // Check if any notification unreaded
+        const notif = data.find((n) => n.IsRead === 0);
+        if (notif) {
+          setShow(true);
+        } else {
+          setShow(false);
+        }
+        setNotif(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getNotif();
   }, []);
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Notification', { data: dummyData })}
+      onPress={() => navigation.navigate('Notification', { data: notif })}
     >
       <View>
         <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
