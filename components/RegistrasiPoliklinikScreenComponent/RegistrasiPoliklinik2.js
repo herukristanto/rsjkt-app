@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
 import cuid from 'cuid';
+import { Notifications } from 'expo';
 
 import { PoliklinikContext } from '../../context/PoliklinikContext';
 import {
@@ -61,6 +62,18 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         type: RESPONSE_REGIS_POLI,
         response: {
           noAntrian: data.nomorpanggil,
+          kodeBooking: data.kodebooking,
+        },
+      });
+
+      await Notifications.presentLocalNotificationAsync({
+        title: 'Pendaftaran Registrasi Poliklinik Berhasil',
+        body: `Kode Booking Anda Adalah : ${data.kodebooking}`,
+        android: {
+          channelId: 'default',
+        },
+        data: {
+          route: 'booking',
           kodeBooking: data.kodebooking,
         },
       });

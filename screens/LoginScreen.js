@@ -163,7 +163,10 @@ const LoginScreen = () => {
             await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
             dispatch({ type: LOGIN, user: userData });
 
-            navigation.popToTop();
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'HomeNavigation' }],
+            });
           } else {
             setLoading(false);
             Alert.alert(

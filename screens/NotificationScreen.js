@@ -46,8 +46,10 @@ const NotificationScreen = () => {
       }
     };
 
-    getNotification();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', getNotification);
+
+    return unsubscribe;
+  }, [navigation]);
 
   const handleNotif = async (data) => {
     try {

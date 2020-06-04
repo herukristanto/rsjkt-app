@@ -204,7 +204,10 @@ const HomeDrawerNavigator = () => {
     const { navigation } = props;
     AsyncStorage.removeItem('_USERDATA_');
     dispatch({ type: LOGOUT });
-    navigation.closeDrawer();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeNavigation' }],
+    });
   };
 
   const handlePromo = (props) => {

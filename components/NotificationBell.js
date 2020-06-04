@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Icon } from '@ui-kitten/components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { baseAxios } from '../utils/useAxios';
 import { AppContext } from '../context/AppContext';
@@ -11,47 +11,50 @@ const NotificationBell = () => {
   const [notif, setNotif] = useState();
   const { state } = useContext(AppContext);
 
-  useEffect(() => {
-    const getNotif = async () => {
-      try {
-        // Notif Promo
-        const { data: dataNotifPromo } = await baseAxios.get('/NotifPromo', {
-          params: {
-            key: 'rsjkt4231',
-          },
-        });
-        let data = dataNotifPromo;
+  useFocusEffect(
+    useCallback(() => {
+      const getNotif = async () => {
+        try {
+          // Notif Promo
+          const { data: dataNotifPromo } = await baseAxios.get('/NotifPromo', {
+            params: {
+              key: 'rsjkt4231',
+            },
+          });
+          let data = dataNotifPromo;
 
-        if (state.isLogin && state.user.role === 'pasien') {
-          // Notif Pasien
-          const { data: dataNotifPasien } = await baseAxios.get(
-            '/NotifPasien',
-            {
-              params: {
-                key: 'rsjkt4231',
-                rm: state.user.nomor_cm,
-              },
-            }
+          if (state.isLogin && state.user.role === 'pasien') {
+            // Notif Pasien
+            const { data: dataNotifPasien } = await baseAxios.get(
+              '/NotifPasien',
+              {
+                params: {
+                  key: 'rsjkt4231',
+                  rm: state.user.nomor_cm,
+                },
+              }
+            );
+            data = dataNotifPromo.concat(dataNotifPasien);
+          }
+
+          // Check if any notification unreaded
+          const notif = data.find(
+            (n) => n.IsRead === 0 && n.TypeNotif !== 'Promo'
           );
-          data = dataNotifPromo.concat(dataNotifPasien);
+          console.log(data);
+          if (notif) {
+            setShow(true);
+          } else {
+            setShow(false);
+          }
+          setNotif(data);
+        } catch (error) {
+          console.log(error);
         }
-
-        // Check if any notification unreaded
-        const notif = data.find(
-          (n) => n.IsRead === 0 && n.TypeNotif !== 'Promo'
-        );
-        if (notif) {
-          setShow(true);
-        } else {
-          setShow(false);
-        }
-        setNotif(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getNotif();
-  }, []);
+      };
+      getNotif();
+    }, [navigation])
+  );
 
   return (
     <TouchableOpacity
