@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { StyleSheet, Alert, BackHandler } from 'react-native';
 import { Text, Layout, Spinner } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import moment from 'moment';
@@ -21,6 +21,24 @@ import SelectJaminan from './SelectJaminan';
 
 const RegistrasiPoliklinik1 = ({ setStep }) => {
   const { state, dispatch } = useContext(PoliklinikContext);
+  const { isLoading: stateLoading } = state;
+
+  useEffect(() => {
+    const backAction = () => {
+      if (stateLoading) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [stateLoading]);
 
   const handlePoliklinik = (value) => {
     const rawDokter = state.daftarPraktek.map((item) => {

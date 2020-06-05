@@ -55,7 +55,12 @@ const ListPraktekScreen = () => {
 
         setJadwal(daftarJadwal);
       } catch (error) {
-        console.log(error);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please Contact Customer Service!',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
+        return;
       }
     };
     getJadwal();
@@ -75,7 +80,10 @@ const ListPraktekScreen = () => {
       <TouchableOpacity style={styles.jadwal} onPress={() => handleModal(data)}>
         <Text>{moment(data.Tanggal).format('DD/MM/YYYY')}</Text>
         {data.Status && (
-          <Avatar source={require('../../assets/icon/status.png')} size='medium' />
+          <Avatar
+            source={require('../../assets/icon/status.png')}
+            size='medium'
+          />
         )}
       </TouchableOpacity>
     );

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Text, Spinner } from '@ui-kitten/components';
 import { StyleSheet, Image, Dimensions, Alert, ScrollView } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const { width: widthScreen } = Dimensions.get('screen');
 
 const PromoScreen = () => {
   const [promo, setPromo] = useState();
   const [imgHeight, setImgHeight] = useState();
-  const [error, setError] = useState(false);
   const route = useRoute();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    setError(false);
     const loadSliders = async () => {
       try {
         const singlePromo = route.params.promo;
@@ -25,7 +24,12 @@ const PromoScreen = () => {
             setImgHeight(imageHeight);
           },
           (error) => {
-            console.error(`Couldn't get the image size: ${error.message}`);
+            Alert.alert(
+              'Error',
+              'Something Wrong! Please Contact Customer Service!',
+              [{ text: 'OK', onPress: () => navigation.goBack() }]
+            );
+            return;
           }
         );
 
@@ -33,7 +37,8 @@ const PromoScreen = () => {
       } catch (error) {
         Alert.alert(
           'Error',
-          'Something Wrong! Please contact customer service!'
+          'Something Wrong! Please contact customer service!',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       }
     };

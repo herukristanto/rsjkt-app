@@ -81,7 +81,12 @@ const ResetPasswordDokterScreen = () => {
         },
       ]);
     } catch (error) {
-      console.log(error);
+      Alert.alert(
+        'Error',
+        'Something Wrong! Please Contact Customer Service!',
+        [{ text: 'OK', onPress: () => navigation.goBack() }]
+      );
+      return;
     }
   };
 

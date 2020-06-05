@@ -39,11 +39,14 @@ const NotificationScreen = () => {
 
         setTransaksi(transaksiList);
         setUpdate(updateList);
-
-        setLoading(false);
       } catch (error) {
-        console.log(error);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please Contact Customer Service!',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
       }
+      setLoading(false);
     };
 
     const unsubscribe = navigation.addListener('focus', getNotification);

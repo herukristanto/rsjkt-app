@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Layout, Text, Icon, Spinner } from '@ui-kitten/components';
+import { Layout, Text, Spinner } from '@ui-kitten/components';
 import { StyleSheet, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import NetInfo from '@react-native-community/netinfo';
 import { Rating } from 'react-native-elements';
-const StarImage = require('../../assets/images/starFilled.png');
+import { useNavigation } from '@react-navigation/native';
 
 import Header from '../../components/Header';
 import { baseAxios } from '../../utils/useAxios';
@@ -13,7 +13,8 @@ import { AppContext } from '../../context/AppContext';
 const FeedbackDokterScreen = () => {
   const [feedback, setFeedback] = useState();
   const [loading, setLoading] = useState(true);
-  const { state, dispatch } = useContext(AppContext);
+  const { state } = useContext(AppContext);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getFeedback = async () => {
@@ -32,11 +33,14 @@ const FeedbackDokterScreen = () => {
         });
 
         setFeedback(data);
-        setLoading(false);
       } catch (error) {
-        console.log(error);
-        setLoading(false);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please Contact Customer Service!',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
       }
+      setLoading(false);
     };
     getFeedback();
   }, []);

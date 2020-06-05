@@ -9,12 +9,15 @@ const NotificationBell = () => {
   const navigation = useNavigation();
   const [show, setShow] = useState(false);
   const [notif, setNotif] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { state } = useContext(AppContext);
 
   useFocusEffect(
     useCallback(() => {
       const getNotif = async () => {
         try {
+          setLoading(true);
           // Notif Promo
           const { data: dataNotifPromo } = await baseAxios.get('/NotifPromo', {
             params: {
@@ -41,15 +44,16 @@ const NotificationBell = () => {
           const notif = data.find(
             (n) => n.IsRead === 0 && n.TypeNotif !== 'Promo'
           );
-          console.log(data);
           if (notif) {
             setShow(true);
           } else {
             setShow(false);
           }
           setNotif(data);
+          setLoading(false);
         } catch (error) {
-          console.log(error);
+          setLoading(true);
+          setError(true);
         }
       };
       getNotif();
@@ -59,9 +63,14 @@ const NotificationBell = () => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Notification', { data: notif })}
+      disabled={loading}
     >
       <View>
-        <Icon style={{ width: 24, height: 24 }} fill='yellow' name='bell' />
+        <Icon
+          style={{ width: 24, height: 24 }}
+          fill={loading ? 'gray' : error ? 'red' : 'white'}
+          name='bell'
+        />
         {show && <View style={styles.IconBadge}></View>}
       </View>
     </TouchableOpacity>

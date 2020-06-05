@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { Layout, Text, Avatar, Spinner, Icon } from '@ui-kitten/components';
 import moment from 'moment';
@@ -61,7 +62,11 @@ const DokterScreen = () => {
         setListPasien(pasienDate);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        Alert.alert(
+          'Error',
+          'Something Wrong! Please Contact Customer Service!'
+        );
+        return;
       }
     };
     getPasien();
