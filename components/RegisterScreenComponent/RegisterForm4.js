@@ -4,6 +4,7 @@ import { Layout, Text, Button } from '@ui-kitten/components';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { RegisterContext } from '../../context/RegisterContext';
 import Divider from '../Divider';
@@ -36,21 +37,21 @@ const RegisterForm4 = (props) => {
       let namaPekerjaanSutri = '';
       if (data.pekerjaanSutri !== '') {
         namaPekerjaanSutri = state.listPekerjaan.find(
-          (pekerjaan) => pekerjaan.value === data.pekerjaanSutri
+          (pekerjaan) => pekerjaan.value === data.pekerjaanSutri,
         ).label;
       }
 
       let namaPekerjaanAyah = '';
       if (data.pekerjaanAyah !== '') {
         namaPekerjaanAyah = state.listPekerjaan.find(
-          (pekerjaan) => pekerjaan.value === data.pekerjaanAyah
+          (pekerjaan) => pekerjaan.value === data.pekerjaanAyah,
         ).label;
       }
 
       let namaAsuransi = '';
       if (data.kodeAsuransi !== '') {
         objectAsuransi = state.listAsuransi.find(
-          (asuransi) => data.kodeAsuransi === asuransi.kd_jaminan.trim()
+          (asuransi) => data.kodeAsuransi === asuransi.kd_jaminan.trim(),
         );
         namaAsuransi = objectAsuransi.nm_jaminan.trim();
       }
@@ -71,11 +72,11 @@ const RegisterForm4 = (props) => {
         kawin: data.kawin,
         sekolah_id: data.pendidikan,
         sekolah_nm: state.listPendidikan.find(
-          (pendidikan) => pendidikan.value === data.pendidikan
+          (pendidikan) => pendidikan.value === data.pendidikan,
         ).label,
         kd_kerjaan: data.pekerjaan,
         kerjaan_nm: state.listPekerjaan.find(
-          (pekerjaan) => pekerjaan.value === data.pekerjaan
+          (pekerjaan) => pekerjaan.value === data.pekerjaan,
         ).label,
         persh_nm: data.namaPerusahaan,
         noktp: data.noIndentitas,
@@ -105,7 +106,7 @@ const RegisterForm4 = (props) => {
       Alert.alert(
         'Data Berhasil Disimpan',
         `Nomor Registrasi Sementara Anda adalah ${response.medical_record}. Silahkan Gunakan Untuk Login`,
-        [{ text: 'OK', onPress: () => navigation.popToTop() }]
+        [{ text: 'OK', onPress: () => navigation.popToTop() }],
       );
     } catch (error) {
       Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
@@ -117,27 +118,9 @@ const RegisterForm4 = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  const onValidate = (values) => {
-    const errors = {};
-
-    if (!values.pekerjaan) {
-      errors.pekerjaan = 'Pekerjaan Wajib Diisi';
-    }
-    // if (!values.namaPerusahaan) {
-    //   errors.namaPerusahaan = 'Nama Perusahaan Wajib Diisi';
-    // }
-    // if (!values.nomorAsuransi) {
-    //   errors.nomorAsuransi = 'Nomor Asuransi Wajib Diisi';
-    // }
-    // if (!values.kodeAsuransi) {
-    //   errors.kodeAsuransi = 'Kode Asuransi Wajib Diisi';
-    // }
-    // if (!values.namaAsuransi) {
-    //   errors.namaAsuransi = 'Nama Asuransi Wajib Diisi';
-    // }
-
-    return errors;
-  };
+  const formSchema = Yup.object().shape({
+    pekerjaan: Yup.string().required('Pekerjaan Wajib Diisi'),
+  });
 
   return (
     <Formik
@@ -145,39 +128,39 @@ const RegisterForm4 = (props) => {
         ...state.form,
       }}
       onSubmit={handleForm}
-      validate={onValidate}
+      validationSchema={formSchema}
     >
       <React.Fragment>
-        <Text category='h4'>Pekerjaan dan Asuransi</Text>
+        <Text category="h4">Pekerjaan dan Asuransi</Text>
         <Layout style={styles.form}>
           <Text style={styles.label}>Pekerjaan</Text>
           <InputSelect
-            placeholder='Pilih Pekerjaan'
+            placeholder="Pilih Pekerjaan"
             items={state.listPekerjaan}
-            name='pekerjaan'
+            name="pekerjaan"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='namaPerusahaan'
-            label='Nama Perusahaan'
-            placeholder='Masukkan Nama Perusahaan'
+            name="namaPerusahaan"
+            label="Nama Perusahaan"
+            placeholder="Masukkan Nama Perusahaan"
           />
         </Layout>
 
         <Divider />
         <Layout style={styles.form}>
           <InputText
-            name='nomorAsuransi'
-            label='Nomor Asuransi'
-            placeholder='Masukkan Nomor Asuransi'
+            name="nomorAsuransi"
+            label="Nomor Asuransi"
+            placeholder="Masukkan Nomor Asuransi"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputSelect
-            placeholder='Masukkan Asuransi'
+            placeholder="Masukkan Asuransi"
             items={state.listAsuransi}
-            name='kodeAsuransi'
+            name="kodeAsuransi"
           />
         </Layout>
 
@@ -193,14 +176,14 @@ const RegisterForm4 = (props) => {
         >
           <Button
             onPress={handleBack}
-            status='success'
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           >
             Back
           </Button>
           <InputButton
-            label='Simpan'
-            status='success'
+            label="Simpan"
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           />
         </Layout>

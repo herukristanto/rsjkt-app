@@ -33,7 +33,12 @@ const NotificationScreen = () => {
             t.TypeNotif === 'Registrasi' ||
             t.TypeNotif === 'Antrian' ||
             t.TypeNotif === 'Feedback' ||
-            t.TypeNotif === 'PasienBaru'
+            t.TypeNotif === 'PasienBaru',
+        );
+        transaksiList.sort(
+          (a, b) =>
+            moment(b.Tanggal).format('YYYYMMDD') -
+            moment(a.Tanggal).format('YYYYMMDD'),
         );
         const updateList = data.filter((t) => t.TypeNotif === 'Promo');
 
@@ -43,7 +48,7 @@ const NotificationScreen = () => {
         Alert.alert(
           'Error',
           'Something Wrong! Please Contact Customer Service!',
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
+          [{ text: 'OK', onPress: () => navigation.goBack() }],
         );
       }
       setLoading(false);
@@ -88,7 +93,7 @@ const NotificationScreen = () => {
 
         Alert.alert(
           'Congratulations',
-          'Selamat Datang Di Rumah Sakit Jakarta Mobile'
+          'Selamat Datang Di Rumah Sakit Jakarta Mobile',
         );
       }
     } catch (error) {
@@ -113,7 +118,7 @@ const NotificationScreen = () => {
         <Text>
           {data.TypeNotif} - {moment(data.Tanggal).format('DD MMMM Y')}
         </Text>
-        <Text status='success' style={{ fontWeight: 'bold' }}>
+        <Text status="success" style={{ fontWeight: 'bold' }}>
           {data.JudulNotif}
         </Text>
         <Text>"{data.IsiNotif}"</Text>
@@ -126,7 +131,7 @@ const NotificationScreen = () => {
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Spinner status='success' />
+        <Spinner status="success" />
       </Layout>
     );
   }
@@ -138,7 +143,7 @@ const NotificationScreen = () => {
       indicatorStyle={styles.selectedTab}
     >
       <Tab
-        title='Transaksi'
+        title="Transaksi"
         titleStyle={[
           styles.tabTitle,
           { color: selectedIndex === -0 ? 'rgb(7,94,85)' : '#8c8c8c' },
@@ -153,7 +158,7 @@ const NotificationScreen = () => {
         </ScrollView>
       </Tab>
       <Tab
-        title='Update'
+        title="Update"
         titleStyle={[
           styles.tabTitle,
           { color: selectedIndex === 1 ? 'rgb(7,94,85)' : '#8c8c8c' },

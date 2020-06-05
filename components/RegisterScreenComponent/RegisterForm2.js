@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
+import * as Yup from 'yup';
 import { RegisterContext } from '../../context/RegisterContext';
 import { ADD_FORM } from '../../reducer/RegisterReducer';
 import { Formik } from 'formik';
 import InputText from '../InputText';
 import InputButton from '../InputButton';
 import InputSelect from '../InputSelect';
-import { validateEmail } from '../../utils/helpers';
 
 const RegisterForm2 = (props) => {
   const { setStep } = props;
   const { state, dispatch } = useContext(RegisterContext);
 
-  const handleForm = async (values) => {
+  const handleForm = (values) => {
     dispatch({
       type: ADD_FORM,
       form: {
@@ -27,34 +27,19 @@ const RegisterForm2 = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  const onValidate = (values) => {
-    const errors = {};
-
-    if (!values.kewarganegaraan) {
-      errors.kewarganegaraan = 'Kewarganegaraan Diisi';
-    }
-    if (!values.alamat) {
-      errors.alamat = 'Alamat Wajib Diisi';
-    }
-    if (!values.rt) {
-      errors.rt = 'RT Wajib Diisi';
-    }
-    if (!values.rw) {
-      errors.rw = 'RW Wajib Diisi';
-    }
-    if (!values.telp) {
-      errors.telp = 'No Telp Wajib Diisi';
-    }
-    if (!values.email) {
-      errors.email = 'Email Wajib Diisi';
-    } else {
-      if (!validateEmail(values.email)) {
-        errors.email = 'Email Tidak Valid';
-      }
-    }
-
-    return errors;
-  };
+  const formSchema = Yup.object().shape({
+    kewarganegaraan: Yup.string().required('Kewarganegaraan Wajib Diisi'),
+    alamat: Yup.string().required('Alamat Wajib Diisi'),
+    rt: Yup.string().required('RT Wajib Diisi').max(3, 'RT Tidak Valid'),
+    rw: Yup.string().required('RW Wajib Diisi').max(3, 'RT Tidak Valid'),
+    telp: Yup.string()
+      .required('No Telp Wajib Diisi')
+      .min(9, 'Telp Tidak Valid')
+      .max(13, 'Telp Tidak Valid'),
+    email: Yup.string()
+      .required('Email Wajib Diisi')
+      .email('Email Tidak Valid'),
+  });
 
   return (
     <Formik
@@ -62,26 +47,26 @@ const RegisterForm2 = (props) => {
         ...state.form,
       }}
       onSubmit={handleForm}
-      validate={onValidate}
+      validationSchema={formSchema}
     >
       <React.Fragment>
-        <Text category='h4'>Alamat</Text>
+        <Text category="h4">Alamat</Text>
         <Layout style={styles.form}>
           <Text style={styles.label}>Kewarganegaraan</Text>
           <InputSelect
-            placeholder='Pilih Kewarganegaraan'
+            placeholder="Pilih Kewarganegaraan"
             items={[
               { label: 'WNI', value: 'wni' },
               { label: 'WNA', value: 'wna' },
             ]}
-            name='kewarganegaraan'
+            name="kewarganegaraan"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='alamat'
-            label='Alamat'
-            placeholder='Masukkan Alamat'
+            name="alamat"
+            label="Alamat"
+            placeholder="Masukkan Alamat"
             multiline={true}
           />
         </Layout>
@@ -92,34 +77,34 @@ const RegisterForm2 = (props) => {
           ]}
         >
           <InputText
-            name='rt'
-            label='RT'
-            placeholder='Masukkan RT'
-            keyboardType='number-pad'
+            name="rt"
+            label="RT"
+            placeholder="Masukkan RT"
+            keyboardType="number-pad"
             style={{ width: '48%' }}
           />
           <InputText
-            name='rw'
-            label='RW'
-            placeholder='Masukkan RW'
-            keyboardType='number-pad'
+            name="rw"
+            label="RW"
+            placeholder="Masukkan RW"
+            keyboardType="number-pad"
             style={{ width: '48%' }}
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='telp'
-            label='Telp'
-            placeholder='Masukkan Telp (08*******)'
-            keyboardType='number-pad'
+            name="telp"
+            label="Telp"
+            placeholder="Masukkan Telp (08*******)"
+            keyboardType="number-pad"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='email'
-            label='Email'
-            placeholder='Masukkan Email'
-            keyboardType='email-address'
+            name="email"
+            label="Email"
+            placeholder="Masukkan Email"
+            keyboardType="email-address"
           />
         </Layout>
         <Layout
@@ -134,14 +119,14 @@ const RegisterForm2 = (props) => {
         >
           <Button
             onPress={handleBack}
-            status='success'
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           >
             Back
           </Button>
           <InputButton
-            label='Next'
-            status='success'
+            label="Next"
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           />
         </Layout>

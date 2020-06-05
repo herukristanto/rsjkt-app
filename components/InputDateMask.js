@@ -12,7 +12,6 @@ const InputDateMask = ({ name, ...props }) => {
   return (
     <Layout style={styles.container}>
       <TextInputMask
-        {...props}
         type={'datetime'}
         options={{
           format: 'DD/MM/YYYY',
@@ -23,8 +22,9 @@ const InputDateMask = ({ name, ...props }) => {
           styles.form,
           { borderColor: error && touch ? 'red' : '#E4E9F2' },
         ]}
-        placeholder='dd/mm/yyyy'
-        placeholderTextColor='#C5CEE0'
+        placeholder="dd/mm/yyyy"
+        placeholderTextColor="#C5CEE0"
+        {...props}
       />
       {error && touch ? <Text style={styles.textHelp}>{error}</Text> : null}
     </Layout>

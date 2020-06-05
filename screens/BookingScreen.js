@@ -33,8 +33,8 @@ const BookingScreen = () => {
 
         data.data.sort(
           (a, b) =>
-            new moment(a.Tgl_Pesan).format('YYYYMMDD') -
-            new moment(b.Tgl_Pesan).format('YYYYMMDD')
+            moment(a.Tgl_Pesan).format('YYYYMMDD') -
+            moment(b.Tgl_Pesan).format('YYYYMMDD'),
         );
 
         setDataBooking(data.data);
@@ -43,7 +43,7 @@ const BookingScreen = () => {
         Alert.alert(
           'Error',
           'Something Wrong! Please Contact Customer Service!',
-          [{ text: 'OK', onPress: () => navigation.popToTop() }]
+          [{ text: 'OK', onPress: () => navigation.popToTop() }],
         );
       }
     };
@@ -87,7 +87,7 @@ const BookingScreen = () => {
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Spinner status='success' />
+        <Spinner status="success" />
       </Layout>
     );
   }

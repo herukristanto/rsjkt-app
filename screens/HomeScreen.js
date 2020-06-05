@@ -10,6 +10,7 @@ import {
 import { Layout } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
+import { useNavigation } from '@react-navigation/native';
 
 import { AppContext } from '../context/AppContext';
 import ButtonHome from '../components/HomeScreenComponent/ButtonHome';
@@ -21,36 +22,16 @@ import Header from '../components/HomeScreenComponent/Header';
 
 const { height } = Dimensions.get('window');
 
-const HomeScreen = (props) => {
-  const { navigation } = props;
+const HomeScreen = () => {
+  const navigation = useNavigation();
   const { state } = useContext(AppContext);
 
-  const initialLink = async () => {
-    const url = await Linking.getInitialURL();
-    if (!url) return;
-
-    let { path, queryParams } = Linking.parse(url);
-    if (path === 'regis-poli') {
-      if (state.isLogin) {
-        navigation.navigate('RegistrasiPoliklinik', {
-          dataDokter: queryParams,
-        });
-      } else {
-        Alert.alert(
-          'Peringatan',
-          'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
-          [{ text: 'Oke' }]
-        );
-      }
-    }
-  };
-
   const urlRedirect = (event) => {
-    const url = event.url;
+    const { url } = event;
 
     if (!url) return;
 
-    let { path, queryParams } = Linking.parse(url);
+    const { path, queryParams } = Linking.parse(url);
     if (path === 'regis-poli') {
       if (state.isLogin) {
         navigation.navigate('RegistrasiPoliklinik', {
@@ -58,7 +39,6 @@ const HomeScreen = (props) => {
         });
       } else {
         ToastAndroid.show('Silahkan Login Terlebih Dahulu', ToastAndroid.SHORT);
-        return;
       }
     }
   };
@@ -81,7 +61,6 @@ const HomeScreen = (props) => {
       Alert.alert(
         'Peringatan',
         'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
-        [{ text: 'Oke' }]
       );
     }
   };
@@ -93,7 +72,6 @@ const HomeScreen = (props) => {
       Alert.alert(
         'Peringatan',
         'Anda Harus Login Terlebih Dahulu Untuk Mengecek Pendaftaran',
-        [{ text: 'Oke' }]
       );
     }
   };
@@ -105,7 +83,6 @@ const HomeScreen = (props) => {
       Alert.alert(
         'Peringatan',
         'Anda Harus Login Terlebih Dahulu Untuk Memberikan Feedback',
-        [{ text: 'Oke' }]
       );
     }
   };
@@ -114,7 +91,7 @@ const HomeScreen = (props) => {
     <Layout style={styl.screen}>
       <Header isLogin={state.isLogin} />
 
-      <ScrollView style={{ height: height, marginBottom: 30 }}>
+      <ScrollView style={{ height, marginBottom: 30 }}>
         <Slider />
 
         {state.isLogin && (
@@ -128,36 +105,35 @@ const HomeScreen = (props) => {
             <>
               <ButtonHome
                 onPressHandler={handlePoli}
-                label='Registrasi'
+                label="Registrasi"
                 avatar={require('../assets/icon/registrasi.png')}
               />
               <ButtonHome
                 onPressHandler={handleBooking}
-                label='Cek Pendaftaran'
+                label="Cek Pendaftaran"
                 avatar={require('../assets/icon/cek-pendaftaran.png')}
               />
               <ButtonHome
                 onPressHandler={handleFeedback}
-                label='Feedback'
+                label="Feedback"
                 avatar={require('../assets/icon/feedback.png')}
               />
             </>
           )}
           <ButtonHome
             onPressHandler={() => navigation.navigate('ListPoliklinik')}
-            label='Profile Dokter'
+            label="Profile Dokter"
             avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
             onPressHandler={() => navigation.navigate('Lokasi')}
-            // onPressHandler={() => {}}
-            label='Lokasi'
+            label="Lokasi"
             avatar={require('../assets/icon/lokasi.png')}
           />
           {!state.isLogin && (
             <ButtonHome
               onPressHandler={() => navigation.navigate('Login')}
-              label='Login'
+              label="Login"
               avatar={require('../assets/icon/login.png')}
             />
           )}

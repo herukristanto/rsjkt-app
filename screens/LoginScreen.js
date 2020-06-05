@@ -12,9 +12,9 @@ import { Layout, Text } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import NetInfo from '@react-native-community/netinfo';
-import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 import Constants from 'expo-constants';
+import * as Yup from 'yup';
 
 import { baseAxios } from '../utils/useAxios';
 import InputText from '../components/InputText';
@@ -25,6 +25,7 @@ import { LOGIN } from '../reducer/AppReducer';
 import InputDateMask from '../components/InputDateMask';
 import ModalDokter from '../components/LoginScreenComponent/ModalDokter';
 import LoadingOverlay from '../components/LoadingOverlay';
+import { validatedate } from '../utils/helpers';
 
 const { width } = Dimensions.get('screen');
 
@@ -48,7 +49,7 @@ const LoginScreen = () => {
     };
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      handleBackPress
+      handleBackPress,
     );
 
     return () => {
@@ -81,7 +82,7 @@ const LoginScreen = () => {
           },
         });
         const dokterLogin = data.find(
-          (dokter) => dokter.Dokter_ID === dataDokter.PERSONILID
+          (dokter) => dokter.Dokter_ID === dataDokter.PERSONILID,
         );
         const dataLoginDokter = {
           ...dataDokter,
@@ -114,25 +115,6 @@ const LoginScreen = () => {
 
           // * Send Expo Push Token
           if (Constants.isDevice) {
-            // const { status: existingStatus } = await Permissions.getAsync(
-            //   Permissions.NOTIFICATIONS
-            // );
-            // let finalStatus = existingStatus;
-            // if (existingStatus !== 'granted') {
-            //   const { status } = await Permissions.askAsync(
-            //     Permissions.NOTIFICATIONS
-            //   );
-            //   finalStatus = status;
-            // }
-            // if (finalStatus !== 'granted') {
-            //   setLoading(false);
-            //   Alert.alert(
-            //     'Error',
-            //     'Failed to get push token for push notification!',
-            //     [{ text: 'OK' }]
-            //   );
-            //   return;
-            // }
             const token = await Notifications.getExpoPushTokenAsync();
 
             if (Platform.OS === 'android') {
@@ -144,7 +126,7 @@ const LoginScreen = () => {
               });
             }
 
-            const { data: dataToken } = await baseAxios.put('/pasien', {
+            await baseAxios.put('/pasien', {
               rm: values.noRekamMedis,
               token_phone: token,
             });
@@ -172,14 +154,13 @@ const LoginScreen = () => {
             Alert.alert(
               'Error',
               'Must use physical device for Push Notifications',
-              [{ text: 'OK' }]
             );
             return;
           }
         } catch (err) {
           Alert.alert(
             'Maaf',
-            'Something Wrong! Please Contact Customer Service!'
+            'Something Wrong! Please Contact Customer Service!',
           );
           setLoading(false);
         }
@@ -190,15 +171,14 @@ const LoginScreen = () => {
     }
   };
 
-  const onValidate = (values) => {
-    const errors = {};
-
-    if (!values.noRekamMedis) {
-      errors.noRekamMedis = 'No Rekam Tidak Boleh Kosong';
-    }
-
-    return errors;
-  };
+  const formSchema = Yup.object().shape({
+    noRekamMedis: Yup.string().required('No Rekam Tidak Boleh Kosong'),
+    tanggalLahir: Yup.string().test(
+      'tanggalLahir',
+      'Tanggal Lahir Tidak Valid',
+      (value) => (!value ? true : validatedate(value)),
+    ),
+  });
 
   return (
     <Formik
@@ -207,7 +187,7 @@ const LoginScreen = () => {
         tanggalLahir: '',
       }}
       onSubmit={handleForm}
-      validate={onValidate}
+      validationSchema={formSchema}
     >
       <Layout style={styles.screen}>
         <ModalDokter
@@ -218,7 +198,7 @@ const LoginScreen = () => {
         />
         <KeyboardAvoidingView
           style={styles.screen}
-          behavior='height'
+          behavior="height"
           keyboardVerticalOffset={120}
         >
           <Layout style={styles.container}>
@@ -230,17 +210,17 @@ const LoginScreen = () => {
             </Layout>
             <Layout style={styles.form}>
               <InputText
-                name='noRekamMedis'
-                label='No Rekam Medis'
-                placeholder='Masukkan No Rekam Medis'
+                name="noRekamMedis"
+                label="No Rekam Medis"
+                placeholder="Masukkan No Rekam Medis"
               />
             </Layout>
             <Layout style={styles.form}>
               <Text style={styles.label}>Tanggal Lahir</Text>
-              <InputDateMask name='tanggalLahir' />
+              <InputDateMask name="tanggalLahir" />
             </Layout>
             <Layout style={styles.form}>
-              <InputButton label='Login' status='success' />
+              <InputButton label="Login" status="success" />
             </Layout>
             <Layout
               style={[

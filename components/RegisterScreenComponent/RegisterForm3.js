@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
+import * as Yup from 'yup';
 
 import { RegisterContext } from '../../context/RegisterContext';
 import { ADD_FORM } from '../../reducer/RegisterReducer';
@@ -27,30 +28,9 @@ const RegisterForm3 = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  const onValidate = (values) => {
-    const errors = {};
-
-    if (!values.kawin) {
-      errors.kawin = 'Status Perkawinan Wajib Diisi';
-    }
-    // if (!values.namaAyah) {
-    //   errors.namaAyah = 'Nama Ayah Wajib Diisi';
-    // }
-    // if (!values.pekerjaanAyah) {
-    //   errors.pekerjaanAyah = 'Pekerjaan Ayah Wajib Diisi';
-    // }
-    // if (!values.namaIbu) {
-    //   errors.namaIbu = 'Nama Ibu Wajib Diisi';
-    // }
-    // if (!values.namaSutri) {
-    //   errors.namaSutri = 'Nama Suami/Istri Wajib Diisi';
-    // }
-    // if (!values.pekerjaanSutri) {
-    //   errors.pekerjaanSutri = 'Pekerjaan Suami/Istri Wajib Diisi';
-    // }
-
-    return errors;
-  };
+  const formSchema = Yup.object().shape({
+    kawin: Yup.string().required('Status Perkawinan Wajib Diisi'),
+  });
 
   return (
     <Formik
@@ -58,58 +38,58 @@ const RegisterForm3 = (props) => {
         ...state.form,
       }}
       onSubmit={handleForm}
-      validate={onValidate}
+      validationSchema={formSchema}
     >
       <React.Fragment>
-        <Text category='h4'>Keluarga</Text>
+        <Text category="h4">Keluarga</Text>
         <Layout style={styles.form}>
           <Text style={styles.label}>Status Perkawinan</Text>
           <InputSelect
-            placeholder='Pilih Status Perkawinan'
+            placeholder="Pilih Status Perkawinan"
             items={[
               { label: 'Kawin', value: 'kawin' },
               { label: 'Belum Kawin', value: 'belum kawin' },
               { label: 'Janda/Duda', value: 'janda/duda' },
               { label: 'Dibawah Umur', value: 'dibawah umur' },
             ]}
-            name='kawin'
+            name="kawin"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='namaAyah'
-            label='Nama Ayah'
-            placeholder='Masukkan Nama Ayah'
+            name="namaAyah"
+            label="Nama Ayah"
+            placeholder="Masukkan Nama Ayah"
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Pekerjaan Ayah</Text>
           <InputSelect
-            placeholder='Pilih Pekerjaan Ayah'
+            placeholder="Pilih Pekerjaan Ayah"
             items={state.listPekerjaan}
-            name='pekerjaanAyah'
+            name="pekerjaanAyah"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='namaIbu'
-            label='Nama Ibu'
-            placeholder='Masukkan Nama Ibu'
+            name="namaIbu"
+            label="Nama Ibu"
+            placeholder="Masukkan Nama Ibu"
           />
         </Layout>
         <Layout style={styles.form}>
           <InputText
-            name='namaSutri'
-            label='Nama Suami/Istri'
-            placeholder='Masukkan Nama Suami/Istri'
+            name="namaSutri"
+            label="Nama Suami/Istri"
+            placeholder="Masukkan Nama Suami/Istri"
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Pekerjaan Suami/Istri</Text>
           <InputSelect
-            placeholder='Pilih Pekerjaan Suami/Istri'
+            placeholder="Pilih Pekerjaan Suami/Istri"
             items={state.listPekerjaan}
-            name='pekerjaanSutri'
+            name="pekerjaanSutri"
           />
         </Layout>
         <Layout
@@ -124,14 +104,14 @@ const RegisterForm3 = (props) => {
         >
           <Button
             onPress={handleBack}
-            status='success'
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           >
             Back
           </Button>
           <InputButton
-            label='Next'
-            status='success'
+            label="Next"
+            status="success"
             style={{ width: '40%', marginVertical: 10 }}
           />
         </Layout>
