@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Notifications } from 'expo';
 
 import { RegisterContext } from '../../context/RegisterContext';
 import Divider from '../Divider';
@@ -102,6 +103,18 @@ const RegisterForm4 = (props) => {
       const { data: response } = await baseAxios.post('/regnew', request);
 
       setLoading(false);
+
+      await Notifications.presentLocalNotificationAsync({
+        title: 'Pendaftaran Akun Anda Berhasil',
+        body: `Nomor Registrasi Sementara Anda adalah : ${response.medical_record}`,
+        android: {
+          channelId: 'default',
+        },
+        data: {
+          route: 'regis',
+          kodeBooking: response.medical_record,
+        },
+      });
 
       Alert.alert(
         'Data Berhasil Disimpan',
