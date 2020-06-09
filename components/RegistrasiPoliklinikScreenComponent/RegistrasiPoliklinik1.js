@@ -34,7 +34,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction
+      backAction,
     );
 
     return () => backHandler.remove();
@@ -66,7 +66,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     });
 
     const jaminan = state.daftarPenjamin.find(
-      (jaminan) => jaminan.value === value
+      (jaminan) => jaminan.value === value,
     );
 
     const dataPerusahaan = data.map((perusahaan) => {
@@ -87,7 +87,7 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
     let namaPerusahaan = '';
     if (values.status === 1) {
       const perusahaan = state.daftarPerusahaan.find(
-        (perusahaan) => values.perusahaan == perusahaan.value
+        (perusahaan) => values.perusahaan == perusahaan.value,
       );
       namaPerusahaan = perusahaan.label;
     }
@@ -129,6 +129,9 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
       if (!values.perusahaan) {
         errors.perusahaan = 'Perusahaan Tidak Boleh Kosong';
       }
+      if (!values.noKartu) {
+        errors.noKartu = 'No Kartu Tidak Boleh Kosong';
+      }
     }
 
     return errors;
@@ -141,28 +144,28 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           <Text style={styles.label}>Jaminan</Text>
           <SelectJaminan
             items={state.daftarPenjamin}
-            placeholder='Pilih/Cari Jaminan'
-            name='jaminan'
+            placeholder="Pilih/Cari Jaminan"
+            name="jaminan"
             handlePenjamin={handlePenjamin}
           />
         </Layout>
         <Layout style={styles.form}>
           <Text style={styles.label}>Perusahaan</Text>
           <InputSelect
-            placeholder='Pilih Perusahaan'
+            placeholder="Pilih Perusahaan"
             items={state.daftarPerusahaan}
-            name='perusahaan'
+            name="perusahaan"
           />
         </Layout>
         <Layout style={styles.form}>
-          <InputText name='noKartu' label='No Kartu' />
+          <InputText name="noKartu" label="No Kartu" />
         </Layout>
       </>
     );
   };
 
   if (state.isLoading) {
-    return <Spinner status='success' />;
+    return <Spinner status="success" />;
   }
 
   return (
@@ -187,22 +190,22 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         <React.Fragment>
           <Layout style={styles.form}>
             <InputText
-              name='noRekamMedis'
-              label='No Rekam Medis'
+              name="noRekamMedis"
+              label="No Rekam Medis"
               disabled
               placeholder={state.form.noRekamMedis}
-              placeholderTextColor='black'
+              placeholderTextColor="black"
               style={{ backgroundColor: '#FEFDCB' }}
             />
           </Layout>
           <Layout style={styles.form}>
             <InputText
-              name='tanggalLahir'
-              label='Tanggal Lahir'
+              name="tanggalLahir"
+              label="Tanggal Lahir"
               placeholder={moment(state.form.tanggalLahir).format(
-                'DD MMMM YYYY'
+                'DD MMMM YYYY',
               )}
-              placeholderTextColor='black'
+              placeholderTextColor="black"
               disabled
               style={{ backgroundColor: '#FEFDCB' }}
             />
@@ -210,28 +213,28 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
           <Layout style={styles.form}>
             <Text style={styles.label}>Poliklinik</Text>
             <InputSelect
-              placeholder='Pilih Poliklinik'
+              placeholder="Pilih Poliklinik"
               items={state.daftarPoli}
-              name='poliklinik'
+              name="poliklinik"
               additionalHandler={handlePoliklinik}
             />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Dokter</Text>
-            <InputDokter name='dokter' items={state.daftarDokter} />
+            <InputDokter name="dokter" items={state.daftarDokter} />
           </Layout>
           <Layout style={styles.form}>
             <Text style={styles.label}>Tanggal Kunjungan</Text>
             <SelectJadwal
               items={state.daftarJadwal}
-              placeholder='Pilih Jadwal Kunjungan'
-              name='tanggal'
+              placeholder="Pilih Jadwal Kunjungan"
+              name="tanggal"
               disabled={state.daftarJadwal.length ? false : true}
             />
           </Layout>
           <Layout style={styles.form}>
             <InputRadio
-              name='status'
+              name="status"
               items={['Pribadi', 'Penjamin']}
               style={{ flexDirection: 'row', justifyContent: 'space-around' }}
             />
@@ -241,8 +244,8 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
 
           <Layout style={[styles.form, { flexDirection: 'row-reverse' }]}>
             <InputButton
-              label='Next'
-              status='success'
+              label="Next"
+              status="success"
               style={{ width: '45%' }}
             />
           </Layout>
