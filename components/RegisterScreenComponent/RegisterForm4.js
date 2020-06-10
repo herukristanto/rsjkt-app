@@ -63,7 +63,7 @@ const RegisterForm4 = (props) => {
         Dtg_Awal: moment().format('YYYY-MM-DD'),
         namapasien: data.namaLengkap,
         nmpanggil: data.namaPanggilan,
-        tgl_lahir: moment(new Date(data.tanggalLahir)).format('YYYY-MM-DD'),
+        tgl_lahir: moment(data.tanggalLahir, 'DD/MM/YYYY').format('YYYY-MM-DD'),
         tmp_lahir: data.tempatLahir,
         gol_darah: data.darah,
         kelamin: data.kelamin,
