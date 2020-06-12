@@ -69,7 +69,10 @@ const NotificationScreen = () => {
         });
         const promo = dataPromo.find((p) => p.id == data.IDPromo);
         navigation.navigate('Promo', { promo: promo });
-      } else if (data.TypeNotif === 'Registrasi') {
+      } else if (
+        data.TypeNotif === 'Registrasi' ||
+        data.TypeNotif === 'Antrian'
+      ) {
         // Flag Notif
         const request = {
           key: 'rsjkt4231',
@@ -95,6 +98,14 @@ const NotificationScreen = () => {
           'Congratulations',
           'Selamat Datang Di Rumah Sakit Jakarta Mobile',
         );
+      } else if (data.TypeNotif === 'Feedback') {
+        // Flag Notif
+        const request = {
+          key: 'rsjkt4231',
+          id_notif: data.ID_Notif,
+        };
+        await baseAxios.put('IsReadNotif', request);
+        navigation.navigate('Feedback');
       }
     } catch (error) {
       Alert.alert('Error', 'Something Wrong! Please contact customer service!');

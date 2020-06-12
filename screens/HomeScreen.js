@@ -11,6 +11,7 @@ import { Layout } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 import { useNavigation } from '@react-navigation/native';
+import { Notifications } from 'expo';
 
 import { AppContext } from '../context/AppContext';
 import ButtonHome from '../components/HomeScreenComponent/ButtonHome';
@@ -43,11 +44,15 @@ const HomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    // initialLink();
+  const handleNotification = (notification) => {
+    console.log(notification);
+  };
 
+  useEffect(() => {
     // listen for new url events coming from Expo
     Linking.addEventListener('url', urlRedirect);
+
+    const notificationSubs = Notifications.addListener(handleNotification);
 
     return () => {
       Linking.removeEventListener('url', urlRedirect);
