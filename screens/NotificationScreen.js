@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Layout, TabView, Tab, Text, Spinner } from '@ui-kitten/components';
+import {
+  Layout,
+  TabView,
+  Tab,
+  Text,
+  Spinner,
+  Button,
+} from '@ui-kitten/components';
 import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Dimensions,
   Alert,
+  View,
 } from 'react-native';
 import moment from 'moment';
 import { AppContext } from '../context/AppContext';
@@ -117,6 +125,22 @@ const NotificationScreen = () => {
     setSelectedIndex(index);
   };
 
+  const handleDelete = async (idNotif) => {
+    try {
+      const request = {
+        key: 'rsjkt4231',
+        id_notif: idNotif,
+        flag: 0,
+      };
+      await baseAxios.put('FlagNotif', request);
+      Alert.alert('Berhasil', 'Notifikasi Berhasil Dihapus', [
+        { text: 'Ok', onPress: () => navigation.goBack() },
+      ]);
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please contact customer service!');
+    }
+  };
+
   const Item = ({ data }) => {
     return (
       <TouchableOpacity
@@ -126,13 +150,29 @@ const NotificationScreen = () => {
         ]}
         onPress={() => handleNotif(data)}
       >
-        <Text>
-          {data.TypeNotif} - {moment(data.Tanggal).format('DD MMMM Y')}
-        </Text>
-        <Text status="success" style={{ fontWeight: 'bold' }}>
-          {data.JudulNotif}
-        </Text>
-        <Text>"{data.IsiNotif}"</Text>
+        <View>
+          <Text>
+            {data.TypeNotif} - {moment(data.Tanggal).format('DD MMMM Y')}
+          </Text>
+          <Text status="success" style={{ fontWeight: 'bold' }}>
+            {data.JudulNotif}
+          </Text>
+          <Text>"{data.IsiNotif}"</Text>
+        </View>
+        <View style={styles.deleteButton}>
+          <Button
+            status="success"
+            size="small"
+            onPress={() =>
+              Alert.alert('Peringatan', 'Yakin Untuk Menghapus?', [
+                { text: 'Yes', onPress: () => handleDelete(data.ID_Notif) },
+                { text: 'No' },
+              ])
+            }
+          >
+            Hapus
+          </Button>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -202,6 +242,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  deleteButton: {
+    flexDirection: 'column-reverse',
   },
 });
 
