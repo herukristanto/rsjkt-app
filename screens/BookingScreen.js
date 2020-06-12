@@ -73,6 +73,7 @@ const BookingScreen = () => {
           <Text>
             {moment(data.Tgl_Pesan).format('DD MMMM YYYY')}, {data.Jam}
           </Text>
+          {data.Status && <Text>Info Dokter : {data.Status}</Text>}
         </Layout>
         <Layout style={styles.kodeBookingContainer}>
           <Text style={{ fontWeight: 'bold' }}>Kode Booking</Text>

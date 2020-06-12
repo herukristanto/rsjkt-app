@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Layout, Text, Button } from '@ui-kitten/components';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
@@ -14,10 +14,13 @@ import InputButton from '../InputButton';
 import InputSelect from '../InputSelect';
 import LoadingOverlay from '../LoadingOverlay';
 import { baseAxios } from '../../utils/useAxios';
+import { LOGIN } from '../../reducer/AppReducer';
+import { AppContext } from '../../context/AppContext';
 
 const RegisterForm4 = (props) => {
   const { setStep, navigation } = props;
   const { state } = useContext(RegisterContext);
+  const { dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const handleForm = async (values) => {
@@ -115,6 +118,20 @@ const RegisterForm4 = (props) => {
           kodeBooking: response.medical_record,
         },
       });
+
+      const userData = {
+        nomor_cm: response.medical_record,
+        namaPasien: request.namapasien,
+        Tgl_lahir: `${request.tgl_lahir} 00:00:00.000`,
+        kd_jaminan: request.kd_jaminan,
+        kd_anakjmn: '',
+        no_kartu: request.kd_member,
+        Hand_phone: request.hand_phone,
+        role: 'pasien',
+      };
+
+      await AsyncStorage.setItem('_USERDATA_', JSON.stringify(userData));
+      dispatch({ type: LOGIN, user: userData });
 
       Alert.alert(
         'Data Berhasil Disimpan',

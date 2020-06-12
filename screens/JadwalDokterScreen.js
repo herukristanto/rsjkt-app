@@ -50,7 +50,7 @@ const JadwalDokterScreen = () => {
       } catch (error) {
         Alert.alert(
           'Error',
-          'Something Wrong! Please contact customer service!'
+          'Something Wrong! Please contact customer service!',
         );
       }
     };
@@ -79,18 +79,18 @@ const JadwalDokterScreen = () => {
       Alert.alert(
         'Peringatan',
         'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
-        [{ text: 'Oke' }]
+        [{ text: 'Login', onPress: () => navigation.navigate('Login') }],
       );
       return;
     }
     const dokterFilterId = rawDokter.filter(
-      (a) => a.Dokter_ID === data.Dokter_ID
+      (a) => a.Dokter_ID === data.Dokter_ID,
     );
     if (dokterFilterId.length === 0) {
       Alert.alert(
         'Peringatan',
         'Dokter Yang Anda Pilih Belum Ada Jadwal Praktek',
-        [{ text: 'Oke' }]
+        [{ text: 'Oke' }],
       );
       return;
     }
@@ -102,13 +102,13 @@ const JadwalDokterScreen = () => {
   const handleShare = async (data) => {
     try {
       const dokterFilterId = rawDokter.filter(
-        (a) => a.Dokter_ID === data.Dokter_ID
+        (a) => a.Dokter_ID === data.Dokter_ID,
       );
       if (dokterFilterId.length === 0) {
         Alert.alert(
           'Peringatan',
           'Dokter Yang Anda Pilih Belum Ada Jadwal Praktek',
-          [{ text: 'Oke' }]
+          [{ text: 'Oke' }],
         );
         return;
       }
@@ -133,7 +133,7 @@ const JadwalDokterScreen = () => {
       Alert.alert(
         'Error',
         'Something Wrong! Please Contact Customer Service!',
-        [{ text: 'Oke' }]
+        [{ text: 'Oke' }],
       );
       return;
     }
@@ -147,7 +147,7 @@ const JadwalDokterScreen = () => {
           { justifyContent: 'center', alignItems: 'center' },
         ]}
       >
-        <Spinner status='success' />
+        <Spinner status="success" />
       </Layout>
     );
   }
@@ -161,12 +161,12 @@ const JadwalDokterScreen = () => {
               source={{ uri: data.Img }}
               // width={30}
               // height={30}
-              size='giant'
+              size="giant"
               style={styles.avatar}
             />
           </Layout>
           <Layout style={styles.namaContainer}>
-            <Text category='h6' style={styles.dokterName}>
+            <Text category="h6" style={styles.dokterName}>
               {data.Dokter_nm.trim()}
             </Text>
             <Text style={styles.dokterDesc}>{data.Poli_nm.trim()}</Text>
@@ -176,20 +176,20 @@ const JadwalDokterScreen = () => {
         </Layout>
         <Layout style={styles.footer}>
           <Layout style={styles.yearContainer}>
-            <Icon name='briefcase' width={24} height={24} fill='#A0A0A0' />
+            <Icon name="briefcase" width={24} height={24} fill="#A0A0A0" />
             <Text>{data.LamaBekerjaTahun} tahun</Text>
           </Layout>
           <Layout style={styles.buttonContainer}>
             <Button
-              status='success'
-              size='small'
+              status="success"
+              size="small"
               onPress={() => handleShare(data)}
             >
               SHARE
             </Button>
             <Button
-              status='success'
-              size='small'
+              status="success"
+              size="small"
               onPress={() => handleRegistrasi(data)}
             >
               REGISTRASI
@@ -202,7 +202,7 @@ const JadwalDokterScreen = () => {
 
   return (
     <Layout style={styles.screen}>
-      <Header onSearch={onSearch} title={title} placeholder='Cari Dokter...' />
+      <Header onSearch={onSearch} title={title} placeholder="Cari Dokter..." />
       <ScrollView>
         {daftarDokter.map((dokter) => (
           <RenderPoli data={dokter} key={dokter.Dokter_ID} />
