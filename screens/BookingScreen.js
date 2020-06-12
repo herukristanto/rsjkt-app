@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Layout, Text, Spinner } from '@ui-kitten/components';
+import { Layout, Text, Spinner, Button } from '@ui-kitten/components';
 import { StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
@@ -51,6 +51,20 @@ const BookingScreen = () => {
     return () => {};
   }, []);
 
+  const handleBatal = async (kodeBooking) => {
+    try {
+      const request = {
+        key: 'rsjkt4231',
+        kd_booking: kodeBooking,
+        flag: 1,
+      };
+      await baseAxios.put('RegOL', request);
+      navigation.goBack();
+    } catch (error) {
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
+    }
+  };
+
   const List = ({ data }) => {
     return (
       <TouchableOpacity
@@ -78,6 +92,19 @@ const BookingScreen = () => {
         <Layout style={styles.kodeBookingContainer}>
           <Text style={{ fontWeight: 'bold' }}>Kode Booking</Text>
           <Text style={{ fontWeight: 'bold' }}>{data.KodeBooking}</Text>
+          <Button
+            status="success"
+            size="small"
+            style={{ marginTop: 5 }}
+            onPress={() =>
+              Alert.alert('Peringatan', 'Yakin Untuk Membatalkan?', [
+                { text: 'Yes', onPress: () => handleBatal(data.KodeBooking) },
+                { text: 'No' },
+              ])
+            }
+          >
+            Batal
+          </Button>
         </Layout>
       </TouchableOpacity>
     );
