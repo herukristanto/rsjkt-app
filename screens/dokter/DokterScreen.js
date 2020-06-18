@@ -18,6 +18,7 @@ import { AppContext } from '../../context/AppContext';
 import { LOGOUT } from '../../reducer/AppReducer';
 import { getUnique } from '../../utils/helpers';
 import { baseAxios } from '../../utils/useAxios';
+import ModalImageDokter from '../../components/ModalImageDokter';
 
 const { width } = Dimensions.get('screen');
 
@@ -25,6 +26,8 @@ const DokterScreen = () => {
   const { state, dispatch } = useContext(AppContext);
   const [listPasien, setListPasien] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [dataModal, setDataModal] = useState();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -71,6 +74,15 @@ const DokterScreen = () => {
     };
     getPasien();
   }, []);
+
+  const handleModal = (value) => {
+    setShowModal(true);
+    setDataModal(value);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('_USERDATA_');
@@ -164,15 +176,23 @@ const DokterScreen = () => {
         </View>
       </View>
 
+      <ModalImageDokter
+        showModal={showModal}
+        dataModal={dataModal}
+        handleClose={handleClose}
+      />
+
       <Layout style={{ width: '100%', height: '90%' }}>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
           <Layout style={styles.avatarContainer}>
-            <Avatar
-              source={{ uri: state.user.avatar }}
-              width={width * 0.3}
-              height={width * 0.3}
-              style={styles.avatar}
-            />
+            <TouchableOpacity onPress={() => handleModal(state.user.avatar)}>
+              <Avatar
+                source={{ uri: state.user.avatar }}
+                width={width * 0.3}
+                height={width * 0.3}
+                style={styles.avatar}
+              />
+            </TouchableOpacity>
           </Layout>
 
           <Layout style={styles.identity}>
