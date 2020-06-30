@@ -61,8 +61,6 @@ export const PoliklinikContextProvider = ({ children }) => {
           (anakPenjamin) =>
             anakPenjamin.kd_anakjmn === stateApp.user.kd_anakjmn.trim()
         );
-      }
-      if (stateApp.user.kd_jaminan.trim() !== '') {
         namaPenjamin = penjaminData.find(
           (jaminan) => jaminan.value === stateApp.user.kd_jaminan.trim()
         );
@@ -132,7 +130,9 @@ export const PoliklinikContextProvider = ({ children }) => {
           jaminan: stateApp.user.kd_jaminan.trim(),
           perusahaan: stateApp.user.kd_anakjmn.trim(),
           _label_jaminan: namaPenjamin.label,
-          _label_perusahaan: namaAnakPenjamin.NM_AnakJMN,
+          _label_perusahaan: namaAnakPenjamin
+            ? namaAnakPenjamin.NM_AnakJMN
+            : '',
           telp: stateApp.user.Hand_phone.trim(),
           poliklinik: poliklinik,
           dokter: dokter,

@@ -162,10 +162,10 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         {state.form.status === 0 ? <RenderPribadi /> : <RenderPenjamin />}
         <Layout style={styles.form}>
           <InputText
-            name="telp"
-            label="Masukkan Telp"
-            keyboardType="number-pad"
-            placeholder="08*******"
+            name='telp'
+            label='Masukkan Telp'
+            keyboardType='number-pad'
+            placeholder='08*******'
           />
         </Layout>
         <Layout
@@ -175,13 +175,13 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
           ]}
         >
           <Button
-            status="success"
+            status='success'
             onPress={() => setStep((prevStep) => prevStep - 1)}
             style={{ width: '45%' }}
           >
             Back
           </Button>
-          <InputButton label="Save" status="success" style={{ width: '45%' }} />
+          <InputButton label='Save' status='success' style={{ width: '45%' }} />
         </Layout>
       </React.Fragment>
     </Formik>
