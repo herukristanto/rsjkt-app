@@ -134,7 +134,7 @@ const HomeStackNavigator = () => {
         component={FeedbackScreen}
         options={({ navigation }) => {
           return {
-            headerTitle: 'Feedback',
+            headerTitle: 'Ulasan',
             headerRight: () => (
               <View style={{ marginRight: 10 }}>
                 <NotificationBell />

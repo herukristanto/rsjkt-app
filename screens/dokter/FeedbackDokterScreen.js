@@ -62,13 +62,13 @@ const FeedbackDokterScreen = () => {
       <Layout style={styles.container}>
         <Layout style={styles.feedbackContainer}>
           <Text style={styles.text} category='h1'>
-            Jumlah Feedback
+            Jumlah Ulasan
           </Text>
           <Text style={styles.text} status='success' category='h1'>
             {feedback.count}
           </Text>
           <Text style={styles.text} category='h1'>
-            Nilai Feedback
+            Nilai Ulasan
           </Text>
           <Text style={styles.text} status='success' category='h1'>
             {feedback.mean.toFixed(2)}

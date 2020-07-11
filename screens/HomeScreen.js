@@ -65,7 +65,7 @@ const HomeScreen = () => {
     } else {
       Alert.alert(
         'Peringatan',
-        'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli',
+        'Anda Harus Login Terlebih Dahulu Untuk Registrasi Poli'
       );
     }
   };
@@ -76,7 +76,7 @@ const HomeScreen = () => {
     } else {
       Alert.alert(
         'Peringatan',
-        'Anda Harus Login Terlebih Dahulu Untuk Mengecek Pendaftaran',
+        'Anda Harus Login Terlebih Dahulu Untuk Mengecek Pendaftaran'
       );
     }
   };
@@ -87,7 +87,7 @@ const HomeScreen = () => {
     } else {
       Alert.alert(
         'Peringatan',
-        'Anda Harus Login Terlebih Dahulu Untuk Memberikan Feedback',
+        'Anda Harus Login Terlebih Dahulu Untuk Memberikan Feedback'
       );
     }
   };
@@ -110,35 +110,35 @@ const HomeScreen = () => {
             <>
               <ButtonHome
                 onPressHandler={handlePoli}
-                label="Registrasi"
+                label='Registrasi'
                 avatar={require('../assets/icon/registrasi.png')}
               />
               <ButtonHome
                 onPressHandler={handleBooking}
-                label="Cek Pendaftaran"
+                label='Cek Pendaftaran'
                 avatar={require('../assets/icon/cek-pendaftaran.png')}
               />
               <ButtonHome
                 onPressHandler={handleFeedback}
-                label="Feedback"
+                label='Ulasan'
                 avatar={require('../assets/icon/feedback.png')}
               />
             </>
           )}
           <ButtonHome
             onPressHandler={() => navigation.navigate('ListPoliklinik')}
-            label="Profile Dokter"
+            label='Profile Dokter'
             avatar={require('../assets/icon/registrasi.png')}
           />
           <ButtonHome
             onPressHandler={() => navigation.navigate('Lokasi')}
-            label="Lokasi"
+            label='Lokasi'
             avatar={require('../assets/icon/lokasi.png')}
           />
           {!state.isLogin && (
             <ButtonHome
               onPressHandler={() => navigation.navigate('Login')}
-              label="Login"
+              label='Login'
               avatar={require('../assets/icon/login.png')}
             />
           )}

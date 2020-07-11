@@ -39,7 +39,7 @@ const ModalFeedback = ({ showModal, dataModal, handleClose }) => {
 
       const { data } = await baseAxios.post('feedback', request);
 
-      Alert.alert('Berhasil', 'Feedback Berhasil Disimpan', [
+      Alert.alert('Berhasil', 'Ulasan Berhasil Disimpan', [
         { text: 'Okay', onPress: () => navigation.goBack() },
       ]);
 

@@ -31,6 +31,7 @@ const ModalStatus = ({ showModal, dataModal, handleClose }) => {
 
       if (!status) {
         Alert.alert('Peringatan', 'Status Tidak Boleh Kosong');
+        setLoading(false);
         return;
       }
       if (status.length > 50) {
@@ -38,6 +39,7 @@ const ModalStatus = ({ showModal, dataModal, handleClose }) => {
           'Peringatan',
           'Jumlah Karakter Terlalu Panjang. Maksimal 50 Karakter'
         );
+        setLoading(false);
         return;
       }
 

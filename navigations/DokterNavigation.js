@@ -107,7 +107,7 @@ const DokterDrawerNavigator = () => {
         name='FeedbackDokter'
         component={FeedbackDokterScreen}
         options={{
-          title: 'Feedback Dokter',
+          title: 'Ulasan Dokter',
         }}
       />
     </DokterDrawer.Navigator>
