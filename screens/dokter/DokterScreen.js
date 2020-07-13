@@ -103,7 +103,9 @@ const DokterScreen = () => {
         }}
       >
         <Layout style={{ width: '60%' }}>
-          <Text>{data.NamaPasien}</Text>
+          <Text style={{ color: data.Flag_Batal === 1 ? 'red' : 'black' }}>
+            {data.NamaPasien}
+          </Text>
         </Layout>
         <Layout>
           <Text>- {data.Jenis_Penjamin}</Text>
