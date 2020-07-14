@@ -32,6 +32,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
   const { daftarDokter } = state;
   // Empty dokter when poli change
   useDidMountEffect(() => {
+    setFieldValue('cluster', {});
     setFieldValue(name, '');
     setFieldValue(`_label_${name}`, '');
   }, [daftarDokter]);
@@ -69,7 +70,11 @@ const InputDokter = ({ name, label, items, ...props }) => {
     return filteredJadwal;
   };
 
-  const handleSelect = (label, value) => {
+  const handleSelect = (label, value, item) => {
+    setFieldValue('cluster', {
+      cluster_id: item.Cluster_ID,
+      cluster_nm: item.Cluster_NM,
+    });
     setFieldValue(name, value);
     setFieldValue(`_label_${name}`, label);
     let daftarJadwalDokter = daftarJadwal;
@@ -102,7 +107,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
         >
           <Layout style={{ flexShrink: 1 }}>
             <TouchableWithoutFeedback
-              onPress={() => handleSelect(item.label, item.value)}
+              onPress={() => handleSelect(item.label, item.value, item)}
             >
               <Text numberOfLines={2}>{item.label}</Text>
             </TouchableWithoutFeedback>

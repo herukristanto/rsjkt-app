@@ -47,6 +47,8 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         kd_jaminan: state.form.jaminan,
         kd_anakjaminan: state.form.perusahaan,
         hand_phone: values.telp,
+        cluster_id: state.form.cluster.cluster_id,
+        cluster_nm: state.form.cluster.cluster_nm,
       };
 
       const { data } = await baseAxios.post('/regpoli', request);
