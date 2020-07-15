@@ -60,6 +60,11 @@ const DokterScreen = () => {
             pasien: data.data.filter((pasien) =>
               moment(pasien.Tgl_Pesan).isSame(date.Tanggal, 'day')
             ),
+            batal: data.data.filter(
+              (pasien) =>
+                moment(pasien.Tgl_Pesan).isSame(date.Tanggal, 'day') &&
+                pasien.Flag_Batal === 1
+            ),
           };
         });
         setListPasien(pasienDate);
@@ -108,7 +113,9 @@ const DokterScreen = () => {
           </Text>
         </Layout>
         <Layout>
-          <Text>- {data.Jenis_Penjamin}</Text>
+          <Text style={{ color: data.Flag_Batal === 1 ? 'red' : 'black' }}>
+            - {data.Jenis_Penjamin}
+          </Text>
         </Layout>
       </Layout>
     );
@@ -118,11 +125,14 @@ const DokterScreen = () => {
     return (
       <Layout style={{ marginVertical: 5 }}>
         <Layout style={{ flexDirection: 'row' }}>
-          <Text style={{ fontWeight: 'bold', width: '60%' }}>
+          <Text style={{ fontWeight: 'bold', width: '40%' }}>
             {moment(pasien.date).format('DD/MM/YYYY')}
           </Text>
-          <Text style={{ fontWeight: 'bold' }}>
+          <Text style={{ fontWeight: 'bold', width: '30%' }}>
             Total: {pasien.pasien.length}
+          </Text>
+          <Text style={{ fontWeight: 'bold' }}>
+            Batal: {pasien.batal.length}
           </Text>
         </Layout>
         <Layout>
