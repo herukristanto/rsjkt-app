@@ -126,7 +126,7 @@ const RegistrasiPoliklinik3 = () => {
           </Text>
         </Layout>
         <Layout style={[styles.desc, { flexDirection: 'row' }]}>
-          <Text style={{ width: width * 0.4 }}>Waktu Booking</Text>
+          <Text style={{ width: width * 0.4 }}>Tanggal Periksa</Text>
           <Text style={{ width: width * 0.5 }}>
             {`: ${state.form.tanggal.hari}, ${moment(
               state.form.tanggal.date
@@ -136,6 +136,12 @@ const RegistrasiPoliklinik3 = () => {
         <Layout style={[styles.desc, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>No Antrian</Text>
           <Text style={{ width: width * 0.5 }}>: {state.noAntrian}</Text>
+        </Layout>
+        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+          <Text style={{ width: width * 0.4 }}>Lantai / Cluster</Text>
+          <Text style={{ width: width * 0.5 }}>
+            : {state.form.cluster.cluster_nm}
+          </Text>
         </Layout>
         <Layout style={styles.qrCode}>
           <QRCode

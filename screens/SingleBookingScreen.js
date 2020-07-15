@@ -127,7 +127,7 @@ const SingleBookingScreen = () => {
             <Text style={{ width: width * 0.65 }}>: {data.Poli_nm}</Text>
           </Layout>
           <Layout style={styles.desc}>
-            <Text style={{ width: width * 0.35 }}>Waktu Booking</Text>
+            <Text style={{ width: width * 0.35 }}>Tanggal Periksa</Text>
             <Text style={{ width: width * 0.65 }}>
               : {moment(data.Tgl_Pesan).format('dddd, DD MMMM YYYY')}
             </Text>
@@ -136,13 +136,13 @@ const SingleBookingScreen = () => {
             <Text style={{ width: width * 0.35 }}>No Antrian</Text>
             <Text style={{ width: width * 0.65 }}>: {data.NomorPanggil}</Text>
           </Layout>
+          <Layout style={styles.desc}>
+            <Text style={{ width: width * 0.35 }}>Lantai / Cluster</Text>
+            <Text style={{ width: width * 0.65 }}>: {data.Cluster}</Text>
+          </Layout>
         </Layout>
         <Layout style={styles.qrCode}>
-          <QRCode
-            value={data.KodeBooking}
-            size={width * 0.7}
-            getRef={qrcode}
-          />
+          <QRCode value={data.KodeBooking} size={width * 0.7} getRef={qrcode} />
         </Layout>
         <Text category='h5' style={{ fontWeight: 'bold' }}>
           Kode Booking
