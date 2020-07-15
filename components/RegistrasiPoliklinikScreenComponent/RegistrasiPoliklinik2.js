@@ -51,6 +51,26 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         cluster_nm: state.form.cluster.cluster_nm,
       };
 
+      // Check if already regis poli with the same doctor and date
+      const { data: dataPasien } = await baseAxios('RegOL', {
+        params: {
+          rm: state.form.noRekamMedis,
+        },
+      });
+      const checkData = dataPasien.data.find(
+        (pasien) =>
+          pasien.Poli_id === request.poli_id &&
+          pasien.Dokter_id === request.dokter_id &&
+          pasien.Tgl_Pesan === request.tgl_pesan
+      );
+      if (checkData) {
+        Alert.alert(
+          'Peringatan',
+          'Anda Sudah Pernah Mendaftar Untuk Poli, Dokter, dan Waktu yang sama!'
+        );
+        return;
+      }
+
       const { data } = await baseAxios.post('/regpoli', request);
 
       dispatch({

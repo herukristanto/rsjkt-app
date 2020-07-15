@@ -200,7 +200,10 @@ const RegistrasiPoliklinik1 = ({ setStep }) => {
         perusahaan: state.form.perusahaan,
         _label_perusahaan: state.form._label_perusahaan,
         noKartu: state.form.noKartu,
-        cluster: {},
+        cluster: {
+          cluster_id: state.form.cluster.cluster_id,
+          cluster_nm: state.form.cluster.cluster_nm,
+        },
       }}
       onSubmit={handleForm}
       validate={onValidate}

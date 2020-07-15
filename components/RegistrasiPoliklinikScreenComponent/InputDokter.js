@@ -32,7 +32,10 @@ const InputDokter = ({ name, label, items, ...props }) => {
   const { daftarDokter } = state;
   // Empty dokter when poli change
   useDidMountEffect(() => {
-    setFieldValue('cluster', {});
+    setFieldValue('cluster', {
+      cluster_id: '',
+      cluster_nm: '',
+    });
     setFieldValue(name, '');
     setFieldValue(`_label_${name}`, '');
   }, [daftarDokter]);
@@ -72,8 +75,8 @@ const InputDokter = ({ name, label, items, ...props }) => {
 
   const handleSelect = (label, value, item) => {
     setFieldValue('cluster', {
-      cluster_id: item.Cluster_ID,
-      cluster_nm: item.Cluster_NM,
+      cluster_id: item.Cluster_ID.trim(),
+      cluster_nm: item.Cluster_NM.trim(),
     });
     setFieldValue(name, value);
     setFieldValue(`_label_${name}`, label);

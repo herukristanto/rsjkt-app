@@ -23,7 +23,10 @@ export const initialState = {
     noKartu: '',
     telp: '',
     qrCode: '',
-    cluster: {},
+    cluster: {
+      cluster_id: '',
+      cluster_nm: '',
+    },
   },
   daftarPraktek: [],
   daftarPoli: [],
