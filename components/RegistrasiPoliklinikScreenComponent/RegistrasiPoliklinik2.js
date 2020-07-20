@@ -45,7 +45,11 @@ const RegistrasiPoliklinik2 = ({ setStep }) => {
         jam: state.form.tanggal.jamAwal,
         jenis_penjamin: state.form.status === 0 ? 'Pribadi' : 'Jaminan',
         kd_jaminan: state.form.jaminan,
+        nm_jaminan: state.form._label_jaminan ? state.form._label_jaminan : '',
         kd_anakjaminan: state.form.perusahaan,
+        nm_anakjaminan: state.form._label_perusahaan
+          ? state.form._label_perusahaan
+          : '',
         hand_phone: values.telp,
         cluster_id: state.form.cluster.cluster_id,
         cluster_nm: state.form.cluster.cluster_nm,
