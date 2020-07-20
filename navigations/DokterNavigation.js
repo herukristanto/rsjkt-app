@@ -19,6 +19,8 @@ import DokterScreen from '../screens/dokter/DokterScreen';
 import ResetPasswordDokterScreen from '../screens/dokter/ResetPasswordDokterScreen';
 import ListPraktekScreen from '../screens/dokter/ListPraktekScreen';
 import FeedbackDokterScreen from '../screens/dokter/FeedbackDokterScreen';
+import CutiDokterScreen from '../screens/dokter/CutiDokterScreen';
+import TambahCutiDokterScreen from '../screens/dokter/TambahCutiDokterScreen';
 
 const DokterStack = createStackNavigator();
 const DokterStackNavigator = () => {
@@ -45,6 +47,34 @@ const DokterStackNavigator = () => {
         options={{ headerShown: false }}
       />
     </DokterStack.Navigator>
+  );
+};
+
+const CutiDokterStack = createStackNavigator();
+const CutiDokterStackNavigator = () => {
+  return (
+    <CutiDokterStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Platform.OS === 'android' ? 'rgb(7,94,85)' : '',
+        },
+        headerTintColor: Platform.OS === 'android' ? 'white' : 'rgb(7,94,85)',
+        headerTitleStyle: {
+          fontFamily: 'calibri',
+        },
+      }}
+    >
+      <CutiDokterStack.Screen
+        name='CutiDokter'
+        component={CutiDokterScreen}
+        options={{ headerShown: false }}
+      />
+      <CutiDokterStack.Screen
+        name='TambahCutiDokter'
+        component={TambahCutiDokterScreen}
+        options={{ headerShown: false }}
+      />
+    </CutiDokterStack.Navigator>
   );
 };
 
@@ -108,6 +138,13 @@ const DokterDrawerNavigator = () => {
         component={FeedbackDokterScreen}
         options={{
           title: 'Ulasan Dokter',
+        }}
+      />
+      <DokterDrawer.Screen
+        name='CutiDokterStack'
+        component={CutiDokterStackNavigator}
+        options={{
+          title: 'Cuti / Izin',
         }}
       />
     </DokterDrawer.Navigator>
