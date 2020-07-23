@@ -63,6 +63,7 @@ const TambahCutiDokterScreen = () => {
         dokter_nm: state.user.namaDokter,
         kd_cuti: values.no,
         status: '1',
+        alasan: values.alasan,
         tanggal: [...values.tanggals],
       };
 
