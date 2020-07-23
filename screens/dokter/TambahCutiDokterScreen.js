@@ -18,6 +18,7 @@ const { width } = Dimensions.get('screen');
 const TambahCutiDokterScreen = () => {
   const { state } = useContext(AppContext);
   const [no, setNo] = useState();
+  const [minDate, setMinDate] = useState();
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -38,7 +39,10 @@ const TambahCutiDokterScreen = () => {
           },
         });
 
+        const startDate = data.tgl_pengajuan.split('-').reverse().join('-');
+
         setNo(data.kd_cuti);
+        setMinDate(startDate);
       } catch (error) {
         Alert.alert(
           'Error',
@@ -63,7 +67,10 @@ const TambahCutiDokterScreen = () => {
       };
 
       const { data } = await baseAxios.post('cutidr', request);
-      console.log(data);
+
+      Alert.alert('Berhasil', 'Data Berhasil Disimpan', [
+        { text: 'OK', onPress: () => navigation.goBack() },
+      ]);
     } catch (error) {
       if (error.response.status === 501) {
         Alert.alert('Peringatan', error.response.data.message);
@@ -126,7 +133,7 @@ const TambahCutiDokterScreen = () => {
             />
           </Layout>
           <Layout style={styles.form}>
-            <InputMultipleDate name='tanggal' />
+            <InputMultipleDate name='tanggal' minDate={minDate} />
           </Layout>
           <Layout style={styles.buttonContainer}>
             <Button status='success' onPress={() => navigation.goBack()}>

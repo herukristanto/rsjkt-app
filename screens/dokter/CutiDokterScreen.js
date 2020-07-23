@@ -19,92 +19,12 @@ import { baseAxios } from '../../utils/useAxios';
 
 const { width } = Dimensions.get('screen');
 
-const dummyData = [
-  {
-    alasan: '',
-    dokter_id: 368,
-    dokter_nm: 'Adhi Wicaksono, SpM, dr.',
-    kd_cuti: '20071636805',
-    status_cuti: '5',
-    tgl_cuti: [
-      {
-        tanggal: '2020-07-15 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-16 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-17 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-18 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-19 00:00:00.000',
-      },
-    ],
-    tgl_input: '2020-07-17 13:41:57.000',
-    tgl_status: '2020-07-18 00:00:00.000',
-  },
-  {
-    alasan: '',
-    dokter_id: 368,
-    dokter_nm: 'Adhi Wicaksono, SpM, dr.',
-    kd_cuti: '20071636806',
-    status_cuti: '1',
-    tgl_cuti: [
-      {
-        tanggal: '2020-07-15 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-16 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-17 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-18 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-19 00:00:00.000',
-      },
-    ],
-    tgl_input: '2020-07-17 13:46:23.000',
-    tgl_status: '2020-07-17 13:46:23.000',
-  },
-  {
-    alasan: '',
-    dokter_id: 368,
-    dokter_nm: 'Adhi Wicaksono, SpM, dr.',
-    kd_cuti: '20071636808',
-    status_cuti: '1',
-    tgl_cuti: [
-      {
-        tanggal: '2020-07-15 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-16 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-17 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-18 00:00:00.000',
-      },
-      {
-        tanggal: '2020-07-19 00:00:00.000',
-      },
-    ],
-    tgl_input: '2020-07-17 16:17:02.000',
-    tgl_status: '1900-01-01 00:00:00.000',
-  },
-];
-
 const CutiDokterScreen = () => {
   const navigation = useNavigation();
   const { state } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
-  const [dataCuti, setDataCuti] = useState(dummyData);
+  const [loading, setLoading] = useState(true);
+  const [loadingBatal, setLoadingBatal] = useState(false);
+  const [dataCuti, setDataCuti] = useState([]);
   const [checked, setChecked] = useState('');
 
   useEffect(() => {
@@ -139,8 +59,29 @@ const CutiDokterScreen = () => {
 
       setLoading(false);
     };
-    // getData();
-  });
+    getData();
+  }, []);
+
+  const handleBatal = async (value) => {
+    setLoadingBatal(true);
+    try {
+      const request = {
+        key: 'rsjkt4231',
+        dokter_id: state.user.idDokter,
+        kd_cuti: value.kd_cuti,
+        status: '5',
+      };
+      console.log(request);
+      const { data } = await baseAxios.put('cutidr', request);
+      Alert.alert('Berhasil', 'Cuti Berhasil Dibatalkan', [
+        { text: 'OK', onPress: () => navigation.goBack() },
+      ]);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Something Wrong! Please Contact Customer Service!');
+    }
+    setLoadingBatal(false);
+  };
 
   const getStatusCuti = (status) => {
     switch (status) {
@@ -210,8 +151,8 @@ const CutiDokterScreen = () => {
                 Tanggal :
               </Text>
               <Layout>
-                {data.tgl_cuti.map((tanggal) => (
-                  <Text style={{ fontWeight: 'bold' }} key={tanggal.tanggal}>
+                {data.tgl_cuti.map((tanggal, index) => (
+                  <Text style={{ fontWeight: 'bold' }} key={index}>
                     {moment(tanggal.tanggal).format('DD-MM-YYYY')}
                   </Text>
                 ))}
@@ -220,6 +161,25 @@ const CutiDokterScreen = () => {
           )}
         </Layout>
         <Layout style={styles.iconContainer}>
+          {data.status_cuti !== '5' && (
+            <Button
+              status='success'
+              size='tiny'
+              onPress={() =>
+                Alert.alert(
+                  'Peringatan',
+                  'Apakah Anda yakin ingin membatalkan cuti?',
+                  [
+                    { text: 'Iya', onPress: () => handleBatal(data) },
+                    { text: 'Tidak' },
+                  ]
+                )
+              }
+              disabled={loadingBatal}
+            >
+              Batal
+            </Button>
+          )}
           {checked === data.kd_cuti ? (
             <TouchableOpacity onPress={() => setChecked('')}>
               <Icon name='arrowhead-up-outline' width={32} height={32} />
@@ -259,15 +219,14 @@ const CutiDokterScreen = () => {
 
       <Layout style={styles.container}>
         <ScrollView>
-          {dataCuti.map((data) => (
-            <List data={data} key={data.kd_cuti} />
+          {dataCuti.map((data, index) => (
+            <List data={data} key={index} />
           ))}
         </ScrollView>
       </Layout>
 
       <Layout style={styles.footer}>
         <Layout style={styles.footerContainer}>
-          <Button status='success'>Batal</Button>
           <Button
             status='success'
             onPress={() => navigation.navigate('TambahCutiDokter')}

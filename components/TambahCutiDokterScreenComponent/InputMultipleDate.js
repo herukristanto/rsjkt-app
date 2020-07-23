@@ -27,7 +27,7 @@ const InputMultipleDate = ({ name, ...props }) => {
       <Text style={{ color: '#8F9BB3', marginVertical: 5 }} category='c1'>
         Tanggal (Bisa memilih lebih dari 1 tanggal)
       </Text>
-      <Calendar markedDates={value} onDayPress={selectDate} />
+      <Calendar markedDates={value} onDayPress={selectDate} {...props} />
       {error && touch && (
         <Text style={{ color: 'red', marginTop: 5 }} category='c1'>
           {error}
