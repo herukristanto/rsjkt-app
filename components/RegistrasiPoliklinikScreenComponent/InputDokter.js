@@ -108,7 +108,7 @@ const InputDokter = ({ name, label, items, ...props }) => {
             alignItems: 'center',
           }}
         >
-          <Layout style={{ flexShrink: 1 }}>
+          <Layout style={{ flexShrink: 1, padding: 10 }}>
             <TouchableWithoutFeedback
               onPress={() => handleSelect(item.label, item.value, item)}
             >

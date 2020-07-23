@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Dimensions,
-  AsyncStorage,
   View,
   TouchableOpacity,
   Image,
@@ -15,22 +14,22 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 
 import { AppContext } from '../../context/AppContext';
-import { LOGOUT } from '../../reducer/AppReducer';
-import { getUnique } from '../../utils/helpers';
 import { baseAxios } from '../../utils/useAxios';
 import ModalImageDokter from '../../components/ModalImageDokter';
 
 const { width } = Dimensions.get('screen');
 
 const DokterScreen = () => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state } = useContext(AppContext);
   const [listPasien, setListPasien] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [dataModal, setDataModal] = useState();
+  const [triggerRefresh, setTriggerRefresh] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
+    setLoading(true);
     const getPasien = async () => {
       try {
         const { data } = await baseAxios('RegOL', {
@@ -78,7 +77,7 @@ const DokterScreen = () => {
       }
     };
     getPasien();
-  }, []);
+  }, [triggerRefresh]);
 
   const handleModal = (value) => {
     setShowModal(true);
@@ -89,14 +88,8 @@ const DokterScreen = () => {
     setShowModal(false);
   };
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('_USERDATA_');
-    dispatch({ type: LOGOUT });
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'HomeNavigation' }],
-    });
+  const handleRefresh = async () => {
+    setTriggerRefresh((prevState) => !prevState);
   };
 
   const Pasien = ({ data }) => {
@@ -226,12 +219,12 @@ const DokterScreen = () => {
 
       <Layout style={styles.footer}>
         <Layout style={styles.container}>
-          <TouchableOpacity onPress={handleLogout}>
-            <Text style={styles.footerText}>Logout</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('ListPraktek')}>
+            <Text style={styles.footerText}>Update Status</Text>
           </TouchableOpacity>
           <Layout style={styles.footerDivider}></Layout>
-          <TouchableOpacity onPress={() => navigation.navigate('ListPraktek')}>
-            <Text style={styles.footerText}>Update</Text>
+          <TouchableOpacity onPress={handleRefresh}>
+            <Text style={styles.footerText}>Refresh</Text>
           </TouchableOpacity>
         </Layout>
       </Layout>

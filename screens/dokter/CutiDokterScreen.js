@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Layout, Text, Icon, Spinner, Button } from '@ui-kitten/components';
 import {
   StyleSheet,
@@ -9,7 +9,11 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native';
 import Constants from 'expo-constants';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
@@ -21,46 +25,55 @@ const { width } = Dimensions.get('screen');
 
 const CutiDokterScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const { state } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const [loadingBatal, setLoadingBatal] = useState(false);
   const [dataCuti, setDataCuti] = useState([]);
   const [checked, setChecked] = useState('');
+  const [triggerRefresh, setTriggerRefresh] = useState(true);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        // Check internet connection
-        const connect = await NetInfo.fetch();
-        if (!connect.isConnected && !connect.isInternetReachable) {
-          Alert.alert('Error', 'No Internet Connection', [
-            { text: 'OK', onPress: () => navigation.goBack() },
-          ]);
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const getData = async () => {
+        try {
+          // Check internet connection
+          const connect = await NetInfo.fetch();
+          if (!connect.isConnected && !connect.isInternetReachable) {
+            Alert.alert('Error', 'No Internet Connection', [
+              {
+                text: 'OK',
+                onPress: () => navigation.goBack(),
+              },
+            ]);
+          }
+
+          const { data } = await baseAxios.get('cutidr', {
+            params: {
+              key: 'rsjkt4231',
+              dokter_id: state.user.idDokter,
+            },
+          });
+
+          const result = data.filter((cuti) => cuti.status_cuti !== '5');
+
+          setDataCuti(result);
+        } catch (error) {
+          Alert.alert(
+            'Error',
+            'Something Wrong! Please Contact Customer Service!',
+            [{ text: 'OK', onPress: () => navigation.goBack() }]
+          );
         }
 
-        const { data } = await baseAxios.get('cutidr', {
-          params: {
-            key: 'rsjkt4231',
-            dokter_id: state.user.idDokter,
-          },
-        });
-
-        const result = data.filter((cuti) => cuti.status_cuti !== '5');
-
-        setDataCuti(result);
-      } catch (error) {
-        console.log(error);
-        Alert.alert(
-          'Error',
-          'Something Wrong! Please Contact Customer Service!',
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
-        );
+        setLoading(false);
+      };
+      if (route.name === 'CutiDokter') {
+        getData();
       }
-
-      setLoading(false);
-    };
-    getData();
-  }, []);
+    }, [triggerRefresh])
+  );
 
   const handleBatal = async (value) => {
     setLoadingBatal(true);
@@ -74,7 +87,10 @@ const CutiDokterScreen = () => {
       console.log(request);
       const { data } = await baseAxios.put('cutidr', request);
       Alert.alert('Berhasil', 'Cuti Berhasil Dibatalkan', [
-        { text: 'OK', onPress: () => navigation.goBack() },
+        {
+          text: 'OK',
+          onPress: () => setTriggerRefresh((prevState) => !prevState),
+        },
       ]);
     } catch (error) {
       console.log(error);
@@ -108,17 +124,7 @@ const CutiDokterScreen = () => {
     );
   }
 
-  if (dataCuti.length === 0) {
-    return (
-      <Layout
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Text>Data Tidak Ditemukan</Text>
-      </Layout>
-    );
-  }
-
-  const List = ({ data }) => {
+  const List = ({ data, index }) => {
     return (
       <Layout style={styles.card}>
         <Layout style={styles.descContainer}>
@@ -140,7 +146,7 @@ const CutiDokterScreen = () => {
               : {getStatusCuti(data.status_cuti)}
             </Text>
           </Layout>
-          {checked === data.kd_cuti && (
+          {checked === index && (
             <Layout
               style={{
                 flexDirection: 'row',
@@ -180,12 +186,12 @@ const CutiDokterScreen = () => {
               Batal
             </Button>
           )}
-          {checked === data.kd_cuti ? (
+          {checked === index ? (
             <TouchableOpacity onPress={() => setChecked('')}>
               <Icon name='arrowhead-up-outline' width={32} height={32} />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => setChecked(data.kd_cuti)}>
+            <TouchableOpacity onPress={() => setChecked(index)}>
               <Icon name='arrowhead-down-outline' width={32} height={32} />
             </TouchableOpacity>
           )}
@@ -219,9 +225,21 @@ const CutiDokterScreen = () => {
 
       <Layout style={styles.container}>
         <ScrollView>
-          {dataCuti.map((data, index) => (
-            <List data={data} key={index} />
-          ))}
+          {dataCuti.length > 0 ? (
+            dataCuti.map((data, index) => (
+              <List data={data} key={index} index={index} />
+            ))
+          ) : (
+            <Layout
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text>Data Tidak Ditemukan</Text>
+            </Layout>
+          )}
         </ScrollView>
       </Layout>
 
