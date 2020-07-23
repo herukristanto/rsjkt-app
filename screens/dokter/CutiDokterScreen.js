@@ -60,11 +60,15 @@ const CutiDokterScreen = () => {
 
           setDataCuti(result);
         } catch (error) {
-          Alert.alert(
-            'Error',
-            'Something Wrong! Please Contact Customer Service!',
-            [{ text: 'OK', onPress: () => navigation.goBack() }]
-          );
+          if (error.response.status === 404) {
+            setDataCuti([]);
+          } else {
+            Alert.alert(
+              'Error',
+              'Something Wrong! Please Contact Customer Service!',
+              [{ text: 'OK', onPress: () => navigation.goBack() }]
+            );
+          }
         }
 
         setLoading(false);
