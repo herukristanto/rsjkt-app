@@ -171,7 +171,7 @@ const CutiDokterScreen = () => {
           )}
         </Layout>
         <Layout style={styles.iconContainer}>
-          {(data.status_cuti === '1' || data.status_cuti !== '4') && (
+          {(data.status_cuti === '1' || data.status_cuti === '4') && (
             <Button
               status='success'
               size='tiny'
