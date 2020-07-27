@@ -28,8 +28,8 @@ const ModalFeedback = ({ showModal, dataModal, handleClose }) => {
       }
 
       const request = {
-        rm: dataModal.Nomor_Cm,
-        generalkey: dataModal.No_reg,
+        rm: dataModal.RM,
+        generalkey: dataModal.Generalkey,
         poli_id: dataModal.Poli_id,
         dokter_id: dataModal.Dokter_id,
         tgl_pesan: dataModal.Tgl_Pesan,
