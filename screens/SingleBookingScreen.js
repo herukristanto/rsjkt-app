@@ -132,10 +132,10 @@ const SingleBookingScreen = () => {
               : {moment(data.Tgl_Pesan).format('dddd, DD MMMM YYYY')}
             </Text>
           </Layout>
-          <Layout style={styles.desc}>
+          {/* <Layout style={styles.desc}>
             <Text style={{ width: width * 0.35 }}>No Antrian</Text>
             <Text style={{ width: width * 0.65 }}>: {data.NomorPanggil}</Text>
-          </Layout>
+          </Layout> */}
           <Layout style={styles.desc}>
             <Text style={{ width: width * 0.35 }}>Lantai / Cluster</Text>
             <Text style={{ width: width * 0.65 }}>: {data.Cluster}</Text>

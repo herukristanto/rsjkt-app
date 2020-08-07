@@ -133,10 +133,10 @@ const RegistrasiPoliklinik3 = () => {
             ).format('DD MMMM YYYY')}`}
           </Text>
         </Layout>
-        <Layout style={[styles.desc, { flexDirection: 'row' }]}>
+        {/* <Layout style={[styles.desc, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>No Antrian</Text>
           <Text style={{ width: width * 0.5 }}>: {state.noAntrian}</Text>
-        </Layout>
+        </Layout> */}
         <Layout style={[styles.desc, { flexDirection: 'row' }]}>
           <Text style={{ width: width * 0.4 }}>Lantai / Cluster</Text>
           <Text style={{ width: width * 0.5 }}>
